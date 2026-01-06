@@ -1,0 +1,58 @@
+.menuContainer {
+  background: url("/images/bg-sidebar.svg");
+  width: 206px;
+  height: 555px;
+  padding-top: 10px;
+  background-size: cover;
+  border: 1px solid #a56b00;
+  outline: 1px solid #f2ae00;
+  outline-offset: 1px;
+  box-shadow: 0 0 0 3px #dea000, 0 0 0 4px #8a5900, 0 0 0 5px #c58a00,
+    0 0 0 6px #d4a512;
+}
+
+.button {
+  position: relative;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  transition: transform 0.1s ease;
+}
+
+.button:hover {
+  transform: scale(1.02);
+}
+
+.buttonImage {
+  width: 175px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: -15px;
+}
+
+.buttonLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.8),
+    1px 1px 0 rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  font-family: Tahoma, sans-serif;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.socialContainer {
+  position: sticky;
+  display: inline-flex;
+  padding-top: 15px;
+  gap: 13px;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}

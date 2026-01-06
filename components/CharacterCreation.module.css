@@ -1,0 +1,281 @@
+.container {
+  width: 879px;
+  background: url("/images/bg-create-char.svg");
+  background-size: cover;
+  border: 6px solid;
+  border-image: linear-gradient(180deg, #8b6914 0%, #ffa500 50%, #8b6914 100%);
+  border-image-slice: 1;
+  box-sizing: border-box;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+  font-family: Tahoma, sans-serif;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  background: linear-gradient(180deg, #8b7355 0%, #6b5745 100%);
+  border-bottom: 3px solid #3e2723;
+}
+
+.statsContainer {
+  display: flex;
+  gap: 8px;
+}
+
+.statBar {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 6px 10px;
+  color: #fff;
+  font-family: Tahoma, sans-serif;
+  width: 100%;
+  height: 33px;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.statBar1 {
+  background-image: url("/images/statbar1.svg");
+  width: 109px;
+  height: 33px;
+}
+
+.statBar3 {
+  background-image: url("/images/statbar3.svg");
+}
+
+.statBar::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.hpBar {
+  background-image: url("/images/hpbar.svg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 200px;
+  height: 30px;
+}
+
+.title {
+  text-align: center;
+  padding: 15px;
+  border-bottom: 2px solid #8b6914;
+}
+
+.titleText {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.6);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.section {
+  border-radius: 4px;
+}
+
+.sectionHeader {
+  background: linear-gradient(180deg, #6b5745 0%, #5c4a3a 50%, #4a3828 100%);
+  padding: 3px 20px;
+  border-radius: 4px 4px 0 0;
+  border: 2px solid #3e2723;
+  border-bottom: 3px solid #2c1810;
+}
+
+.sectionTitle {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.5px;
+  justify-content: center;
+  display: flex;
+}
+
+.serverGrid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 12px 8px;
+  padding: 5px;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  background: #000000;
+  border: 2px solid #8b6914;
+  border-radius: 2px;
+  cursor: pointer;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8);
+  position: relative;
+  transition: background 0.2s ease;
+}
+
+.checkboxChecked {
+  background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+}
+
+.checkboxLabel {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: left;
+  align-items: center;
+  gap: 4px;
+}
+
+.labelText {
+  color: #3e2723;
+  font-size: 12px;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.settingsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px 30px;
+  padding: 10px;
+  width: 102px;
+}
+
+.settingRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.settingLabel {
+  color: #3e2723;
+  font-size: 13px;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  min-width: 90px;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 15px;
+}
+
+.radioLabel {
+  display: -webkit-inline-box;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: #3e2723;
+  font-size: 12px;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.classesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 25px 40px;
+  justify-items: center;
+}
+
+.classItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.className {
+  color: #3e2723;
+  font-size: 13px;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.3px;
+}
+
+.classIcon {
+  width: 70px;
+  height: 70px;
+  background-image: url("/images/checkboxProf.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #000000;
+  border: 1px solid #8b6914;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(0, 0, 0, 0.8);
+  transition: all 0.2s ease;
+}
+
+.classIconSelected {
+  border: 3px solid #ffd700;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.6),
+    inset 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  padding-top: 10px;
+}
+
+.button {
+  position: relative;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  background: none;
+  transition: transform 0.1s ease;
+  width: 200px;
+  height: 50px;
+}
+
+.button:hover {
+  transform: scale(1.03);
+}
+img.buttonImage {
+  width: 100%;
+  height: 100%;
+}
+
+.buttonImage {
+  display: block;
+}
+
+.buttonLabel {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.8);
+  z-index: 2;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.footer {
+  text-align: center;
+  padding: 5px;
+}
+
+.footerText {
+  color: #5c4a3a;
+  font-size: 11px;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+  margin: 0;
+}
