@@ -1,5 +1,5 @@
 .menuContainer {
-  background: url("/images/bg-sidebar.svg");
+  background: url("/images/bg-sidebar.svg") center / 115% 104% no-repeat;
   width: 206px;
   height: 550px;
   padding-top: 10px;

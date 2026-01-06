@@ -1,13 +1,12 @@
 .container {
-  width: 879px;
-  background: url("/images/bg-create-char.svg");
-  background-size: center/100% 100% no-repeat;
-  border: 6px solid;
-  border-image: linear-gradient(180deg, #8b6914 0%, #ffa500 50%, #8b6914 100%);
-  border-image-slice: 1;
   box-sizing: border-box;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+  background: url(/images/bg-create-char.svg) center / 107% 128% no-repeat;
+  border: 6px solid;
+  border-image: linear-gradient(#8b6914 0%, orange 50%, #8b6914 100%) 1;
+  width: 879px;
   font-family: Tahoma, sans-serif;
+  box-shadow: 0 0 0 1px #b27800, 0 0 0 2px #e0a000, 0 0 0 3px #be8400,
+    0 0 0 4px #946200, 0 0 0 5px #efb100, 0 0 0 6px #f4d944, 0 10px 40px #000c;
 }
 
 .topBar {
