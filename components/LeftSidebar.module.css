@@ -1,9 +1,9 @@
 .menuContainer {
   background: url("/images/bg-sidebar.svg");
   width: 206px;
-  height: 555px;
+  height: 550px;
   padding-top: 10px;
-  background-size: cover;
+  background-size: center/100% 100% no-repeat;
   border: 1px solid #a56b00;
   outline: 1px solid #f2ae00;
   outline-offset: 1px;
@@ -50,7 +50,7 @@
 .socialContainer {
   position: sticky;
   display: inline-flex;
-  padding-top: 15px;
+  padding-top: 30px;
   gap: 13px;
   align-items: center;
   width: 100%;

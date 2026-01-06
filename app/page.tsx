@@ -50,7 +50,7 @@ export default function Home() {
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '20px'
+          gap: '13px'
         }}>
           <LoginForm />
           <SettingsPanel />

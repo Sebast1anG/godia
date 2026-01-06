@@ -1,7 +1,7 @@
 .container {
   width: 879px;
   background: url("/images/bg-create-char.svg");
-  background-size: cover;
+  background-size: center/100% 100% no-repeat;
   border: 6px solid;
   border-image: linear-gradient(180deg, #8b6914 0%, #ffa500 50%, #8b6914 100%);
   border-image-slice: 1;
