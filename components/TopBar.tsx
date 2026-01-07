@@ -31,7 +31,7 @@ export default function TopBar() {
                         className={styles.titleBackground}
                     />
                     <img
-                        src="/images/godia.png"
+                        src="/images/godiaText.png"
                         alt="GODIA.PL"
                         className={styles.logoImage}
                     />
