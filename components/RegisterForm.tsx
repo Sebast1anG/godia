@@ -30,7 +30,7 @@ export default function RegisterForm() {
         try {
             const result = await authService.register({ email, username, password });
             console.log('Zarejestrowano:', result.user);
-            window.location.href = '/game';
+            window.location.href = '/';
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Błąd rejestracji');
         } finally {
@@ -109,7 +109,7 @@ export default function RegisterForm() {
                 </button>
 
                 <div className={styles.linkContainer}>
-                    <a href="#login" className={styles.link}>
+                    <a href="/login" className={styles.link}>
                         Masz już konto? Zaloguj się
                     </a>
                 </div>
