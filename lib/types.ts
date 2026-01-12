@@ -34,3 +34,26 @@ export interface TokenPayload {
   userId: string;
   email: string;
 }
+export interface Character {
+  id: string;
+  userId: string;
+  name: string;
+  class: CharacterClass;
+  level: number;
+  experience: number;
+  serverName: string;
+  gameMode: string;
+  createdAt: string;
+  lastPlayed?: string;
+}
+
+export type CharacterClass = "Wojownik" | "Mag" | "Łucznik" | "Łotr";
+
+export interface CharacterResponse {
+  id: string;
+  name: string;
+  class: CharacterClass;
+  level: number;
+  serverName: string;
+  gameMode: string;
+}

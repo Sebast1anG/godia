@@ -17,7 +17,7 @@ export default function LoginForm() {
         try {
             const result = await authService.login({ email, password });
             console.log('Zalogowano:', result.user);
-            window.location.href = '/game';
+            window.location.reload();
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Błąd logowania');
         } finally {

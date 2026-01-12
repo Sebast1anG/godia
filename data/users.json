@@ -5,6 +5,13 @@
     "username": "SuperGracz",
     "password": "$2b$10$OVzkPLBzVkjuwZt/5d6FuOMv0/ef7F77kDKIYDempq5ZW96QaQ77C",
     "createdAt": "2026-01-08T20:06:15.198Z",
-    "lastLogin": "2026-01-08T20:06:33.511Z"
+    "lastLogin": "2026-01-11T19:26:30.594Z"
+  },
+  {
+    "id": "019413ca-1340-492f-8a26-867e6f19f327",
+    "email": "test123@godia.pl",
+    "username": "Admin",
+    "password": "$2b$10$U9WPrp5pgSr8kA.rAGQlTu0CTjngwPcTNh8ocC3O/XpPbUuacDznm",
+    "createdAt": "2026-01-11T23:07:53.782Z"
   }
 ]
