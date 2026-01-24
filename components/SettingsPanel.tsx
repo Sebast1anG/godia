@@ -5,7 +5,7 @@ import styles from './SettingsPanel.module.css';
 export default function SettingsPanel() {
     const menuItems = [
         { label: 'Ustawienia Konta', href: '#ustawienia' },
-        { label: 'Waluta Premium|GM|', href: '#waluta' },
+        { label: 'Waluta Premium(GM)', href: '#waluta' },
         { label: 'Regulamin', href: '#regulamin' }
     ];
 

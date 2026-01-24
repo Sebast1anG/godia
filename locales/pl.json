@@ -1,0 +1,47 @@
+{
+  "characterCreation": {
+    "title": "Tworzenie Postaci",
+    "serverSelection": "Wybór serwera:",
+    "testServer": "Testserw",
+    "characterSettings": "Ustawienia postaci:",
+    "gameMode": "Tryb postaci:",
+    "modePvE": "Tryb PvE",
+    "modePvP": "Tryb PvP",
+    "gender": "Płeć postaci:",
+    "genderMale": "Męska",
+    "genderFemale": "Damska",
+    "race": "Rasa postaci:",
+    "raceHuman": "Human",
+    "raceElf": "Elf",
+    "professions": "Profesje postaci:",
+    "classWarrior": "Wojownik",
+    "classMage": "Mag",
+    "className": "Nazwa",
+    "createButton": "Utwórz postać",
+    "footer": "Informacje o trybach i profesjach postaci są w \"Wikipedia gry\""
+  },
+  "login": {
+    "title": "Logowanie",
+    "email": "Email",
+    "password": "Hasło",
+    "loginButton": "Zaloguj",
+    "forgotPassword": "Zapomniałeś hasła?",
+    "createAccount": "Utwórz konto"
+  },
+  "register": {
+    "title": "Rejestracja",
+    "email": "Email",
+    "username": "Nazwa gracza",
+    "password": "Hasło",
+    "confirmPassword": "Powtórz hasło",
+    "registerButton": "Zarejestruj się",
+    "hasAccount": "Masz już konto? Zaloguj się"
+  },
+  "userPanel": {
+    "loading": "Ładowanie postaci...",
+    "noCharacter": "Brak postaci",
+    "level": "Poziom",
+    "characterSelect": "Wybór postaci",
+    "joinGame": "Dołącz do rozgrywki"
+  }
+}

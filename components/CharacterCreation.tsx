@@ -2,8 +2,11 @@
 
 import { useState } from 'react';
 import styles from './CharacterCreation.module.css';
+import Checkbox from './Checkbox';
+import { useTranslations } from '@/lib/useTranslations';
 
 export default function CharacterCreation() {
+    const { t } = useTranslations();
     const [selectedServer, setSelectedServer] = useState(0);
     const [gameMode, setGameMode] = useState('pve');
     const [gender, setGender] = useState('male');
@@ -12,12 +15,12 @@ export default function CharacterCreation() {
 
     const servers = Array(32).fill('');
     const classes = [
-        { name: 'Wojownik', id: 'warrior' },
-        { name: 'Mag', id: 'mage' },
-        { name: 'Nazwa', id: 'class3' },
-        { name: 'Nazwa', id: 'class4' },
-        { name: 'Nazwa', id: 'class5' },
-        { name: 'Nazwa', id: 'class6' }
+        { name: t('characterCreation.classWarrior'), id: 'warrior' },
+        { name: t('characterCreation.classMage'), id: 'mage' },
+        { name: t('characterCreation.className'), id: 'class3' },
+        { name: t('characterCreation.className'), id: 'class4' },
+        { name: t('characterCreation.className'), id: 'class5' },
+        { name: t('characterCreation.className'), id: 'class6' }
     ];
 
     return (
@@ -44,22 +47,22 @@ export default function CharacterCreation() {
             </div>
 
             <div className={styles.title}>
-                <h1 className={styles.titleText}>Tworzenie Postaci</h1>
+                <h1 className={styles.titleText}>{t('characterCreation.title')}</h1>
             </div>
 
             <div className={styles.section}>
                 <div className={styles.sectionHeader}>
-                    <div className={styles.sectionTitle}>Wybór serwera:</div>
+                    <div className={styles.sectionTitle}>{t('characterCreation.serverSelection')}</div>
                 </div>
                 <div className={styles.sectionContent}>
                     <div className={styles.serverGrid}>
                         {servers.map((_, index) => (
                             <div key={index} className={styles.checkboxLabel}>
-                                {index === 0 && <span className={styles.labelText}>Testserw</span>}
-                                <div
-                                    className={`${styles.checkbox} ${selectedServer === index ? styles.checkboxChecked : ''}`}
-                                    onClick={() => setSelectedServer(index)}
-                                ></div>
+                                {index === 0 && <span className={styles.labelText}>{t('characterCreation.testServer')}</span>}
+                                <Checkbox
+                                    checked={selectedServer === index}
+                                    onChange={() => setSelectedServer(index)}
+                                />
                             </div>
                         ))}
                     </div>
@@ -68,67 +71,55 @@ export default function CharacterCreation() {
 
             <div className={styles.section}>
                 <div className={styles.sectionHeader}>
-                    <div className={styles.sectionTitle}>Ustawienia postaci:</div>
+                    <div className={styles.sectionTitle}>{t('characterCreation.characterSettings')}</div>
                 </div>
                 <div className={styles.sectionContent}>
                     <div className={styles.settingsGrid}>
                         <div className={styles.settingRow}>
-                            <span className={styles.settingLabel}>Tryb postaci:</span>
+                            <span className={styles.settingLabel}>{t('characterCreation.gameMode')}</span>
                             <div className={styles.radioGroup}>
-                                <label className={styles.radioLabel}>
-                                    <div
-                                        className={`${styles.checkbox} ${gameMode === 'pve' ? styles.checkboxChecked : ''}`}
-                                        onClick={() => setGameMode('pve')}
-                                    ></div>
-                                    Tryb PvE
-                                </label>
-                                <label className={styles.radioLabel}>
-                                    <div
-                                        className={`${styles.checkbox} ${gameMode === 'pvp' ? styles.checkboxChecked : ''}`}
-                                        onClick={() => setGameMode('pvp')}
-                                    ></div>
-                                    Tryb PvP
-                                </label>
+                                <Checkbox
+                                    label={t('characterCreation.modePvE')}
+                                    checked={gameMode === 'pve'}
+                                    onChange={() => setGameMode('pve')}
+                                />
+                                <Checkbox
+                                    label={t('characterCreation.modePvP')}
+                                    checked={gameMode === 'pvp'}
+                                    onChange={() => setGameMode('pvp')}
+                                />
                             </div>
                         </div>
 
                         <div className={styles.settingRow}>
-                            <span className={styles.settingLabel}>Płeć postaci:</span>
+                            <span className={styles.settingLabel}>{t('characterCreation.gender')}</span>
                             <div className={styles.radioGroup}>
-                                <label className={styles.radioLabel}>
-                                    <div
-                                        className={`${styles.checkbox} ${gender === 'male' ? styles.checkboxChecked : ''}`}
-                                        onClick={() => setGender('male')}
-                                    ></div>
-                                    Męska
-                                </label>
-                                <label className={styles.radioLabel}>
-                                    <div
-                                        className={`${styles.checkbox} ${gender === 'female' ? styles.checkboxChecked : ''}`}
-                                        onClick={() => setGender('female')}
-                                    ></div>
-                                    Damska
-                                </label>
+                                <Checkbox
+                                    label={t('characterCreation.genderMale')}
+                                    checked={gender === 'male'}
+                                    onChange={() => setGender('male')}
+                                />
+                                <Checkbox
+                                    label={t('characterCreation.genderFemale')}
+                                    checked={gender === 'female'}
+                                    onChange={() => setGender('female')}
+                                />
                             </div>
                         </div>
 
                         <div className={styles.settingRow}>
-                            <span className={styles.settingLabel}>Rasa postaci:</span>
+                            <span className={styles.settingLabel}>{t('characterCreation.race')}</span>
                             <div className={styles.radioGroup}>
-                                <label className={styles.radioLabel}>
-                                    <div
-                                        className={`${styles.checkbox} ${race === 'human' ? styles.checkboxChecked : ''}`}
-                                        onClick={() => setRace('human')}
-                                    ></div>
-                                    Human
-                                </label>
-                                <label className={styles.radioLabel}>
-                                    <div
-                                        className={`${styles.checkbox} ${race === 'elf' ? styles.checkboxChecked : ''}`}
-                                        onClick={() => setRace('elf')}
-                                    ></div>
-                                    Elf
-                                </label>
+                                <Checkbox
+                                    label={t('characterCreation.raceHuman')}
+                                    checked={race === 'human'}
+                                    onChange={() => setRace('human')}
+                                />
+                                <Checkbox
+                                    label={t('characterCreation.raceElf')}
+                                    checked={race === 'elf'}
+                                    onChange={() => setRace('elf')}
+                                />
                             </div>
                         </div>
                     </div>
@@ -137,7 +128,7 @@ export default function CharacterCreation() {
 
             <div className={styles.section}>
                 <div className={styles.sectionHeader}>
-                    <div className={styles.sectionTitle}>Profesje postaci:</div>
+                    <div className={styles.sectionTitle}>{t('characterCreation.professions')}</div>
                 </div>
                 <div className={styles.sectionContent}>
                     <div className={styles.classesGrid}>
@@ -160,17 +151,17 @@ export default function CharacterCreation() {
             <div className={styles.buttonContainer}>
                 <button className={styles.button}>
                     <img
-                        src="/images/button.svg"
+                        src="/images/createCharacterButton.svg"
                         alt=""
                         className={styles.buttonImage}
                     />
-                    <span className={styles.buttonLabel}>Utwórz postać</span>
+                    <span className={styles.buttonLabel}>{t('characterCreation.createButton')}</span>
                 </button>
             </div>
 
             <div className={styles.footer}>
                 <p className={styles.footerText}>
-                    Informacje o trybach i profesjach postaci są w &quot;Wikipedia gry&quot;
+                    {t('characterCreation.footer')}
                 </p>
             </div>
         </div>
