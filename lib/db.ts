@@ -1,7 +1,7 @@
 import { neon } from '@neondatabase/serverless';
 import { v4 as uuidv4 } from 'uuid';
 
-const sql = neon(process.env.DATABASE_URL!);
+const sql = neon(process.env.POSTGRES_URL!);
 
 export interface User {
   id: string;
