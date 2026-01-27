@@ -16,7 +16,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const user = db.findUserByEmail(email);
+    const user = await db.findUserByEmail(email);
+
     if (!user) {
       return NextResponse.json(
         { error: "Nieprawidłowy e-mail lub hasło" },
@@ -25,6 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
+
     if (!isValidPassword) {
       return NextResponse.json(
         { error: "Nieprawidłowy e-mail lub hasło" },
@@ -32,7 +34,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    db.updateUser(user.id, { lastLogin: new Date().toISOString() });
 
     const token = generateToken({ userId: user.id, email: user.email });
 
@@ -40,7 +41,7 @@ export async function POST(request: NextRequest) {
       id: user.id,
       email: user.email,
       username: user.username,
-      createdAt: user.createdAt,
+      createdAt: user.created_at.toISOString(),
     };
 
     return NextResponse.json({ user: userResponse, token });
