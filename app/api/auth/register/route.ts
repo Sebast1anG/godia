@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { v4 as uuidv4 } from "uuid";
 import { db } from "@/lib/db";
 import { generateToken } from "@/lib/auth";
-import { RegisterRequest, User, UserResponse } from "@/lib/types";
+import { RegisterRequest, UserResponse } from "@/lib/types";
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,7 +23,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const existingUser = db.findUserByEmail(email);
+    const existingUser = await db.findUserByEmail(email);
     if (existingUser) {
       return NextResponse.json(
         { error: "Użytkownik z tym e-mailem już istnieje" },
@@ -34,15 +33,11 @@ export async function POST(request: NextRequest) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser: User = {
-      id: uuidv4(),
+    const newUser = await db.createUser({
       email,
       username,
       password: hashedPassword,
-      createdAt: new Date().toISOString(),
-    };
-
-    db.createUser(newUser);
+    });
 
     const token = generateToken({ userId: newUser.id, email: newUser.email });
 
@@ -50,7 +45,7 @@ export async function POST(request: NextRequest) {
       id: newUser.id,
       email: newUser.email,
       username: newUser.username,
-      createdAt: newUser.createdAt,
+      createdAt: newUser.created_at.toISOString(),
     };
 
     return NextResponse.json({ user: userResponse, token }, { status: 201 });

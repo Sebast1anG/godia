@@ -1,57 +1,46 @@
-import fs from "fs";
-import path from "path";
-import { User } from "./types";
+import { neon } from '@neondatabase/serverless';
+import { v4 as uuidv4 } from 'uuid';
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const DB_PATH = path.join(DATA_DIR, "users.json");
+const sql = neon(process.env.DATABASE_URL!);
 
-class Database {
-  private ensureDbExists(): void {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
-    }
-    if (!fs.existsSync(DB_PATH)) {
-      fs.writeFileSync(DB_PATH, JSON.stringify([]), "utf8");
-    }
-  }
-
-  private readUsers(): User[] {
-    this.ensureDbExists();
-    const data = fs.readFileSync(DB_PATH, "utf8");
-    return JSON.parse(data);
-  }
-
-  private writeUsers(users: User[]): void {
-    this.ensureDbExists();
-    fs.writeFileSync(DB_PATH, JSON.stringify(users, null, 2), "utf8");
-  }
-
-  findUserByEmail(email: string): User | undefined {
-    const users = this.readUsers();
-    return users.find((u) => u.email.toLowerCase() === email.toLowerCase());
-  }
-
-  findUserById(id: string): User | undefined {
-    const users = this.readUsers();
-    return users.find((u) => u.id === id);
-  }
-
-  createUser(user: User): User {
-    const users = this.readUsers();
-    users.push(user);
-    this.writeUsers(users);
-    return user;
-  }
-
-  updateUser(id: string, updates: Partial<User>): User | undefined {
-    const users = this.readUsers();
-    const index = users.findIndex((u) => u.id === id);
-    if (index === -1) return undefined;
-
-    users[index] = { ...users[index], ...updates };
-    this.writeUsers(users);
-    return users[index];
-  }
+export interface User {
+  id: string;
+  email: string;
+  username: string;
+  password: string;
+  created_at: Date;
 }
 
-export const db = new Database();
+export async function initDb() {
+  await sql`
+    CREATE TABLE IF NOT EXISTS users (
+      id VARCHAR(255) PRIMARY KEY,
+      email VARCHAR(255) UNIQUE NOT NULL,
+      username VARCHAR(255) NOT NULL,
+      password VARCHAR(255) NOT NULL,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+}
+
+export const db = {
+  findUserByEmail: async (email: string): Promise<User | null> => {
+    const rows = await sql`SELECT * FROM users WHERE email = ${email}`;
+    return rows[0] as User || null;
+  },
+
+  findUserById: async (id: string): Promise<User | null> => {
+    const rows = await sql`SELECT * FROM users WHERE id = ${id}`;
+    return rows[0] as User || null;
+  },
+
+  createUser: async (user: Omit<User, 'id' | 'created_at'>): Promise<User> => {
+    const id = uuidv4();
+    const rows = await sql`
+      INSERT INTO users (id, email, username, password)
+      VALUES (${id}, ${user.email}, ${user.username}, ${user.password})
+      RETURNING *
+    `;
+    return rows[0] as User;
+  }
+};
