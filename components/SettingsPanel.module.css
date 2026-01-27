@@ -7,12 +7,17 @@
     #3a0000 50%,
     #2a0000 100%
   );
-  border: 8px solid;
+  border: 8px solid transparent;
   padding: 9px 25px 30px 25px;
   position: relative;
   box-sizing: border-box;
-  box-shadow: 0 0 0 1px #ac7500, 0 0 0 2px #c48800, 0 0 0 3px #ac7500,
-    0 0 0 4px #aa7100, 0 0 0 5px #e7a701, 0 0 0 6px #cca10f;
+  box-shadow:
+    0 0 0 1px #ac7500,
+    0 0 0 2px #c48800,
+    0 0 0 3px #ac7500,
+    0 0 0 4px #aa7100,
+    0 0 0 5px #e7a701,
+    0 0 0 6px #cca10f;
 }
 
 .innerBorder {
@@ -93,7 +98,9 @@
   font-weight: 900;
   font-size: 14px;
   letter-spacing: 1px;
-  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.95), 0 0 12px rgba(0, 0, 0, 0.9),
+  text-shadow:
+    0 3px 6px rgba(0, 0, 0, 0.95),
+    0 0 12px rgba(0, 0, 0, 0.9),
     2px 2px 0 rgba(0, 0, 0, 0.6);
   font-family: Tahoma, sans-serif;
   z-index: 3;
@@ -114,7 +121,8 @@
   background: linear-gradient(135deg, #ffd700 0%, #ffa500 50%, #ff8c00 100%);
   transform: rotate(45deg);
   border: 2px solid #8b6914;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6),
+  box-shadow:
+    0 3px 6px rgba(0, 0, 0, 0.6),
     inset 0 1px 3px rgba(255, 255, 255, 0.5);
   position: relative;
 }
@@ -146,7 +154,9 @@
   color: #ffffff;
   font-size: 18px;
   font-weight: 900;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.8);
+  text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.9),
+    0 0 10px rgba(0, 0, 0, 0.8);
   font-family: Tahoma, sans-serif;
   letter-spacing: 1px;
 }
@@ -155,7 +165,9 @@
   color: #4caf50;
   font-size: 14px;
   font-weight: 700;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.7);
+  text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.9),
+    0 0 8px rgba(0, 0, 0, 0.7);
   font-family: Tahoma, sans-serif;
 }
 
