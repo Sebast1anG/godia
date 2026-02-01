@@ -1,0 +1,236 @@
+.container {
+    width: 100%;
+    background: linear-gradient(180deg, #d4c4a0 0%, #c9b896 50%, #b8a67d 100%);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 0 0 2px #5c3d1e,
+        0 0 0 4px #8b6914;
+}
+
+/* Tabs bar */
+.tabsBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(180deg, #8b6914 0%, #6b4f0f 50%, #4a3508 100%);
+    padding: 0;
+    border-bottom: 3px solid #3a2505;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 215, 0, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.tabsLeft {
+    display: flex;
+}
+
+.tab {
+    padding: 10px 20px;
+    background: linear-gradient(180deg, #6b5a3a 0%, #5a4a2e 50%, #4a3a22 100%);
+    border: none;
+    border-right: 1px solid #3a2505;
+    color: #d4c4a0;
+    font-size: 13px;
+    font-weight: bold;
+    font-family: Tahoma, sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.tab:hover {
+    background: linear-gradient(180deg, #7b6a4a 0%, #6a5a3e 50%, #5a4a32 100%);
+    color: #ffd700;
+}
+
+.tabActive {
+    background: linear-gradient(180deg, #8b6914 0%, #7a5c12 50%, #6b4f0f 100%);
+    color: #ffd700;
+    box-shadow: inset 0 -2px 0 #ffd700;
+}
+
+.logoutButton {
+    padding: 8px 25px;
+    margin: 5px 10px;
+    background: linear-gradient(180deg, #8b0000 0%, #6b0000 50%, #4a0000 100%);
+    border: 2px solid #3a0000;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+    font-family: Tahoma, sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 100, 100, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.logoutButton:hover {
+    background: linear-gradient(180deg, #a00000 0%, #800000 50%, #5a0000 100%);
+}
+
+/* Content area */
+.content {
+    padding: 20px 30px;
+}
+
+.tabContent {
+    padding: 40px;
+    text-align: center;
+    color: #4a2800;
+    font-size: 16px;
+    font-family: Tahoma, sans-serif;
+}
+
+.columnsWrapper {
+    display: flex;
+    gap: 60px;
+}
+
+.column {
+    flex: 1;
+}
+
+.sectionTitle {
+    color: #4a2800;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 0 15px 0;
+    font-family: Tahoma, sans-serif;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.sectionTitleCentered {
+    color: #4a2800;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+    font-family: Tahoma, sans-serif;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+    text-align: center;
+}
+
+.inputWrapper {
+    margin-bottom: 10px;
+}
+
+.label {
+    color: #5c3d0e;
+    font-size: 13px;
+    font-weight: normal;
+    margin-bottom: 4px;
+    display: block;
+    font-family: Tahoma, sans-serif;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.input {
+    width: 220px;
+    padding: 6px 10px;
+    background: linear-gradient(180deg, #c9a875 0%, #b8956a 50%, #a78355 100%);
+    border: 2px solid #5c3d1e;
+    border-radius: 3px;
+    box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        inset 0 -1px 2px rgba(255, 255, 255, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.2);
+    font-size: 14px;
+    color: #3e2510;
+    font-family: Tahoma, sans-serif;
+    box-sizing: border-box;
+    outline: none;
+    transition: box-shadow 0.2s ease;
+}
+
+.input:focus {
+    box-shadow:
+        inset 0 2px 6px rgba(0, 0, 0, 0.4),
+        inset 0 -1px 2px rgba(255, 255, 255, 0.15),
+        0 0 6px rgba(139, 105, 20, 0.5);
+    border-color: #8b6914;
+}
+
+.input:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.error {
+    color: #8b0000;
+    font-size: 12px;
+    margin: 10px 0;
+    padding: 8px;
+    background: rgba(139, 0, 0, 0.1);
+    border: 1px solid rgba(139, 0, 0, 0.3);
+    border-radius: 3px;
+    font-family: Tahoma, sans-serif;
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.buttonWrapperRight {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.button {
+    padding: 6px 20px;
+    background: linear-gradient(180deg, #c9a875 0%, #a78355 50%, #8b6b3d 100%);
+    border: 2px solid #5c3d1e;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.button:hover:not(:disabled) {
+    background: linear-gradient(180deg, #d4b080 0%, #b89060 50%, #967548 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.button:active:not(:disabled) {
+    transform: translateY(1px);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.buttonLabel {
+    color: #3e2510;
+    font-size: 12px;
+    font-weight: bold;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+    font-family: Tahoma, sans-serif;
+}
+
+.accountInfoSection {
+    margin-top: 30px;
+    padding-top: 20px;
+}
+
+.infoText {
+    color: #4a2800;
+    font-size: 13px;
+    font-family: Tahoma, sans-serif;
+    margin-bottom: 3px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}

@@ -2,28 +2,45 @@
 
 import styles from './SettingsPanel.module.css';
 
-export default function SettingsPanel() {
-    const menuItems = [
-        { label: 'Ustawienia Konta', href: '#ustawienia' },
-        { label: 'Waluta Premium(GM)', href: '#waluta' },
-        { label: 'Regulamin', href: '#regulamin' }
+type ViewType = 'home' | 'account-settings' | 'premium' | 'regulations';
+
+interface SettingsPanelProps {
+    onNavigate?: (view: ViewType) => void;
+    isAuthenticated?: boolean;
+}
+
+export default function SettingsPanel({ onNavigate, isAuthenticated }: SettingsPanelProps) {
+    const menuItems: { label: string; view: ViewType; requiresAuth: boolean }[] = [
+        { label: 'Ustawienia Konta', view: 'account-settings', requiresAuth: true },
+        { label: 'Waluta Premium(GM)', view: 'premium', requiresAuth: false },
+        { label: 'Regulamin', view: 'regulations', requiresAuth: false }
     ];
+
+    const handleClick = (item: typeof menuItems[0]) => {
+        if (item.requiresAuth && !isAuthenticated) {
+            return;
+        }
+        onNavigate?.(item.view);
+    };
 
     return (
         <div className={styles.container}>
-
             <div className={styles.menuContainer}>
                 {menuItems.map((item, index) => (
                     <div key={index}>
                         <div className={styles.menuItem}>
-                            <a href={item.href} className={styles.button}>
+                            <button 
+                                onClick={() => handleClick(item)} 
+                                className={`${styles.button} ${item.requiresAuth && !isAuthenticated ? styles.disabled : ''}`}
+                                disabled={item.requiresAuth && !isAuthenticated}
+                            >
                                 <img
                                     src="/images/button.svg"
                                     alt=""
                                     className={styles.buttonImage}
                                 />
                                 <span className={styles.buttonLabel}>{item.label}</span>
-                            </a>
+                            </button>
                         </div>
                     </div>
                 ))}
