@@ -2,25 +2,36 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { generateToken } from "@/lib/auth";
-import { LoginRequest, UserResponse } from "@/lib/types";
+
+interface LoginRequest {
+  login: string;
+  password: string;
+}
+
+interface UserResponse {
+  id: string;
+  email: string;
+  username: string;
+  createdAt: string;
+}
 
 export async function POST(request: NextRequest) {
   try {
     const body: LoginRequest = await request.json();
-    const { email, password } = body;
+    const { login, password } = body;
 
-    if (!email || !password) {
+    if (!login || !password) {
       return NextResponse.json(
-        { error: "E-mail i hasło są wymagane" },
+        { error: "Login i hasło są wymagane" },
         { status: 400 }
       );
     }
 
-    const user = await db.findUserByEmail(email);
+    const user = await db.findUserByUsername(login);
 
     if (!user) {
       return NextResponse.json(
-        { error: "Nieprawidłowy e-mail lub hasło" },
+        { error: "Nieprawidłowy login lub hasło" },
         { status: 401 }
       );
     }
@@ -29,11 +40,10 @@ export async function POST(request: NextRequest) {
 
     if (!isValidPassword) {
       return NextResponse.json(
-        { error: "Nieprawidłowy e-mail lub hasło" },
+        { error: "Nieprawidłowy login lub hasło" },
         { status: 401 }
       );
     }
-
 
     const token = generateToken({ userId: user.id, email: user.email });
 

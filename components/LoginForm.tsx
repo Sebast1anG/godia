@@ -4,7 +4,7 @@ import { authService } from '@/lib/authService';
 import styles from './LoginForm.module.css';
 
 export default function LoginForm() {
-    const [email, setEmail] = useState('');
+    const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ export default function LoginForm() {
         setLoading(true);
 
         try {
-            const result = await authService.login({ email, password });
+            const result = await authService.login({ login, password });
             console.log('Zalogowano:', result.user);
             window.location.reload();
         } catch (err) {
@@ -29,11 +29,11 @@ export default function LoginForm() {
         <div className={styles.container}>
             <form className={styles.formContent} onSubmit={handleSubmit}>
                 <div className={styles.inputWrapper}>
-                    <label className={styles.label}>Email</label>
+                    <label className={styles.label}>Login</label>
                     <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        type="text"
+                        value={login}
+                        onChange={(e) => setLogin(e.target.value)}
                         className={styles.input}
                         required
                         disabled={loading}

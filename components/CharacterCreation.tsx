@@ -24,7 +24,7 @@ export default function CharacterCreation({ onCharacterCreated }: CharacterCreat
     const servers = Array(32).fill('');
     const classes = [
         { name: t('characterCreation.classWarrior'), id: 'warrior' },
-        { name: t('characterCreation.classMage'), id: 'mage' },
+        { name: t('characterCreation.classMage'), id: 'mag' },
         { name: t('characterCreation.className'), id: 'class3' },
         { name: t('characterCreation.className'), id: 'class4' },
         { name: t('characterCreation.className'), id: 'class5' },

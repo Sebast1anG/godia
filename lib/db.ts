@@ -57,6 +57,11 @@ export const db = {
     return rows[0] as User || null;
   },
 
+  findUserByUsername: async (username: string): Promise<User | null> => {
+    const rows = await sql`SELECT * FROM users WHERE username = ${username}`;
+    return rows[0] as User || null;
+  },
+
   findUserById: async (id: string): Promise<User | null> => {
     const rows = await sql`SELECT * FROM users WHERE id = ${id}`;
     return rows[0] as User || null;

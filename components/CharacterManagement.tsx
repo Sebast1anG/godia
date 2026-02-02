@@ -3,37 +3,19 @@
 import { useState } from 'react';
 import styles from './CharacterManagement.module.css';
 import Modal, { ModalInput, ModalCheckbox, ModalButton, ModalButtonsRow, ModalText } from './Modal';
-
-interface Character {
-    id: string;
-    name: string;
-    avatarUrl?: string;
-    level?: number;
-    class?: string;
-    gameMode?: 'pve' | 'pvp';
-    gender?: 'male' | 'female';
-    race?: 'human' | 'elf';
-}
+import { useCharacters } from '@/lib/CharactersContext';
 
 interface CharacterManagementProps {
-    characters: Character[];
     onViewAppearance?: (characterId: string) => void;
-    onDeleteCharacter?: (characterId: string, confirmation: string) => void;
-    onChangeNick?: (characterId: string, newNick: string) => void;
-    onChangeGender?: (characterId: string, gender: 'male' | 'female') => void;
-    onChangeRace?: (characterId: string, race: string) => void;
     onLogout?: () => void;
 }
 
 export default function CharacterManagement({
-    characters,
     onViewAppearance,
-    onDeleteCharacter,
-    onChangeNick,
-    onChangeGender,
-    onChangeRace,
     onLogout
 }: CharacterManagementProps) {
+    const { characters, deleteCharacter, updateCharacter } = useCharacters();
+    
     const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [nickModalOpen, setNickModalOpen] = useState(false);
@@ -46,6 +28,13 @@ export default function CharacterManagement({
     const [selectedRace, setSelectedRace] = useState<'human' | 'elf' | null>(null);
 
     const getSelectedCharacter = () => characters.find(c => c.id === selectedCharacterId);
+
+    const maxSlots = 5;
+    const slots = [...characters];
+    
+    while (slots.length < maxSlots) {
+        slots.push({ id: '', name: '', level: 0, class: '', gameMode: 'pve', gender: 'male', race: 'human', serverId: 0 });
+    }
 
     const openDeleteModal = (id: string) => {
         setSelectedCharacterId(id);
@@ -61,49 +50,52 @@ export default function CharacterManagement({
 
     const openGenderModal = (id: string) => {
         setSelectedCharacterId(id);
-        setSelectedGender(null);
+        const character = characters.find(c => c.id === id);
+        setSelectedGender(character?.gender || null);
         setGenderModalOpen(true);
     };
 
     const openRaceModal = (id: string) => {
         setSelectedCharacterId(id);
-        setSelectedRace(null);
+        const character = characters.find(c => c.id === id);
+        setSelectedRace(character?.race || null);
         setRaceModalOpen(true);
     };
 
-    const handleDeleteConfirm = () => {
+    const handleDeleteConfirm = async () => {
         if (deleteConfirmation === 'TAK' && selectedCharacterId) {
-            onDeleteCharacter?.(selectedCharacterId, deleteConfirmation);
             setDeleteModalOpen(false);
+            setDeleteConfirmation('');
+            await deleteCharacter(selectedCharacterId);
         }
     };
 
-    const handleNickConfirm = () => {
+    const handleNickConfirm = async () => {
         if (newNick && selectedCharacterId) {
-            onChangeNick?.(selectedCharacterId, newNick);
             setNickModalOpen(false);
+            const nick = newNick;
+            setNewNick('');
+            await updateCharacter(selectedCharacterId, { name: nick });
         }
     };
 
-    const handleGenderConfirm = () => {
+    const handleGenderConfirm = async () => {
         if (selectedGender && selectedCharacterId) {
-            onChangeGender?.(selectedCharacterId, selectedGender);
             setGenderModalOpen(false);
+            const gender = selectedGender;
+            setSelectedGender(null);
+            await updateCharacter(selectedCharacterId, { gender });
         }
     };
 
-    const handleRaceConfirm = () => {
+    const handleRaceConfirm = async () => {
         if (selectedRace && selectedCharacterId) {
-            onChangeRace?.(selectedCharacterId, selectedRace);
             setRaceModalOpen(false);
+            const race = selectedRace;
+            setSelectedRace(null);
+            await updateCharacter(selectedCharacterId, { race });
         }
     };
-    const maxSlots = 5;
-    const slots = [...characters];
-    
-    while (slots.length < maxSlots) {
-        slots.push({ id: '', name: '', avatarUrl: '' });
-    }
 
     return (
         <div className={styles.container}>
@@ -138,9 +130,6 @@ export default function CharacterManagement({
                     <div key={character.id || `empty-${index}`} className={styles.characterRow}>
                         <div className={styles.avatarContainer}>
                             <div className={styles.avatar}>
-                                {character.avatarUrl && (
-                                    <img src={character.avatarUrl} alt={character.name} className={styles.avatarImage} />
-                                )}
                             </div>
                         </div>
 
@@ -187,7 +176,6 @@ export default function CharacterManagement({
                                 >
                                     <span className={styles.actionLabel}>Zmiana rasy</span>
                                 </button>
-
                             </div>
                         ) : (
                             <div className={styles.actionsContainer}>
@@ -198,7 +186,6 @@ export default function CharacterManagement({
                 ))}
             </div>
 
-            {/* Delete Character Modal */}
             <Modal 
                 isOpen={deleteModalOpen} 
                 onClose={() => setDeleteModalOpen(false)} 
@@ -243,7 +230,7 @@ export default function CharacterManagement({
                 />
                 <ModalButtonsRow>
                     <ModalButton onClick={handleNickConfirm} disabled={!newNick}>
-                        Zmień nick<br/>(Koszt 1000GM)
+                        Zmień nick (Koszt 1000GM)
                     </ModalButton>
                 </ModalButtonsRow>
             </Modal>
@@ -269,7 +256,7 @@ export default function CharacterManagement({
                 </div>
                 <ModalButtonsRow>
                     <ModalButton onClick={handleGenderConfirm} disabled={!selectedGender}>
-                        Ustaw(Koszt 1000GM)
+                        Ustaw (Koszt 1000GM)
                     </ModalButton>
                 </ModalButtonsRow>
             </Modal>
@@ -295,7 +282,7 @@ export default function CharacterManagement({
                 </div>
                 <ModalButtonsRow>
                     <ModalButton onClick={handleRaceConfirm} disabled={!selectedRace}>
-                        Ustaw(Koszt 1000GM)
+                        Ustaw (Koszt 1000GM)
                     </ModalButton>
                 </ModalButtonsRow>
             </Modal>
