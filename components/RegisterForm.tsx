@@ -43,7 +43,7 @@ export default function RegisterForm() {
         try {
             const result = await authService.register({ email, username: login, password });
             console.log('Zarejestrowano:', result.user);
-            window.location.href = '/login';
+            window.location.href = '/';
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Błąd rejestracji');
         } finally {

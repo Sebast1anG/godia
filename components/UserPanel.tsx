@@ -1,124 +1,125 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { authService } from '@/lib/authService';
-import loginStyles from './LoginForm.module.css';
-import styles from './UserPanel.module.css';
+"use client";
+import { useEffect, useState } from "react";
+import { authService } from "@/lib/authService";
+import loginStyles from "./LoginForm.module.css";
+import styles from "./UserPanel.module.css";
 
 interface Character {
-    id: string;
-    name: string;
-    class: string;
-    level: number;
-    serverName: string;
-    gameMode: string;
+  id: string;
+  name: string;
+  class: string;
+  level: number;
+  serverName: string;
+  gameMode: string;
 }
 
 export default function UserPanel() {
-    const user = authService.getUser();
-    const [character, setCharacter] = useState<Character | null>(null);
-    const [loading, setLoading] = useState(true);
+  const user = authService.getUser();
+  const [character, setCharacter] = useState<Character | null>(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchCharacter = async () => {
-            try {
-                const token = authService.getToken();
-                if (!token) return;
+  useEffect(() => {
+    const fetchCharacter = async () => {
+      try {
+        const token = authService.getToken();
+        if (!token) return;
 
-                const response = await fetch('/api/character', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+        const response = await fetch("/api/characters", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-                if (response.ok) {
-                    const data = await response.json();
-                    setCharacter(data);
-                }
-            } catch (error) {
-                console.error('Błąd pobierania postaci:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchCharacter();
-    }, []);
-
-    const handleCharacterSelect = () => {
-        window.location.href = '/characters';
+        if (response.ok) {
+          const data = await response.json();
+          if (data.characters && data.characters.length > 0) {
+            const c = data.characters[0];
+            setCharacter({
+              id: c.id,
+              name: c.name,
+              class: c.class,
+              level: c.level,
+              serverName: `Server ${c.server_id}`,
+              gameMode: c.game_mode === "pvp" ? "PvP" : "PvE",
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Błąd pobierania postaci:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const handleJoinGame = () => {
-        window.location.href = '/game';
-    };
+    fetchCharacter();
+  }, []);
 
-    if (!user) return null;
+  const handleCharacterSelect = () => {
+    window.location.href = "/characters";
+  };
 
-    return (
-        <div className={styles.container}>
-            <div className={loginStyles.formContent}>
-                {loading ? (
-                    <div className={styles.loading}>
-                        Ładowanie postaci...
-                    </div>
-                ) : character ? (
-                    <div className={styles.characterSection}>
-                        <div className={styles.characterName}>
-                            {character.name}
-                        </div>
+  const handleJoinGame = () => {
+    window.location.href = "/game";
+  };
 
-                        <div className={styles.characterContainer}>
-                            <div className={styles.characterAvatar}>
-                                {/* Tu będzie sprite/obrazek postaci */}
-                            </div>
+  if (!user) return null;
 
-                            <div className={styles.characterInfo}>
-                                <div className={styles.characterProperty}>
-                                    {character.class}
-                                </div>
-                                <div className={styles.characterProperty}>
-                                    Poziom {character.level}
-                                </div>
-                                <div className={styles.characterProperty}>
-                                    {character.gameMode}
-                                </div>
-                                <div className={styles.characterProperty}>
-                                    {character.serverName}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ) : (
-                    <div className={styles.loading}>
-                        Brak postaci
-                    </div>
-                )}
+  return (
+    <div className={styles.container}>
+      <div className={loginStyles.formContent}>
+        {loading ? (
+          <div className={styles.loading}>Ładowanie postaci...</div>
+        ) : character ? (
+          <div className={styles.characterSection}>
+            <div className={styles.characterName}>{character.name}</div>
 
-                <button
-                    onClick={handleCharacterSelect}
-                    className={loginStyles.button}
-                >
-                    <img
-                        src="/images/chooseChar.svg"
-                        alt=""
-                        className={loginStyles.buttonImage}
-                    />
-                    <span className={loginStyles.buttonLabel}>Wybór postaci</span>
-                </button>
+            <div className={styles.characterContainer}>
+              <div className={styles.characterAvatar}>
+                {/* Tu będzie sprite/obrazek postaci */}
+              </div>
 
-                <button
-                    onClick={handleJoinGame}
-                    className={loginStyles.button}
-                    style={{ marginTop: '1rem' }}
-                >
-                    <img
-                        src="/images/joinToGame.svg"
-                        alt=""
-                        className={loginStyles.buttonImage}
-                    />
-                    <span className={loginStyles.buttonLabel}>Dołącz do rozgrywki</span>
-                </button>
+              <div className={styles.characterInfo}>
+                <div className={styles.characterProperty}>
+                  {character.class}
+                </div>
+                <div className={styles.characterProperty}>
+                  Poziom {character.level}
+                </div>
+                <div className={styles.characterProperty}>
+                  {character.gameMode}
+                </div>
+                <div className={styles.characterProperty}>
+                  {character.serverName}
+                </div>
+              </div>
             </div>
-        </div>
-    );
+          </div>
+        ) : (
+          <div className={styles.loading}>Brak postaci</div>
+        )}
+
+        <button onClick={handleCharacterSelect} className={loginStyles.button}>
+          <img
+            src="/images/chooseChar.svg"
+            alt=""
+            className={loginStyles.buttonImage}
+          />
+          <span className={loginStyles.buttonLabel}>Wybór postaci</span>
+        </button>
+
+        <button
+          onClick={handleJoinGame}
+          className={loginStyles.button}
+          style={{ marginTop: "1rem" }}
+        >
+          <img
+            src="/images/joinToGame.svg"
+            alt=""
+            className={loginStyles.buttonImage}
+          />
+          <span className={loginStyles.buttonLabel}>Dołącz do rozgrywki</span>
+        </button>
+      </div>
+    </div>
+  );
 }

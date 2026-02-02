@@ -4,14 +4,22 @@ import { useState } from 'react';
 import styles from './CharacterCreation.module.css';
 import Checkbox from './Checkbox';
 import { useTranslations } from '@/lib/useTranslations';
+import { authService } from '@/lib/authService';
 
-export default function CharacterCreation() {
+interface CharacterCreationProps {
+    onCharacterCreated?: () => void;
+}
+
+export default function CharacterCreation({ onCharacterCreated }: CharacterCreationProps) {
     const { t } = useTranslations();
+    const [characterName, setCharacterName] = useState('');
     const [selectedServer, setSelectedServer] = useState(0);
     const [gameMode, setGameMode] = useState('pve');
     const [gender, setGender] = useState('male');
     const [race, setRace] = useState('human');
     const [selectedClass, setSelectedClass] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     const servers = Array(32).fill('');
     const classes = [
@@ -22,6 +30,61 @@ export default function CharacterCreation() {
         { name: t('characterCreation.className'), id: 'class5' },
         { name: t('characterCreation.className'), id: 'class6' }
     ];
+
+    const handleCreateCharacter = async () => {
+        setError('');
+
+        if (!characterName.trim()) {
+            setError('Nazwa postaci jest wymagana');
+            return;
+        }
+
+        if (!selectedClass) {
+            setError('Wybierz klasę postaci');
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const token = authService.getToken();
+            if (!token) {
+                setError('Musisz być zalogowany');
+                return;
+            }
+
+            const response = await fetch('/api/characters', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    name: characterName,
+                    serverId: selectedServer,
+                    gameMode,
+                    gender,
+                    race,
+                    characterClass: selectedClass
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Błąd tworzenia postaci');
+            }
+
+            setCharacterName('');
+            setSelectedClass(null);
+            
+            onCharacterCreated?.();
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Błąd tworzenia postaci');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -48,6 +111,25 @@ export default function CharacterCreation() {
 
             <div className={styles.title}>
                 <h1 className={styles.titleText}>{t('characterCreation.title')}</h1>
+            </div>
+
+            <div className={styles.section}>
+                <div className={styles.sectionHeader}>
+                    <div className={styles.sectionTitle}>Nazwa postaci</div>
+                </div>
+                <div className={styles.sectionContent}>
+                    <div className={styles.nameInputWrapper}>
+                        <input
+                            type="text"
+                            className={styles.nameInput}
+                            value={characterName}
+                            onChange={(e) => setCharacterName(e.target.value)}
+                            placeholder="Wpisz nazwę postaci..."
+                            maxLength={20}
+                            disabled={loading}
+                        />
+                    </div>
+                </div>
             </div>
 
             <div className={styles.section}>
@@ -136,7 +218,7 @@ export default function CharacterCreation() {
                             <div
                                 key={cls.id}
                                 className={styles.classItem}
-                                onClick={() => setSelectedClass(cls.id)}
+                                onClick={() => !loading && setSelectedClass(cls.id)}
                             >
                                 <span className={styles.className}>{cls.name}</span>
                                 <div
@@ -148,14 +230,26 @@ export default function CharacterCreation() {
                 </div>
             </div>
 
+            {error && (
+                <div className={styles.errorMessage}>
+                    {error}
+                </div>
+            )}
+
             <div className={styles.buttonContainer}>
-                <button className={styles.button}>
+                <button 
+                    className={styles.button} 
+                    onClick={handleCreateCharacter}
+                    disabled={loading}
+                >
                     <img
                         src="/images/createCharacterButton.svg"
                         alt=""
                         className={styles.buttonImage}
                     />
-                    <span className={styles.buttonLabel}>{t('characterCreation.createButton')}</span>
+                    <span className={styles.buttonLabel}>
+                        {loading ? 'Tworzenie...' : t('characterCreation.createButton')}
+                    </span>
                 </button>
             </div>
 

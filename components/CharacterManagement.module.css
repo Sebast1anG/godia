@@ -1,0 +1,205 @@
+.container {
+    box-sizing: border-box;
+    background: url(/images/bg-create-char.svg) center / 107% 128% no-repeat;
+    border: 6px solid;
+    border-image: linear-gradient(#8b6914 0%, orange 50%, #8b6914 100%) 1;
+    width: 879px;
+    font-family: Tahoma, sans-serif;
+    box-shadow: 0 0 0 1px #b27800, 0 0 0 2px #e0a000, 0 0 0 3px #be8400,
+        0 0 0 4px #946200, 0 0 0 5px #efb100, 0 0 0 6px #f4d944, 0 10px 40px #000c;
+}
+
+.topBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: linear-gradient(180deg, #9f7400 0%, #966e00 100%);
+    border-bottom: 3px solid #3e2723;
+}
+
+.statsContainer {
+    display: flex;
+    gap: 8px;
+}
+
+.statBar {
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 6px 10px;
+    color: #fff;
+    font-family: Tahoma, sans-serif;
+    width: 100%;
+    height: 33px;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.statBar1 {
+    background-image: url("/images/statbar1.svg");
+    width: 109px;
+    height: 33px;
+}
+
+.statBar3 {
+    background-image: url("/images/statbar3.svg");
+}
+
+.logoutButton {
+    padding: 8px 25px;
+    background: linear-gradient(180deg, #8b0000 0%, #6b0000 50%, #4a0000 100%);
+    border: 2px solid #3a0000;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 100, 100, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.logoutButton:hover {
+    background: linear-gradient(180deg, #a00000 0%, #800000 50%, #5a0000 100%);
+}
+
+.logoutLabel {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+    font-family: Tahoma, sans-serif;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.characterList {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.characterRow {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    background: linear-gradient(180deg, #d4c4a0 0%, #c9b896 50%, #b8a67d 100%);
+    border: 2px solid #8b6914;
+    border-radius: 4px;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.avatarContainer {
+    flex-shrink: 0;
+}
+
+.avatar {
+    width: 80px;
+    height: 100px;
+    background: linear-gradient(180deg, #2a1a0a 0%, #1a0f05 100%);
+    border: 3px solid #5c3d1e;
+    border-radius: 4px;
+    box-shadow: 
+        inset 0 2px 8px rgba(0, 0, 0, 0.8),
+        0 2px 4px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+}
+
+.avatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.actionsContainer {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    position: relative;
+}
+
+.actionButton {
+    padding: 8px 12px;
+    background: linear-gradient(180deg, #8a8a8a 0%, #6a6a6a 30%, #5a5a5a 70%, #4a4a4a 100%);
+    border: 3px solid #3a3a3a;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.4);
+    min-width: 110px;
+}
+
+.actionButton:hover {
+    background: linear-gradient(180deg, #9a9a9a 0%, #7a7a7a 30%, #6a6a6a 70%, #5a5a5a 100%);
+}
+
+.actionLabel {
+    color: #2a2a2a;
+    font-size: 11px;
+    font-weight: bold;
+    font-family: Tahoma, sans-serif;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    white-space: nowrap;
+}
+
+.selectIndicator {
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 100%);
+    border: 2px solid #5a5a5a;
+    border-radius: 50%;
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.6),
+        0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.emptySlot {
+    flex: 1;
+}
+
+.characterInfo {
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
+    background: linear-gradient(180deg, #3a2a15 0%, #2a1a0a 100%);
+    border: 2px solid #5c3d1e;
+    border-radius: 4px;
+    padding: 8px 12px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.characterName {
+    color: #c9a875;
+    font-size: 11px;
+    font-weight: bold;
+    font-family: Tahoma, sans-serif;
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    border-bottom: 1px solid #5c3d1e;
+    padding-bottom: 4px;
+}
+
+.characterDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.detailValue {
+    color: #d4c4a0;
+    font-size: 12px;
+    font-family: Tahoma, sans-serif;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}

@@ -17,6 +17,7 @@ interface AccountSettingsProps {
     onChangeEmail?: (newEmail: string, verificationCode: string) => Promise<void>;
     onSendVerificationCode?: (newEmail: string) => Promise<void>;
     onLogout?: () => void;
+    onNavigateToCharacterManagement?: () => void;
 }
 
 export default function AccountSettings({ 
@@ -24,18 +25,17 @@ export default function AccountSettings({
     onChangePassword,
     onChangeEmail,
     onSendVerificationCode,
-    onLogout
+    onLogout,
+    onNavigateToCharacterManagement
 }: AccountSettingsProps) {
     const [activeTab, setActiveTab] = useState<TabType>('account');
     
-    // Password change state
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [passwordLoading, setPasswordLoading] = useState(false);
 
-    // Email change state
     const [currentEmail, setCurrentEmail] = useState('');
     const [newEmail, setNewEmail] = useState('');
     const [confirmNewEmail, setConfirmNewEmail] = useState('');
@@ -121,8 +121,6 @@ export default function AccountSettings({
         switch (activeTab) {
             case 'create-character':
                 return <div className={styles.tabContent}>Utwórz postać - TODO</div>;
-            case 'manage-characters':
-                return <div className={styles.tabContent}>Zarządzanie postaciami - TODO</div>;
             default:
                 return (
                     <div className={styles.columnsWrapper}>
@@ -260,7 +258,6 @@ export default function AccountSettings({
 
     return (
         <div className={styles.container}>
-            {/* Top tabs bar */}
             <div className={styles.tabsBar}>
                 <div className={styles.tabsLeft}>
                     <button 
@@ -277,7 +274,7 @@ export default function AccountSettings({
                     </button>
                     <button 
                         className={`${styles.tab} ${activeTab === 'manage-characters' ? styles.tabActive : ''}`}
-                        onClick={() => setActiveTab('manage-characters')}
+                        onClick={() => onNavigateToCharacterManagement?.()}
                     >
                         Zarządzanie postaciami
                     </button>
@@ -287,7 +284,6 @@ export default function AccountSettings({
                 </button>
             </div>
 
-            {/* Content area */}
             <div className={styles.content}>
                 {renderTabContent()}
             </div>

@@ -7,9 +7,10 @@ import BottomBar from '@/components/BottomBar'
 import LoginForm from '@/components/LoginForm'
 import UserPanel from '@/components/UserPanel'
 import AccountSettings from '@/components/AccountSettings'
+import CharacterManagement from '@/components/CharacterManagement'
 import { authService } from '@/lib/authService'
 
-type ViewType = 'home' | 'account-settings' | 'premium' | 'regulations';
+type ViewType = 'home' | 'account-settings' | 'premium' | 'regulations' | 'character-management';
 
 interface GameLayoutProps {
     centerContent: React.ReactNode;
@@ -19,11 +20,47 @@ export default function GameLayout({ centerContent }: GameLayoutProps) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
     const [currentView, setCurrentView] = useState<ViewType>('home');
+    const [characters, setCharacters] = useState<any[]>([]);
+
+    const fetchCharacters = async () => {
+        const token = authService.getToken();
+        if (!token) return;
+
+        try {
+            const response = await fetch('/api/characters', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                const mapped = data.characters.map((c: any) => ({
+                    id: c.id,
+                    name: c.name,
+                    level: c.level,
+                    class: c.class,
+                    gameMode: c.game_mode,
+                    gender: c.gender,
+                    race: c.race,
+                    serverId: c.server_id
+                }));
+                setCharacters(mapped);
+            }
+        } catch (error) {
+            console.error('Błąd pobierania postaci:', error);
+        }
+    };
 
     useEffect(() => {
         setIsAuthenticated(authService.isAuthenticated());
         setLoading(false);
     }, []);
+
+    useEffect(() => {
+        if (isAuthenticated && currentView === 'character-management') {
+            fetchCharacters();
+        }
+    }, [isAuthenticated, currentView]);
 
     const handleViewChange = (view: ViewType) => {
         if (view === 'account-settings' && !isAuthenticated) {
@@ -46,10 +83,6 @@ export default function GameLayout({ centerContent }: GameLayoutProps) {
                             forumPosts: 0,
                             reputation: 0
                         }}
-                        onLogout={() => {
-                            authService.logout();
-                            window.location.reload();
-                        }}
                         onChangePassword={async (current, newPass) => {
                             // TODO: API call
                             console.log('Change password', current, newPass);
@@ -62,12 +95,107 @@ export default function GameLayout({ centerContent }: GameLayoutProps) {
                             // TODO: API call
                             console.log('Send code to', email);
                         }}
+                        onLogout={() => {
+                            authService.logout();
+                            window.location.reload();
+                        }}
+                        onNavigateToCharacterManagement={() => setCurrentView('character-management')}
                     />
                 );
             case 'premium':
                 return <div>Waluta Premium - TODO</div>;
             case 'regulations':
                 return <div>Regulamin - TODO</div>;
+            case 'character-management':
+                return (
+                    <CharacterManagement
+                        characters={characters}
+                        onLogout={() => {
+                            authService.logout();
+                            window.location.reload();
+                        }}
+                        onDeleteCharacter={async (id, confirmation) => {
+                            if (confirmation !== 'TAK') return;
+                            try {
+                                const token = authService.getToken();
+                                const response = await fetch(`/api/characters?id=${id}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Authorization': `Bearer ${token}`
+                                    }
+                                });
+                                if (response.ok) {
+                                    fetchCharacters();
+                                }
+                            } catch (error) {
+                                console.error('Błąd usuwania postaci:', error);
+                            }
+                        }}
+                        onChangeNick={async (id, newNick) => {
+                            try {
+                                const token = authService.getToken();
+                                const response = await fetch('/api/characters', {
+                                    method: 'PATCH',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${token}`
+                                    },
+                                    body: JSON.stringify({
+                                        characterId: id,
+                                        name: newNick
+                                    })
+                                });
+                                if (response.ok) {
+                                    fetchCharacters();
+                                }
+                            } catch (error) {
+                                console.error('Błąd zmiany nicku:', error);
+                            }
+                        }}
+                        onChangeGender={async (id, gender) => {
+                            try {
+                                const token = authService.getToken();
+                                const response = await fetch('/api/characters', {
+                                    method: 'PATCH',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${token}`
+                                    },
+                                    body: JSON.stringify({
+                                        characterId: id,
+                                        gender: gender
+                                    })
+                                });
+                                if (response.ok) {
+                                    fetchCharacters();
+                                }
+                            } catch (error) {
+                                console.error('Błąd zmiany płci:', error);
+                            }
+                        }}
+                        onChangeRace={async (id, race) => {
+                            try {
+                                const token = authService.getToken();
+                                const response = await fetch('/api/characters', {
+                                    method: 'PATCH',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${token}`
+                                    },
+                                    body: JSON.stringify({
+                                        characterId: id,
+                                        race: race
+                                    })
+                                });
+                                if (response.ok) {
+                                    fetchCharacters();
+                                }
+                            } catch (error) {
+                                console.error('Błąd zmiany rasy:', error);
+                            }
+                        }}
+                    />
+                );
             default:
                 return centerContent;
         }

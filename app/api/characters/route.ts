@@ -1,0 +1,193 @@
+import { NextRequest, NextResponse } from "next/server";
+import { verifyToken } from "@/lib/auth";
+import { db, initDb } from "@/lib/db";
+
+export async function GET(request: NextRequest) {
+  try {
+    await initDb();
+    const authHeader = request.headers.get("authorization");
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return NextResponse.json(
+        { error: "Brak tokenu autoryzacji" },
+        { status: 401 }
+      );
+    }
+
+    const token = authHeader.substring(7);
+    const payload = verifyToken(token);
+
+    if (!payload) {
+      return NextResponse.json(
+        { error: "Nieprawidłowy token" },
+        { status: 401 }
+      );
+    }
+
+    const characters = await db.findCharactersByUserId(payload.userId);
+
+    return NextResponse.json({ characters });
+  } catch (error) {
+    console.error("Get characters error:", error);
+    return NextResponse.json({ error: "Błąd serwera" }, { status: 500 });
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const authHeader = request.headers.get("authorization");
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return NextResponse.json(
+        { error: "Brak tokenu autoryzacji" },
+        { status: 401 }
+      );
+    }
+
+    const token = authHeader.substring(7);
+    const payload = verifyToken(token);
+
+    if (!payload) {
+      return NextResponse.json(
+        { error: "Nieprawidłowy token" },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+    const { name, serverId, gameMode, gender, race, characterClass } = body;
+
+    if (!name || !characterClass) {
+      return NextResponse.json(
+        { error: "Nazwa i klasa postaci są wymagane" },
+        { status: 400 }
+      );
+    }
+
+    const existingCharacters = await db.findCharactersByUserId(payload.userId);
+    if (existingCharacters.length >= 5) {
+      return NextResponse.json(
+        { error: "Osiągnięto maksymalną liczbę postaci (5)" },
+        { status: 400 }
+      );
+    }
+
+    await initDb();
+
+    const character = await db.createCharacter({
+      user_id: payload.userId,
+      name,
+      server_id: serverId || 0,
+      game_mode: gameMode || 'pve',
+      gender: gender || 'male',
+      race: race || 'human',
+      class: characterClass
+    });
+
+    return NextResponse.json({ character }, { status: 201 });
+  } catch (error) {
+    console.error("Create character error:", error);
+    return NextResponse.json({ error: "Błąd serwera" }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const authHeader = request.headers.get("authorization");
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return NextResponse.json(
+        { error: "Brak tokenu autoryzacji" },
+        { status: 401 }
+      );
+    }
+
+    const token = authHeader.substring(7);
+    const payload = verifyToken(token);
+
+    if (!payload) {
+      return NextResponse.json(
+        { error: "Nieprawidłowy token" },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+    const { characterId, name, gender, race } = body;
+
+    if (!characterId) {
+      return NextResponse.json(
+        { error: "ID postaci jest wymagane" },
+        { status: 400 }
+      );
+    }
+
+    const character = await db.findCharacterById(characterId);
+    if (!character || character.user_id !== payload.userId) {
+      return NextResponse.json(
+        { error: "Postać nie istnieje lub nie należy do Ciebie" },
+        { status: 404 }
+      );
+    }
+
+    const updates: any = {};
+    if (name) updates.name = name;
+    if (gender) updates.gender = gender;
+    if (race) updates.race = race;
+
+    const updatedCharacter = await db.updateCharacter(characterId, updates);
+
+    return NextResponse.json({ character: updatedCharacter });
+  } catch (error) {
+    console.error("Update character error:", error);
+    return NextResponse.json({ error: "Błąd serwera" }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const authHeader = request.headers.get("authorization");
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return NextResponse.json(
+        { error: "Brak tokenu autoryzacji" },
+        { status: 401 }
+      );
+    }
+
+    const token = authHeader.substring(7);
+    const payload = verifyToken(token);
+
+    if (!payload) {
+      return NextResponse.json(
+        { error: "Nieprawidłowy token" },
+        { status: 401 }
+      );
+    }
+
+    const { searchParams } = new URL(request.url);
+    const characterId = searchParams.get('id');
+
+    if (!characterId) {
+      return NextResponse.json(
+        { error: "ID postaci jest wymagane" },
+        { status: 400 }
+      );
+    }
+
+    const character = await db.findCharacterById(characterId);
+    if (!character || character.user_id !== payload.userId) {
+      return NextResponse.json(
+        { error: "Postać nie istnieje lub nie należy do Ciebie" },
+        { status: 404 }
+      );
+    }
+
+    await db.deleteCharacter(characterId);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Delete character error:", error);
+    return NextResponse.json({ error: "Błąd serwera" }, { status: 500 });
+  }
+}
