@@ -78,7 +78,7 @@ export const db = {
     return rows[0] as User || null;
   },
 
-  createUser: async (user: Omit<User, 'id' | 'created_at'>): Promise<User> => {
+  createUser: async (user: Omit<User, 'id' | 'created_at' | 'selected_character_id'>): Promise<User> => {
     const id = uuidv4();
     const rows = await sql`
       INSERT INTO users (id, email, username, password)
