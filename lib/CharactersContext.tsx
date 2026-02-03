@@ -18,6 +18,9 @@ interface CharactersContextType {
     characters: Character[];
     loading: boolean;
     error: string | null;
+    selectedCharacterId: string | null;
+    selectedCharacter: Character | null;
+    selectCharacter: (id: string) => void;
     refetch: () => Promise<void>;
     deleteCharacter: (id: string) => Promise<boolean>;
     updateCharacter: (id: string, updates: Partial<Pick<Character, 'name' | 'gender' | 'race'>>) => Promise<boolean>;
@@ -29,6 +32,16 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
     const [characters, setCharacters] = useState<Character[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null);
+
+    const selectedCharacter = characters.find(c => c.id === selectedCharacterId) || characters[0] || null;
+
+    const selectCharacter = useCallback((id: string) => {
+        setSelectedCharacterId(id);
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('selectedCharacterId', id);
+        }
+    }, []);
 
     const fetchCharacters = useCallback(async () => {
         const token = authService.getToken();
@@ -75,7 +88,6 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
         const token = authService.getToken();
         if (!token) return false;
 
-        // Optimistic update - usuń z UI od razu
         const previousCharacters = characters;
         setCharacters(prev => prev.filter(c => c.id !== id));
 
@@ -88,14 +100,12 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
             });
 
             if (!response.ok) {
-                // Revert on error
                 setCharacters(previousCharacters);
                 return false;
             }
             return true;
         } catch (err) {
             console.error('Błąd usuwania postaci:', err);
-            // Revert on error
             setCharacters(previousCharacters);
             return false;
         }
@@ -108,7 +118,6 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
         const token = authService.getToken();
         if (!token) return false;
 
-        // Optimistic update - aktualizuj UI od razu
         setCharacters(prev => prev.map(c => 
             c.id === id ? { ...c, ...updates } : c
         ));
@@ -127,14 +136,12 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
             });
 
             if (!response.ok) {
-                // Revert on error
                 await fetchCharacters();
                 return false;
             }
             return true;
         } catch (err) {
             console.error('Błąd aktualizacji postaci:', err);
-            // Revert on error
             await fetchCharacters();
             return false;
         }
@@ -144,6 +151,12 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
         if (authService.isAuthenticated()) {
             fetchCharacters();
         }
+        if (typeof window !== 'undefined') {
+            const savedId = localStorage.getItem('selectedCharacterId');
+            if (savedId) {
+                setSelectedCharacterId(savedId);
+            }
+        }
     }, [fetchCharacters]);
 
     return (
@@ -151,6 +164,9 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
             characters,
             loading,
             error,
+            selectedCharacterId,
+            selectedCharacter,
+            selectCharacter,
             refetch: fetchCharacters,
             deleteCharacter,
             updateCharacter

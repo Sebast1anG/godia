@@ -11,10 +11,7 @@ interface UserPanelProps {
 
 export default function UserPanel({ onNavigateToCharacterSelection }: UserPanelProps) {
     const user = authService.getUser();
-    const { characters, loading } = useCharacters();
-    
-    // Weź pierwszą postać
-    const character = characters.length > 0 ? characters[0] : null;
+    const { selectedCharacter, loading } = useCharacters();
 
     const handleCharacterSelect = () => {
         onNavigateToCharacterSelection?.();
@@ -33,10 +30,10 @@ export default function UserPanel({ onNavigateToCharacterSelection }: UserPanelP
                     <div className={styles.loading}>
                         Ładowanie postaci...
                     </div>
-                ) : character ? (
+                ) : selectedCharacter ? (
                     <div className={styles.characterSection}>
                         <div className={styles.characterName}>
-                            {character.name}
+                            {selectedCharacter.name}
                         </div>
 
                         <div className={styles.characterContainer}>
@@ -46,16 +43,16 @@ export default function UserPanel({ onNavigateToCharacterSelection }: UserPanelP
 
                             <div className={styles.characterInfo}>
                                 <div className={styles.characterProperty}>
-                                    {character.class}
+                                    {selectedCharacter.class}
                                 </div>
                                 <div className={styles.characterProperty}>
-                                    Poziom {character.level}
+                                    Poziom {selectedCharacter.level}
                                 </div>
                                 <div className={styles.characterProperty}>
-                                    {character.gameMode === 'pvp' ? 'PvP' : 'PvE'}
+                                    {selectedCharacter.gameMode === 'pvp' ? 'PvP' : 'PvE'}
                                 </div>
                                 <div className={styles.characterProperty}>
-                                    Server {character.serverId}
+                                    Server {selectedCharacter.serverId}
                                 </div>
                             </div>
                         </div>

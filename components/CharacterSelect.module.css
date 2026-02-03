@@ -61,6 +61,12 @@
     box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
 }
 
+.slotSelected {
+    border-color: #ffd700;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+    background: linear-gradient(180deg, #4a3a1a 0%, #3a2a10 100%);
+}
+
 .characterLabel {
     position: absolute;
     top: 4px;

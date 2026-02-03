@@ -9,7 +9,7 @@ interface CharacterSelectProps {
 }
 
 export default function CharacterSelect({ onSelect, onClose }: CharacterSelectProps) {
-    const { characters } = useCharacters();
+    const { characters, selectedCharacterId, selectCharacter } = useCharacters();
 
     const maxSlots = 10;
     const slots = [...characters];
@@ -20,6 +20,7 @@ export default function CharacterSelect({ onSelect, onClose }: CharacterSelectPr
 
     const handleSelect = (id: string) => {
         if (id) {
+            selectCharacter(id);
             onSelect?.(id);
         }
     };
@@ -35,7 +36,7 @@ export default function CharacterSelect({ onSelect, onClose }: CharacterSelectPr
                     {slots.map((character, index) => (
                         <div 
                             key={character.id || `empty-${index}`} 
-                            className={`${styles.slot} ${character.id ? styles.slotActive : ''}`}
+                            className={`${styles.slot} ${character.id ? styles.slotActive : ''} ${selectedCharacterId === character.id ? styles.slotSelected : ''}`}
                             onClick={() => handleSelect(character.id)}
                         >
                             {character.id && (
@@ -45,9 +46,10 @@ export default function CharacterSelect({ onSelect, onClose }: CharacterSelectPr
                                 <div className={styles.avatar}></div>
                                 {character.id && (
                                     <div className={styles.info}>
+                                     <span className={styles.infoText}>{character.class}</span>
                                         <span className={styles.infoText}>{character.level}lvl</span>
                                         <span className={styles.infoText}>{character.gameMode === 'pvp' ? 'PvP' : 'PvE'}</span>
-                                        <span className={styles.infoText}>{character.class}</span>
+                                        <span className={styles.infoText}>Serwer {character.serverId}</span>
                                     </div>
                                 )}
                             </div>
