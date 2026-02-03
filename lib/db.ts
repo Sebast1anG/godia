@@ -8,6 +8,7 @@ export interface User {
   email: string;
   username: string;
   password: string;
+  selected_character_id: string | null;
   created_at: Date;
 }
 
@@ -31,8 +32,18 @@ export async function initDb() {
       email VARCHAR(255) UNIQUE NOT NULL,
       username VARCHAR(255) NOT NULL,
       password VARCHAR(255) NOT NULL,
+      selected_character_id VARCHAR(255) DEFAULT NULL,
       created_at TIMESTAMP DEFAULT NOW()
     )
+  `;
+
+  await sql`
+    DO $$ 
+    BEGIN 
+      IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='selected_character_id') THEN
+        ALTER TABLE users ADD COLUMN selected_character_id VARCHAR(255) DEFAULT NULL;
+      END IF;
+    END $$;
   `;
 
   await sql`
@@ -152,5 +163,15 @@ export const db = {
   deleteCharacter: async (id: string): Promise<boolean> => {
     const result = await sql`DELETE FROM characters WHERE id = ${id}`;
     return true;
+  },
+
+  updateSelectedCharacter: async (userId: string, characterId: string | null): Promise<boolean> => {
+    await sql`UPDATE users SET selected_character_id = ${characterId} WHERE id = ${userId}`;
+    return true;
+  },
+
+  getSelectedCharacterId: async (userId: string): Promise<string | null> => {
+    const rows = await sql`SELECT selected_character_id FROM users WHERE id = ${userId}`;
+    return rows[0]?.selected_character_id || null;
   }
 };

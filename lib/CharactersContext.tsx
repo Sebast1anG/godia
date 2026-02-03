@@ -12,6 +12,7 @@ export interface Character {
     gender: 'male' | 'female';
     race: 'human' | 'elf';
     serverId: number;
+    costumeId?: string;
 }
 
 interface CharactersContextType {
@@ -36,10 +37,23 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
 
     const selectedCharacter = characters.find(c => c.id === selectedCharacterId) || characters[0] || null;
 
-    const selectCharacter = useCallback((id: string) => {
+    const selectCharacter = useCallback(async (id: string) => {
         setSelectedCharacterId(id);
-        if (typeof window !== 'undefined') {
-            localStorage.setItem('selectedCharacterId', id);
+        
+        const token = authService.getToken();
+        if (token) {
+            try {
+                await fetch('/api/user/selected-character', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ characterId: id })
+                });
+            } catch (err) {
+                console.error('Błąd zapisu wybranej postaci:', err);
+            }
         }
     }, []);
 
@@ -148,15 +162,32 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
     }, [fetchCharacters]);
 
     useEffect(() => {
-        if (authService.isAuthenticated()) {
-            fetchCharacters();
-        }
-        if (typeof window !== 'undefined') {
-            const savedId = localStorage.getItem('selectedCharacterId');
-            if (savedId) {
-                setSelectedCharacterId(savedId);
+        const init = async () => {
+            if (authService.isAuthenticated()) {
+                await fetchCharacters();
+                
+                // Pobierz wybraną postać z API
+                const token = authService.getToken();
+                if (token) {
+                    try {
+                        const response = await fetch('/api/user/selected-character', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data.selectedCharacterId) {
+                                setSelectedCharacterId(data.selectedCharacterId);
+                            }
+                        }
+                    } catch (err) {
+                        console.error('Błąd pobierania wybranej postaci:', err);
+                    }
+                }
             }
-        }
+        };
+        init();
     }, [fetchCharacters]);
 
     return (

@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
 import styles from './AccountSettings.module.css';
+import CharacterCreation from './CharacterCreation';
+import { useCharacters } from '@/lib/CharactersContext';
 
 interface AccountInfo {
     login: string;
@@ -30,12 +32,14 @@ export default function AccountSettings({
 }: AccountSettingsProps) {
     const [activeTab, setActiveTab] = useState<TabType>('account');
     
+    // Password change state
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [passwordLoading, setPasswordLoading] = useState(false);
 
+    // Email change state
     const [currentEmail, setCurrentEmail] = useState('');
     const [newEmail, setNewEmail] = useState('');
     const [confirmNewEmail, setConfirmNewEmail] = useState('');
@@ -117,10 +121,21 @@ export default function AccountSettings({
         }
     };
 
+    const { refetch } = useCharacters();
+
     const renderTabContent = () => {
         switch (activeTab) {
             case 'create-character':
-                return <div className={styles.tabContent}>Utwórz postać - TODO</div>;
+                return (
+                    <div className={styles.tabContent}>
+                        <CharacterCreation 
+                            onCharacterCreated={() => {
+                                refetch();
+                                setActiveTab('account');
+                            }} 
+                        />
+                    </div>
+                );
             default:
                 return (
                     <div className={styles.columnsWrapper}>

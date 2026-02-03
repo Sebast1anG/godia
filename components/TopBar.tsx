@@ -3,7 +3,11 @@
 import Image from 'next/image';
 import styles from './TopBar.module.css';
 
-export default function TopBar() {
+interface TopBarProps {
+    onLogoClick?: () => void;
+}
+
+export default function TopBar({ onLogoClick }: TopBarProps) {
     return (
         <div className={styles.wrapper}>
             <div className={styles.header}>
@@ -24,7 +28,11 @@ export default function TopBar() {
                 />
                 <div className={styles.overlay}></div>
 
-                <div className={styles.logoWrapper}>
+                <div 
+                    className={styles.logoWrapper}
+                    onClick={onLogoClick}
+                    style={{ cursor: 'pointer' }}
+                >
                     <img
                         src="/images/godiaBg.svg"
                         alt=""

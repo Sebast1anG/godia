@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import styles from './CharacterManagement.module.css';
 import Modal, { ModalInput, ModalCheckbox, ModalButton, ModalButtonsRow, ModalText } from './Modal';
+import AppearanceModal from './AppearanceModal';
 import { useCharacters } from '@/lib/CharactersContext';
 
 interface CharacterManagementProps {
@@ -21,6 +22,7 @@ export default function CharacterManagement({
     const [nickModalOpen, setNickModalOpen] = useState(false);
     const [genderModalOpen, setGenderModalOpen] = useState(false);
     const [raceModalOpen, setRaceModalOpen] = useState(false);
+    const [appearanceModalOpen, setAppearanceModalOpen] = useState(false);
 
     const [deleteConfirmation, setDeleteConfirmation] = useState('');
     const [newNick, setNewNick] = useState('');
@@ -140,6 +142,7 @@ export default function CharacterManagement({
                                     <span className={styles.detailValue}>{character.level || 1}lvl</span>
                                     <span className={styles.detailValue}>{character.gameMode === 'pvp' ? 'PvP' : 'PvE'}</span>
                                     <span className={styles.detailValue}>{character.class}</span>
+                                    <span className={styles.detailValue}>Serwer {character.serverId}</span>
                                 </div>
                             </div>
                         )}
@@ -148,7 +151,10 @@ export default function CharacterManagement({
                             <div className={styles.actionsContainer}>
                                 <button 
                                     className={styles.actionButton}
-                                    onClick={() => onViewAppearance?.(character.id)}
+                                    onClick={() => {
+                                        setSelectedCharacterId(character.id);
+                                        setAppearanceModalOpen(true);
+                                    }}
                                 >
                                     <span className={styles.actionLabel}>Wygląd postaci</span>
                                 </button>
@@ -216,7 +222,6 @@ export default function CharacterManagement({
                 </ModalButtonsRow>
             </Modal>
 
-            {/* Change Nick Modal */}
             <Modal 
                 isOpen={nickModalOpen} 
                 onClose={() => setNickModalOpen(false)} 
@@ -235,7 +240,6 @@ export default function CharacterManagement({
                 </ModalButtonsRow>
             </Modal>
 
-            {/* Change Gender Modal */}
             <Modal 
                 isOpen={genderModalOpen} 
                 onClose={() => setGenderModalOpen(false)} 
@@ -261,7 +265,6 @@ export default function CharacterManagement({
                 </ModalButtonsRow>
             </Modal>
 
-            {/* Change Race Modal */}
             <Modal 
                 isOpen={raceModalOpen} 
                 onClose={() => setRaceModalOpen(false)} 
@@ -286,6 +289,21 @@ export default function CharacterManagement({
                     </ModalButton>
                 </ModalButtonsRow>
             </Modal>
+
+            <AppearanceModal
+                isOpen={appearanceModalOpen}
+                onClose={() => setAppearanceModalOpen(false)}
+                characterId={selectedCharacterId || ''}
+                currentCostumeId={getSelectedCharacter()?.costumeId}
+                ownedCostumes={[
+                    // { id: 'costume1', spriteUrl: '/sprites/costume1.gif' },
+                ]}
+                onConfirm={(charId, costumeId) => {
+                    console.log('Change costume:', charId, costumeId);
+                    // TODO: API do zmiany kostiumu
+                    setAppearanceModalOpen(false);
+                }}
+            />
         </div>
     );
 }

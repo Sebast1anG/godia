@@ -9,10 +9,11 @@ import UserPanel from '@/components/UserPanel'
 import AccountSettings from '@/components/AccountSettings'
 import CharacterManagement from '@/components/CharacterManagement'
 import CharacterSelect from '@/components/CharacterSelect'
-import { CharactersProvider } from '@/lib/CharactersContext';
+import GameNews from '@/components/GameNews'
+import { CharactersProvider } from '@/lib/CharactersContext'
 import { authService } from '@/lib/authService'
 
-type ViewType = 'home' | 'account-settings' | 'premium' | 'regulations' | 'character-management' | 'character-selection';
+type ViewType = 'home' | 'account-settings' | 'premium' | 'regulations' | 'character-management';
 
 interface GameLayoutProps {
     centerContent: React.ReactNode;
@@ -22,6 +23,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
     const [currentView, setCurrentView] = useState<ViewType>('home');
+    const [showCharacterSelect, setShowCharacterSelect] = useState(false);
 
     useEffect(() => {
         setIsAuthenticated(authService.isAuthenticated());
@@ -35,12 +37,17 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
         setCurrentView(view);
     };
 
+    const handleGoHome = () => {
+        setCurrentView('home');
+        setShowCharacterSelect(false);
+    };
+
     const user = authService.getUser();
 
     const renderCenterContent = () => {
         switch (currentView) {
             case 'account-settings':
-                if (!isAuthenticated) return centerContent;
+                if (!isAuthenticated) return <GameNews />;
                 return (
                     <AccountSettings
                         accountInfo={{
@@ -78,17 +85,8 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                         }}
                     />
                 );
-            case 'character-selection':
-                return (
-                    <CharacterSelect
-                        onSelect={(id) => {
-                            console.log('Selected character:', id);
-                            // TODO: zapisz wybraną postać i przejdź do gry
-                        }}
-                    />
-                );
             default:
-                return centerContent;
+                return <GameNews />;
         }
     };
 
@@ -118,7 +116,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                 }}
             />
 
-            <TopBar />
+            <TopBar onLogoClick={handleGoHome} />
 
             <div style={{
                 display: 'flex',
@@ -142,7 +140,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                     ) : (
                         isAuthenticated ? (
                             <UserPanel 
-                                onNavigateToCharacterSelection={() => setCurrentView('character-selection')}
+                                onNavigateToCharacterSelection={() => setShowCharacterSelect(true)}
                             />
                         ) : <LoginForm />
                     )}
@@ -154,6 +152,34 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
             </div>
 
             <BottomBar />
+
+            {/* Modal wyboru postaci */}
+            {showCharacterSelect && (
+                <div 
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 1000
+                    }}
+                    onClick={() => setShowCharacterSelect(false)}
+                >
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <CharacterSelect
+                            onSelect={(id) => {
+                                setShowCharacterSelect(false);
+                            }}
+                            onClose={() => setShowCharacterSelect(false)}
+                        />
+                    </div>
+                </div>
+            )}
         </main>
     );
 }
