@@ -2,12 +2,14 @@
 import { useState } from 'react';
 import { authService } from '@/lib/authService';
 import styles from './LoginForm.module.css';
+import ForgotPassword from './ForgotPassword';
 
 export default function LoginForm() {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -68,9 +70,34 @@ export default function LoginForm() {
                     </span>
                 </button>
                 <div className={styles.linkContainer}>
-                    <a href="#forgot" className={styles.link}>
-                        Zapomniałeś hasła?
-                    </a>
+                     <button 
+                    className={styles.forgotPassword}
+                    onClick={() => setShowForgotPassword(true)}
+                >
+                    Zapomniałeś hasła?
+                </button>
+
+            {showForgotPassword && (
+                <div 
+                    className={styles.modalOverlay}
+                    onClick={() => setShowForgotPassword(false)}
+                >
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <ForgotPassword
+                            onResetPassword={async (loginOrEmail) => {
+                                // API call do wysłania emaila
+                                const response = await fetch('/api/auth/forgot-password', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ loginOrEmail })
+                                });
+                                if (!response.ok) throw new Error('Błąd wysyłania linku');
+                            }}
+                            onClose={() => setShowForgotPassword(false)}
+                        />
+                    </div>
+                </div>
+            )}
                     <a href="/register" className={styles.link}>
                         Utwórz konto
                     </a>

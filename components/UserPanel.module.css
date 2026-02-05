@@ -6,7 +6,7 @@
     #3a0000 50%,
     #2a0000 100%
   );
-  border: 8px solid;
+  border: 8px solid transparent;
   border-image-slice: 1;
   padding: 40px 30px;
   padding: 0;
