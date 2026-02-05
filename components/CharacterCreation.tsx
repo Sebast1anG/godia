@@ -8,9 +8,17 @@ import { authService } from '@/lib/authService';
 
 interface CharacterCreationProps {
     onCharacterCreated?: () => void;
+    onNavigateToAccount?: () => void;
+    onNavigateToCharacterManagement?: () => void;
+    onLogout?: () => void;
 }
 
-export default function CharacterCreation({ onCharacterCreated }: CharacterCreationProps) {
+export default function CharacterCreation({ 
+    onCharacterCreated,
+    onNavigateToAccount,
+    onNavigateToCharacterManagement,
+    onLogout
+}: CharacterCreationProps) {
     const { t } = useTranslations();
     const [characterName, setCharacterName] = useState('');
     const [selectedServer, setSelectedServer] = useState(0);
@@ -90,23 +98,28 @@ export default function CharacterCreation({ onCharacterCreated }: CharacterCreat
         <div className={styles.container}>
             <div className={styles.topBar}>
                 <div className={styles.statsContainer}>
-                    <input
-                        type="text"
+                    <button
                         className={`${styles.statBar} ${styles.statBar1}`}
-                        placeholder=""
-                    />
-                    <input
-                        type="text"
+                        onClick={() => onNavigateToAccount?.()}
+                    >
+                        <span className={styles.logoutLabel}>Konto</span>
+                    </button>
+                    <button
                         className={`${styles.statBar} ${styles.statBar1}`}
-                        placeholder=""
-                    />
-                    <input
-                        type="text"
+                        type="button"
+                    >
+                        <span className={styles.logoutLabel}>Utwórz postać</span>
+                    </button>
+                    <button
                         className={`${styles.statBar} ${styles.statBar3}`}
-                        placeholder=""
-                    />
+                        onClick={() => onNavigateToCharacterManagement?.()}
+                    >
+                        <span className={styles.logoutLabel}>Zarządzanie postaciami</span>
+                    </button>
                 </div>
-                <div className={styles.hpBar}></div>
+                <button className={styles.logoutButton} onClick={onLogout}>
+                    <span className={styles.logoutLabel}>Wyloguj</span>
+                </button>
             </div>
 
             <div className={styles.title}>
@@ -237,8 +250,8 @@ export default function CharacterCreation({ onCharacterCreated }: CharacterCreat
             )}
 
             <div className={styles.buttonContainer}>
-                <button 
-                    className={styles.button} 
+                <button
+                    className={styles.button}
                     onClick={handleCreateCharacter}
                     disabled={loading}
                 >

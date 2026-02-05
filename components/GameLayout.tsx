@@ -8,12 +8,13 @@ import LoginForm from '@/components/LoginForm'
 import UserPanel from '@/components/UserPanel'
 import AccountSettings from '@/components/AccountSettings'
 import CharacterManagement from '@/components/CharacterManagement'
+import CharacterCreation from '@/components/CharacterCreation'
 import CharacterSelect from '@/components/CharacterSelect'
 import GameNews from '@/components/GameNews'
-import { CharactersProvider } from '@/lib/CharactersContext'
+import { CharactersProvider, useCharacters } from '@/lib/CharactersContext'
 import { authService } from '@/lib/authService'
 
-type ViewType = 'home' | 'account-settings' | 'premium' | 'regulations' | 'character-management';
+type ViewType = 'home' | 'account-settings' | 'premium' | 'regulations' | 'character-management' | 'create-character';
 
 interface GameLayoutProps {
     centerContent: React.ReactNode;
@@ -24,6 +25,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
     const [loading, setLoading] = useState(true);
     const [currentView, setCurrentView] = useState<ViewType>('home');
     const [showCharacterSelect, setShowCharacterSelect] = useState(false);
+    const { refetch } = useCharacters();
 
     useEffect(() => {
         setIsAuthenticated(authService.isAuthenticated());
@@ -54,7 +56,8 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                             login: user?.username || '',
                             createdAt: user?.createdAt ? new Date(user.createdAt).toLocaleDateString('pl-PL') : '',
                             forumPosts: 0,
-                            reputation: 0
+                            reputation: 0,
+                            email: user?.email || ''
                         }}
                         onChangePassword={async (current, newPass) => {
                             console.log('Change password', current, newPass);
@@ -69,6 +72,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                             authService.logout();
                             window.location.reload();
                         }}
+                        onNavigateToCreateCharacter={() => setCurrentView('create-character')}
                         onNavigateToCharacterManagement={() => setCurrentView('character-management')}
                     />
                 );
@@ -83,6 +87,24 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                             authService.logout();
                             window.location.reload();
                         }}
+                        onNavigateToAccount={() => setCurrentView('account-settings')}
+                        onNavigateToCreateCharacter={() => setCurrentView('create-character')}
+                    />
+                );
+            case 'create-character':
+                return (
+                    <CharacterCreation
+                        onCharacterCreated={() => {
+                            refetch();
+                            setCurrentView('character-management');
+                        }}
+                         onLogout={() => {
+                            authService.logout();
+                            window.location.reload();
+                        }}
+                        onNavigateToAccount={() => setCurrentView('account-settings')}
+                        onNavigateToCharacterManagement={() => setCurrentView('character-management')}
+
                     />
                 );
             default:

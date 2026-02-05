@@ -49,6 +49,7 @@
 
 .statBar3 {
     background-image: url("/images/statbar3.svg");
+    width: 175px;
 }
 
 .logoutButton {
