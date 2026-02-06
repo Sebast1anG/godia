@@ -11,12 +11,12 @@ interface CharacterSelectProps {
 export default function CharacterSelect({ onSelect, onClose }: CharacterSelectProps) {
     const { characters, selectedCharacterId, selectCharacter } = useCharacters();
 
-    const maxSlots = 10;
-    const slots = [...characters];
-    
-    while (slots.length < maxSlots) {
-        slots.push({ id: '', name: '', level: 0, class: '', gameMode: 'pve', gender: 'male', race: 'human', serverId: 0 });
-    }
+    const sortedCharacters = [...characters].sort((a, b) => {
+        if (a.serverId !== b.serverId) {
+            return a.serverId - b.serverId;
+        }
+        return (b.level || 1) - (a.level || 1);
+    });
 
     const handleSelect = (id: string) => {
         if (id) {
@@ -33,25 +33,21 @@ export default function CharacterSelect({ onSelect, onClose }: CharacterSelectPr
 
             <div className={styles.content}>
                 <div className={styles.grid}>
-                    {slots.map((character, index) => (
-                        <div 
-                            key={character.id || `empty-${index}`} 
-                            className={`${styles.slot} ${character.id ? styles.slotActive : ''} ${selectedCharacterId === character.id ? styles.slotSelected : ''}`}
+                    {sortedCharacters.map((character) => (
+                        <div
+                            key={character.id}
+                            className={`${styles.slot} ${styles.slotActive} ${selectedCharacterId === character.id ? styles.slotSelected : ''}`}
                             onClick={() => handleSelect(character.id)}
                         >
-                            {character.id && (
-                                <div className={styles.characterLabel}>{character.name}</div>
-                            )}
+                            <div className={styles.characterLabel}>{character.name}</div>
                             <div className={styles.slotContent}>
                                 <div className={styles.avatar}></div>
-                                {character.id && (
-                                    <div className={styles.info}>
-                                     <span className={styles.infoText}>{character.class}</span>
-                                        <span className={styles.infoText}>{character.level}lvl</span>
-                                        <span className={styles.infoText}>{character.gameMode === 'pvp' ? 'PvP' : 'PvE'}</span>
-                                        <span className={styles.infoText}>Serwer {character.serverId}</span>
-                                    </div>
-                                )}
+                                <div className={styles.info}>
+                                    <span className={styles.infoText}>{character.class}</span>
+                                    <span className={styles.infoText}>{character.level}lvl</span>
+                                    <span className={styles.infoText}>{character.gameMode === 'pvp' ? 'PvP' : 'PvE'}</span>
+                                    <span className={styles.infoText}>Serwer {character.serverId}</span>
+                                </div>
                             </div>
                         </div>
                     ))}

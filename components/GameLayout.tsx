@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import TopBar from '@/components/TopBar'
 import LeftSidebar from '@/components/LeftSidebar'
 import SettingsPanel from '@/components/SettingsPanel'
@@ -21,6 +22,8 @@ interface GameLayoutProps {
 }
 
 function GameLayoutContent({ centerContent }: GameLayoutProps) {
+    const router = useRouter();
+    const [mounted, setMounted] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
     const [currentView, setCurrentView] = useState<ViewType>('home');
@@ -28,6 +31,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
     const { refetch } = useCharacters();
 
     useEffect(() => {
+        setMounted(true);
         setIsAuthenticated(authService.isAuthenticated());
         setLoading(false);
     }, []);
@@ -40,11 +44,12 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
     };
 
     const handleGoHome = () => {
+        router.push('/');
         setCurrentView('home');
         setShowCharacterSelect(false);
     };
 
-    const user = authService.getUser();
+    const user = mounted ? authService.getUser() : null;
 
     const renderCenterContent = () => {
         switch (currentView) {
@@ -119,7 +124,9 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
             position: 'relative',
             backgroundImage: 'url(/images/bg-top.svg)',
             backgroundSize: 'cover',
-            backgroundPosition: 'center'
+            backgroundPosition: 'center',
+            display: 'flex',
+            flexDirection: 'column'
         }}>
             <img
                 src="/images/main-bg.svg"
@@ -144,12 +151,14 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                 display: 'flex',
                 gap: '20px',
                 padding: '35px 20px',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                flex: 1,
+                overflow: 'auto'
             }}>
                 <LeftSidebar />
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                    {renderCenterContent()}
+                    {centerContent || renderCenterContent()}
                 </div>
 
                 <div style={{
@@ -157,11 +166,11 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                     flexDirection: 'column',
                     gap: '25px'
                 }}>
-                    {loading ? (
+                    {!mounted || loading ? (
                         <div>Ładowanie...</div>
                     ) : (
                         isAuthenticated ? (
-                            <UserPanel 
+                            <UserPanel
                                 onNavigateToCharacterSelection={() => setShowCharacterSelect(true)}
                             />
                         ) : <LoginForm />

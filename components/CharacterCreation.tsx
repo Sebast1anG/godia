@@ -39,11 +39,67 @@ export default function CharacterCreation({
         { name: t('characterCreation.className'), id: 'class6' }
     ];
 
+    const validateCharacterName = (name: string): string | null => {
+        const trimmedName = name.trim();
+
+        if (!trimmedName) {
+            return 'Nazwa postaci jest wymagana';
+        }
+
+        if (trimmedName.length > 17) {
+            return 'Nazwa postaci może mieć maksymalnie 17 znaków';
+        }
+
+        if (!/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\s]+$/.test(trimmedName)) {
+            return 'Nazwa postaci może zawierać tylko litery i spacje (bez cyfr i znaków specjalnych)';
+        }
+
+        for (let i = 0; i < trimmedName.length - 1; i++) {
+            if (trimmedName[i].toLowerCase() === trimmedName[i + 1].toLowerCase()) {
+                return 'Te same litery nie mogą być obok siebie';
+            }
+        }
+
+        const mCount = (trimmedName.match(/m/gi) || []).length;
+        const wCount = (trimmedName.match(/w/gi) || []).length;
+
+        if (mCount > 5) {
+            return 'Litera "m" może wystąpić maksymalnie 5 razy';
+        }
+        if (wCount > 5) {
+            return 'Litera "w" może wystąpić maksymalnie 5 razy';
+        }
+
+        const words = trimmedName.split(/\s+/).filter(w => w.length > 0);
+        if (words.length > 3) {
+            return 'Nazwa postaci może zawierać maksymalnie 3 wyrazy';
+        }
+
+        for (const word of words) {
+            for (let i = 1; i < word.length; i++) {
+                if (word[i] !== word[i].toLowerCase()) {
+                    return 'Wielkie litery mogą być tylko na początku wyrazów';
+                }
+            }
+        }
+
+        return null;
+    };
+
+    const capitalizeCharacterName = (name: string): string => {
+        return name
+            .trim()
+            .split(/\s+/)
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(' ');
+    };
+
     const handleCreateCharacter = async () => {
         setError('');
 
-        if (!characterName.trim()) {
-            setError('Nazwa postaci jest wymagana');
+        const nameError = validateCharacterName(characterName);
+        if (nameError) {
+            setError(nameError);
             return;
         }
 
@@ -68,7 +124,7 @@ export default function CharacterCreation({
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    name: characterName,
+                    name: capitalizeCharacterName(characterName),
                     serverId: selectedServer,
                     gameMode,
                     gender,
@@ -138,7 +194,7 @@ export default function CharacterCreation({
                             value={characterName}
                             onChange={(e) => setCharacterName(e.target.value)}
                             placeholder="Wpisz nazwę postaci..."
-                            maxLength={20}
+                            maxLength={17}
                             disabled={loading}
                         />
                     </div>

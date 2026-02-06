@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 import { authService } from '@/lib/authService';
 import styles from './LoginForm.module.css';
 import ForgotPassword from './ForgotPassword';
@@ -70,7 +71,8 @@ export default function LoginForm() {
                     </span>
                 </button>
                 <div className={styles.linkContainer}>
-                     <button 
+                     <button
+                    type="button"
                     className={styles.forgotPassword}
                     onClick={() => setShowForgotPassword(true)}
                 >
@@ -98,9 +100,9 @@ export default function LoginForm() {
                     </div>
                 </div>
             )}
-                    <a href="/register" className={styles.link}>
+                    <Link href="/register" className={styles.link}>
                         Utwórz konto
-                    </a>
+                    </Link>
                 </div>
             </form>
         </div>

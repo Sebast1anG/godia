@@ -59,17 +59,37 @@ export default function AccountSettings({
     return username.substring(0, 3) + '*'.repeat(username.length - 3) + domain;
   };
 
+  const validatePassword = (password: string): string | null => {
+    if (password.length < 8) {
+      return 'Hasło musi mieć co najmniej 8 znaków';
+    }
+    if (password.length > 17) {
+      return 'Hasło może mieć maksymalnie 17 znaków';
+    }
+    if (!/\d/.test(password)) {
+      return 'Hasło musi zawierać co najmniej 1 cyfrę';
+    }
+    if (!/[A-Z]/.test(password)) {
+      return 'Hasło musi zawierać co najmniej 1 wielką literę';
+    }
+    if (/\s/.test(password)) {
+      return 'Hasło nie może zawierać spacji';
+    }
+    return null;
+  };
+
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setPasswordError('');
 
-    if (newPassword !== confirmNewPassword) {
-      setPasswordError('Hasła nie są identyczne');
+    const passwordValidationError = validatePassword(newPassword);
+    if (passwordValidationError) {
+      setPasswordError(passwordValidationError);
       return;
     }
 
-    if (newPassword.length < 6) {
-      setPasswordError('Hasło musi mieć minimum 6 znaków');
+    if (newPassword !== confirmNewPassword) {
+      setPasswordError('Hasła nie są identyczne');
       return;
     }
 
@@ -183,6 +203,8 @@ export default function AccountSettings({
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className={styles.input}
+                  minLength={8}
+                  maxLength={17}
                   disabled={passwordLoading}
                 />
               </div>
@@ -194,6 +216,8 @@ export default function AccountSettings({
                   value={confirmNewPassword}
                   onChange={(e) => setConfirmNewPassword(e.target.value)}
                   className={styles.input}
+                  minLength={8}
+                  maxLength={17}
                   disabled={passwordLoading}
                 />
               </div>

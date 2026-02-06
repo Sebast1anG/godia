@@ -46,8 +46,16 @@ export default function CharacterManagement({
   const getSelectedCharacter = () =>
     characters.find((c) => c.id === selectedCharacterId);
 
-  const maxSlots = 5;
-  const slots = [...characters];
+  const maxSlots = 21;
+
+  const sortedCharacters = [...characters].sort((a, b) => {
+    if (a.serverId !== b.serverId) {
+      return a.serverId - b.serverId;
+    }
+    return (b.level || 1) - (a.level || 1);
+  });
+
+  const slots = [...sortedCharacters];
 
   while (slots.length < maxSlots) {
     slots.push({
