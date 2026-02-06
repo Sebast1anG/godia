@@ -1,9 +1,11 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { authService } from '@/lib/authService';
 import styles from './RegisterForm.module.css';
 
 export default function RegisterForm() {
+    const router = useRouter();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -14,9 +16,59 @@ export default function RegisterForm() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        if (authService.isAuthenticated()) {
+            router.push('/');
+        }
+    }, [router]);
+
+    const validateLogin = (login: string): string | null => {
+        if (login.length < 6) {
+            return 'Login musi mieć minimum 6 znaków';
+        }
+        if (login.length > 17) {
+            return 'Login może mieć maksymalnie 17 znaków';
+        }
+        if (!/^[a-zA-Z0-9]+$/.test(login)) {
+            return 'Login może zawierać tylko litery i cyfry (bez spacji i znaków specjalnych)';
+        }
+        return null;
+    };
+
+    const validatePassword = (password: string): string | null => {
+        if (password.length < 8) {
+            return 'Hasło musi mieć co najmniej 8 znaków';
+        }
+        if (password.length > 17) {
+            return 'Hasło może mieć maksymalnie 17 znaków';
+        }
+        if (!/\d/.test(password)) {
+            return 'Hasło musi zawierać co najmniej 1 cyfrę';
+        }
+        if (!/[A-Z]/.test(password)) {
+            return 'Hasło musi zawierać co najmniej 1 wielką literę';
+        }
+        if (/\s/.test(password)) {
+            return 'Hasło nie może zawierać spacji';
+        }
+        return null;
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+
+        const loginError = validateLogin(login);
+        if (loginError) {
+            setError(loginError);
+            return;
+        }
+
+        const passwordError = validatePassword(password);
+        if (passwordError) {
+            setError(passwordError);
+            return;
+        }
 
         if (password !== confirmPassword) {
             setError('Hasła nie są identyczne');
@@ -25,11 +77,6 @@ export default function RegisterForm() {
 
         if (email !== confirmEmail) {
             setError('Adresy email nie są identyczne');
-            return;
-        }
-
-        if (password.length < 6) {
-            setError('Hasło musi mieć minimum 6 znaków');
             return;
         }
 
@@ -66,6 +113,8 @@ export default function RegisterForm() {
                         onChange={(e) => setLogin(e.target.value)}
                         className={styles.input}
                         required
+                        minLength={6}
+                        maxLength={17}
                         disabled={loading}
                     />
                 </div>
@@ -78,7 +127,8 @@ export default function RegisterForm() {
                         onChange={(e) => setPassword(e.target.value)}
                         className={styles.input}
                         required
-                        minLength={6}
+                        minLength={8}
+                        maxLength={17}
                         disabled={loading}
                     />
                 </div>
@@ -91,7 +141,8 @@ export default function RegisterForm() {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         className={styles.input}
                         required
-                        minLength={6}
+                        minLength={8}
+                        maxLength={17}
                         disabled={loading}
                     />
                 </div>
