@@ -10,6 +10,7 @@ import Modal, {
   ModalText,
 } from "./Modal";
 import AppearanceModal from "./AppearanceModal";
+import CharacterCard from "./CharacterCard";
 import { useCharacters } from "@/lib/CharactersContext";
 
 interface CharacterManagementProps {
@@ -165,69 +166,63 @@ export default function CharacterManagement({
             key={character.id || `empty-${index}`}
             className={styles.characterRow}
           >
-            <div className={styles.avatarContainer}>
-              <div className={styles.avatar}></div>
+            <CharacterCard
+              {...(character.id
+                ? {
+                    name: character.name,
+                    characterClass: character.class,
+                    level: character.level || 1,
+                    gameMode: character.gameMode,
+                    serverId: character.serverId,
+                  }
+                : { empty: true })}
+            />
+
+            <div className={styles.actionsContainer}>
+              <button
+                className={styles.actionButton}
+                disabled={!character.id}
+                onClick={() => {
+                  setSelectedCharacterId(character.id);
+                  setAppearanceModalOpen(true);
+                }}
+              >
+                <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                <span className={styles.actionLabel}>Wygląd postaci</span>
+              </button>
+              <button
+                className={styles.actionButton}
+                disabled={!character.id}
+                onClick={() => openDeleteModal(character.id)}
+              >
+                <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                <span className={styles.actionLabel}>Usuń postać</span>
+              </button>
+              <button
+                className={styles.actionButton}
+                disabled={!character.id}
+                onClick={() => openNickModal(character.id)}
+              >
+                <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                <span className={styles.actionLabel}>Zmiana nicku</span>
+              </button>
+              <button
+                className={styles.actionButton}
+                disabled={!character.id}
+                onClick={() => openGenderModal(character.id)}
+              >
+                <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                <span className={styles.actionLabel}>Zmiana płci</span>
+              </button>
+              <button
+                className={styles.actionButton}
+                disabled={!character.id}
+                onClick={() => openRaceModal(character.id)}
+              >
+                <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                <span className={styles.actionLabel}>Zmiana rasy</span>
+              </button>
             </div>
-
-            {character.id && (
-              <div className={styles.characterInfo}>
-                <div className={styles.characterName}>{character.name}</div>
-                <div className={styles.characterDetails}>
-                  <span className={styles.detailValue}>
-                    {character.level || 1}lvl
-                  </span>
-                  <span className={styles.detailValue}>
-                    {character.gameMode === "pvp" ? "PvP" : "PvE"}
-                  </span>
-                  <span className={styles.detailValue}>{character.class}</span>
-                  <span className={styles.detailValue}>
-                    Serwer {character.serverId}
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {character.id ? (
-              <div className={styles.actionsContainer}>
-                <button
-                  className={styles.actionButton}
-                  onClick={() => {
-                    setSelectedCharacterId(character.id);
-                    setAppearanceModalOpen(true);
-                  }}
-                >
-                  <span className={styles.actionLabel}>Wygląd postaci</span>
-                </button>
-                <button
-                  className={styles.actionButton}
-                  onClick={() => openDeleteModal(character.id)}
-                >
-                  <span className={styles.actionLabel}>Usuń postać</span>
-                </button>
-                <button
-                  className={styles.actionButton}
-                  onClick={() => openNickModal(character.id)}
-                >
-                  <span className={styles.actionLabel}>Zmiana nicku</span>
-                </button>
-                <button
-                  className={styles.actionButton}
-                  onClick={() => openGenderModal(character.id)}
-                >
-                  <span className={styles.actionLabel}>Zmiana płci</span>
-                </button>
-                <button
-                  className={styles.actionButton}
-                  onClick={() => openRaceModal(character.id)}
-                >
-                  <span className={styles.actionLabel}>Zmiana rasy</span>
-                </button>
-              </div>
-            ) : (
-              <div className={styles.actionsContainer}>
-                <div className={styles.emptySlot}></div>
-              </div>
-            )}
           </div>
         ))}
       </div>

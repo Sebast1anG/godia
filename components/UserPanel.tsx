@@ -4,6 +4,7 @@ import { authService } from '@/lib/authService';
 import { useCharacters } from '@/lib/CharactersContext';
 import loginStyles from './LoginForm.module.css';
 import styles from './UserPanel.module.css';
+import CharacterCard from './CharacterCard';
 
 interface UserPanelProps {
     onNavigateToCharacterSelection?: () => void;
@@ -31,32 +32,13 @@ export default function UserPanel({ onNavigateToCharacterSelection }: UserPanelP
                         Ładowanie postaci...
                     </div>
                 ) : selectedCharacter ? (
-                    <div className={styles.characterSection}>
-                        <div className={styles.characterName}>
-                            {selectedCharacter.name}
-                        </div>
-
-                        <div className={styles.characterContainer}>
-                            <div className={styles.characterAvatar}>
-                                {/* Tu będzie sprite/obrazek postaci */}
-                            </div>
-
-                            <div className={styles.characterInfo}>
-                                <div className={styles.characterProperty}>
-                                    {selectedCharacter.class}
-                                </div>
-                                <div className={styles.characterProperty}>
-                                    Poziom {selectedCharacter.level}
-                                </div>
-                                <div className={styles.characterProperty}>
-                                    {selectedCharacter.gameMode === 'pvp' ? 'PvP' : 'PvE'}
-                                </div>
-                                <div className={styles.characterProperty}>
-                                    Server {selectedCharacter.serverId}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <CharacterCard
+                        name={selectedCharacter.name}
+                        characterClass={selectedCharacter.class}
+                        level={selectedCharacter.level}
+                        gameMode={selectedCharacter.gameMode}
+                        serverId={selectedCharacter.serverId}
+                    />
                 ) : (
                     <div className={styles.loading}>
                         Brak postaci

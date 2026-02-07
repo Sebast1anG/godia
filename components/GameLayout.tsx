@@ -124,9 +124,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
             position: 'relative',
             backgroundImage: 'url(/images/bg-top.svg)',
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            display: 'flex',
-            flexDirection: 'column'
+            backgroundPosition: 'center'
         }}>
             <img
                 src="/images/main-bg.svg"
@@ -151,9 +149,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                 display: 'flex',
                 gap: '20px',
                 padding: '35px 20px',
-                justifyContent: 'center',
-                flex: 1,
-                overflow: 'auto'
+                justifyContent: 'center'
             }}>
                 <LeftSidebar />
 

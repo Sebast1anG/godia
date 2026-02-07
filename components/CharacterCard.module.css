@@ -1,0 +1,77 @@
+.characterSection {
+    margin-bottom: 1.5rem;
+}
+
+.characterName {
+    position: relative;
+    width: 201px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+}
+
+.characterNameBackground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.characterNameText {
+    position: relative;
+    z-index: 1;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #ffffff;
+    font-weight: bold;
+    font-family: "Tahoma";
+    text-align: left;
+    text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.8),
+        0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.characterContainer {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    width: 201px;
+    height: 80px;
+    background-image: url(/images/backgroundCharacterInfo.svg);
+    background-size: 201px 80px;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 3px;
+}
+
+.characterAvatar {
+    width: 71px;
+    height: 72px;
+    background-image: url(/images/backgroundCharacter.svg);
+    background-size: 71px 72px;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.characterInfo {
+    flex: 1;
+    padding: 4px 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.characterProperty {
+    font-size: 12px;
+    font-weight: bolder;
+    color: rgb(170, 170, 170);
+    font-family: "TAHOMA";
+}
+
+.empty {
+    opacity: 0.4;
+}
