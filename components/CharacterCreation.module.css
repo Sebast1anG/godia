@@ -113,6 +113,8 @@
   border-radius: 4px 4px 0 0;
   border: 2px solid #3e2723;
   border-bottom: 3px solid #2c1810;
+  position: relative;
+  z-index: 2;
 }
 
 .sectionTitle {

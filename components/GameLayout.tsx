@@ -76,6 +76,10 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
     const user = mounted ? authService.getUser() : null;
 
     const renderCenterContent = () => {
+        if (!mounted) {
+            if (currentView === 'home') return <GameNews />;
+            return <div style={{ width: 879 }} />;
+        }
         switch (currentView) {
             case 'account-settings':
                 if (!isAuthenticated) return <GameNews />;
