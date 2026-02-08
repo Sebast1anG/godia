@@ -91,6 +91,12 @@
     flex-shrink: 0;
 }
 
+.avatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 .info {
     flex: 1;
     padding: 8px 12px;

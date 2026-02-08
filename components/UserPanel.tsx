@@ -40,9 +40,7 @@ export default function UserPanel({ onNavigateToCharacterSelection }: UserPanelP
                         serverId={selectedCharacter.serverId}
                     />
                 ) : (
-                    <div className={styles.loading}>
-                        Brak postaci
-                    </div>
+                    <CharacterCard empty />
                 )}
 
                 <button

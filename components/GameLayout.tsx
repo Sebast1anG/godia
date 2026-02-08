@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import TopBar from '@/components/TopBar'
 import LeftSidebar from '@/components/LeftSidebar'
 import SettingsPanel from '@/components/SettingsPanel'
@@ -17,16 +17,30 @@ import { authService } from '@/lib/authService'
 
 type ViewType = 'home' | 'account-settings' | 'premium' | 'regulations' | 'character-management' | 'create-character';
 
+const viewToPath: Record<ViewType, string> = {
+    'home': '/',
+    'account-settings': '/account-settings',
+    'premium': '/premium',
+    'regulations': '/regulations',
+    'character-management': '/character-management',
+    'create-character': '/create-character',
+};
+
+const pathToView = (pathname: string): ViewType => {
+    const entry = Object.entries(viewToPath).find(([, path]) => path === pathname);
+    return (entry?.[0] as ViewType) || 'home';
+};
+
 interface GameLayoutProps {
     centerContent: React.ReactNode;
 }
 
 function GameLayoutContent({ centerContent }: GameLayoutProps) {
-    const router = useRouter();
+    const pathname = usePathname();
     const [mounted, setMounted] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [currentView, setCurrentView] = useState<ViewType>('home');
+    const [currentView, setCurrentView] = useState<ViewType>(pathToView(pathname));
     const [showCharacterSelect, setShowCharacterSelect] = useState(false);
     const { refetch } = useCharacters();
 
@@ -36,16 +50,26 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
         setLoading(false);
     }, []);
 
-    const handleViewChange = (view: ViewType) => {
-        if (view === 'account-settings' && !isAuthenticated) {
+    useEffect(() => {
+        const handlePopState = () => {
+            setCurrentView(pathToView(window.location.pathname));
+        };
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, []);
+
+    const navigateTo = (view: ViewType) => {
+        const authRequiredViews: ViewType[] = ['account-settings', 'character-management', 'create-character'];
+        if (authRequiredViews.includes(view) && !isAuthenticated) {
             return;
         }
         setCurrentView(view);
+        window.history.pushState(null, '', viewToPath[view]);
     };
 
     const handleGoHome = () => {
-        router.push('/');
         setCurrentView('home');
+        window.history.pushState(null, '', '/');
         setShowCharacterSelect(false);
     };
 
@@ -62,7 +86,8 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                             createdAt: user?.createdAt ? new Date(user.createdAt).toLocaleDateString('pl-PL') : '',
                             forumPosts: 0,
                             reputation: 0,
-                            email: user?.email || ''
+                            email: user?.email || '',
+                            goldCoins: 0
                         }}
                         onChangePassword={async (current, newPass) => {
                             console.log('Change password', current, newPass);
@@ -77,8 +102,8 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                             authService.logout();
                             window.location.reload();
                         }}
-                        onNavigateToCreateCharacter={() => setCurrentView('create-character')}
-                        onNavigateToCharacterManagement={() => setCurrentView('character-management')}
+                        onNavigateToCreateCharacter={() => navigateTo('create-character')}
+                        onNavigateToCharacterManagement={() => navigateTo('character-management')}
                     />
                 );
             case 'premium':
@@ -92,8 +117,8 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                             authService.logout();
                             window.location.reload();
                         }}
-                        onNavigateToAccount={() => setCurrentView('account-settings')}
-                        onNavigateToCreateCharacter={() => setCurrentView('create-character')}
+                        onNavigateToAccount={() => navigateTo('account-settings')}
+                        onNavigateToCreateCharacter={() => navigateTo('create-character')}
                     />
                 );
             case 'create-character':
@@ -101,15 +126,14 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                     <CharacterCreation
                         onCharacterCreated={() => {
                             refetch();
-                            setCurrentView('character-management');
+                            navigateTo('character-management');
                         }}
-                         onLogout={() => {
+                        onLogout={() => {
                             authService.logout();
                             window.location.reload();
                         }}
-                        onNavigateToAccount={() => setCurrentView('account-settings')}
-                        onNavigateToCharacterManagement={() => setCurrentView('character-management')}
-
+                        onNavigateToAccount={() => navigateTo('account-settings')}
+                        onNavigateToCharacterManagement={() => navigateTo('character-management')}
                     />
                 );
             default:
@@ -172,7 +196,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                         ) : <LoginForm />
                     )}
                     <SettingsPanel 
-                        onNavigate={handleViewChange}
+                        onNavigate={navigateTo}
                         isAuthenticated={isAuthenticated}
                     />
                 </div>

@@ -62,13 +62,11 @@ export default function AppearanceModal({
                     <div className={styles.previewBox}>
                         <div className={styles.previewLabel}>Aktualny kostium</div>
                         <div className={styles.previewSlot}>
-                            {currentCostume?.spriteUrl && (
-                                <img 
-                                    src={currentCostume.spriteUrl} 
-                                    alt="Aktualny kostium" 
-                                    className={styles.spriteImage}
-                                />
-                            )}
+                            <img
+                                src={currentCostume?.spriteUrl || '/images/activeCharacter.svg'}
+                                alt="Aktualny kostium"
+                                className={styles.spriteImage}
+                            />
                         </div>
                     </div>
 

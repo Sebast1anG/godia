@@ -13,7 +13,7 @@ interface CharacterCardProps {
 
 export default function CharacterCard({ name, characterClass, level, gameMode, serverId, empty }: CharacterCardProps) {
     return (
-        <div className={`${styles.characterSection} ${empty ? styles.empty : ''}`}>
+        <div className={styles.characterSection}>
             <div className={styles.characterName}>
                 <img
                     src="/images/nick-background.svg"
@@ -25,7 +25,11 @@ export default function CharacterCard({ name, characterClass, level, gameMode, s
 
             <div className={styles.characterContainer}>
                 <div className={styles.characterAvatar}>
-                    {/* Tu będzie sprite/obrazek postaci */}
+                    <img
+                        src={empty ? "/images/emptyCharacter.svg" : "/images/activeCharacter.svg"}
+                        alt=""
+                        className={styles.avatarImage}
+                    />
                 </div>
 
                 {!empty && (

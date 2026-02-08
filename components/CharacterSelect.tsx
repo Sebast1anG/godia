@@ -41,7 +41,9 @@ export default function CharacterSelect({ onSelect, onClose }: CharacterSelectPr
                         >
                             <div className={styles.characterLabel}>{character.name}</div>
                             <div className={styles.slotContent}>
-                                <div className={styles.avatar}></div>
+                                <div className={styles.avatar}>
+                                    <img src="/images/activeCharacter.svg" alt="" className={styles.avatarImage} />
+                                </div>
                                 <div className={styles.info}>
                                     <span className={styles.infoText}>{character.class}</span>
                                     <span className={styles.infoText}>{character.level}lvl</span>

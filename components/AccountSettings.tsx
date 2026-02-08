@@ -9,6 +9,7 @@ interface AccountInfo {
   createdAt: string;
   forumPosts: number;
   reputation: number;
+  goldCoins: number;
 }
 
 interface AccountSettingsProps {
@@ -107,14 +108,14 @@ export default function AccountSettings({
   };
 
   const handleSendCode = async () => {
-    if (!newEmail) {
-      setEmailError('Wprowadź nowy email');
+    if (!accountInfo.email) {
+      setEmailError('Brak adresu email na koncie');
       return;
     }
 
     setEmailLoading(true);
     try {
-      await onSendVerificationCode?.(newEmail);
+      await onSendVerificationCode?.(accountInfo.email);
       setCodeSent(true);
     } catch (err) {
       setEmailError(err instanceof Error ? err.message : 'Błąd wysyłania kodu');
@@ -242,6 +243,7 @@ export default function AccountSettings({
               {accountInfo.email && (
                 <div className={styles.infoText}>Email: {maskEmail(accountInfo.email)}</div>
               )}
+              <div className={styles.infoText}>Goldijskie monety: {accountInfo.goldCoins}</div>
             </div>
           </div>
 

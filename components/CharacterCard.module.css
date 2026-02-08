@@ -57,6 +57,12 @@
     flex-shrink: 0;
 }
 
+.avatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 .characterInfo {
     flex: 1;
     padding: 4px 8px;
@@ -70,8 +76,4 @@
     font-weight: bolder;
     color: rgb(170, 170, 170);
     font-family: "TAHOMA";
-}
-
-.empty {
-    opacity: 0.4;
 }
