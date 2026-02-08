@@ -126,7 +126,7 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: flex-end;
     position: relative;
 }
@@ -143,10 +143,6 @@
     appearance: none;
 }
 
-.actionButton:disabled {
-    cursor: default;
-    pointer-events: none;
-}
 
 .actionButtonImage {
     position: absolute;

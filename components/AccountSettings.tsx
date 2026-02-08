@@ -243,7 +243,7 @@ export default function AccountSettings({
               {accountInfo.email && (
                 <div className={styles.infoText}>Email: {maskEmail(accountInfo.email)}</div>
               )}
-              <div className={styles.infoText}>Goldijskie monety: {accountInfo.goldCoins}</div>
+              <div className={styles.infoText}>Godijskie monety: {accountInfo.goldCoins}</div>
             </div>
           </div>
 

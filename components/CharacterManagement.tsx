@@ -181,46 +181,41 @@ export default function CharacterManagement({
             <div className={styles.actionsContainer}>
               <button
                 className={styles.actionButton}
-                disabled={!character.id}
-                onClick={() => {
+                onClick={() => character.id && (() => {
                   setSelectedCharacterId(character.id);
                   setAppearanceModalOpen(true);
-                }}
+                })()}
               >
                 <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
-                <span className={styles.actionLabel}>Wygląd postaci</span>
+                <span className={styles.actionLabel} style={!character.id ? { visibility: 'hidden' } : undefined}>Wygląd postaci</span>
               </button>
               <button
                 className={styles.actionButton}
-                disabled={!character.id}
-                onClick={() => openDeleteModal(character.id)}
+                onClick={() => character.id && openDeleteModal(character.id)}
               >
                 <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
-                <span className={styles.actionLabel}>Usuń postać</span>
+                <span className={styles.actionLabel} style={!character.id ? { visibility: 'hidden' } : undefined}>Usuń postać</span>
               </button>
               <button
                 className={styles.actionButton}
-                disabled={!character.id}
-                onClick={() => openNickModal(character.id)}
+                onClick={() => character.id && openNickModal(character.id)}
               >
                 <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
-                <span className={styles.actionLabel}>Zmiana nicku</span>
+                <span className={styles.actionLabel} style={!character.id ? { visibility: 'hidden' } : undefined}>Zmiana nicku</span>
               </button>
               <button
                 className={styles.actionButton}
-                disabled={!character.id}
-                onClick={() => openGenderModal(character.id)}
+                onClick={() => character.id && openGenderModal(character.id)}
               >
                 <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
-                <span className={styles.actionLabel}>Zmiana płci</span>
+                <span className={styles.actionLabel} style={!character.id ? { visibility: 'hidden' } : undefined}>Zmiana płci</span>
               </button>
               <button
                 className={styles.actionButton}
-                disabled={!character.id}
-                onClick={() => openRaceModal(character.id)}
+                onClick={() => character.id && openRaceModal(character.id)}
               >
                 <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
-                <span className={styles.actionLabel}>Zmiana rasy</span>
+                <span className={styles.actionLabel} style={!character.id ? { visibility: 'hidden' } : undefined}>Zmiana rasy</span>
               </button>
             </div>
           </div>
