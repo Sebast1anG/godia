@@ -47,29 +47,12 @@ export default function CharacterManagement({
   const getSelectedCharacter = () =>
     characters.find((c) => c.id === selectedCharacterId);
 
-  const maxSlots = 21;
-
   const sortedCharacters = [...characters].sort((a, b) => {
     if (a.serverId !== b.serverId) {
       return a.serverId - b.serverId;
     }
     return (b.level || 1) - (a.level || 1);
   });
-
-  const slots = [...sortedCharacters];
-
-  while (slots.length < maxSlots) {
-    slots.push({
-      id: "",
-      name: "",
-      level: 0,
-      class: "",
-      gameMode: "pve",
-      gender: "male",
-      race: "human",
-      serverId: 0,
-    });
-  }
 
   const openDeleteModal = (id: string) => {
     setSelectedCharacterId(id);
@@ -161,63 +144,59 @@ export default function CharacterManagement({
       </div>
 
       <div className={styles.characterList}>
-        {slots.map((character, index) => (
+        {sortedCharacters.map((character) => (
           <div
-            key={character.id || `empty-${index}`}
+            key={character.id}
             className={styles.characterRow}
           >
-            <CharacterCard
-              {...(character.id
-                ? {
-                    name: character.name,
-                    characterClass: character.class,
-                    level: character.level || 1,
-                    gameMode: character.gameMode,
-                    serverId: character.serverId,
-                  }
-                : { empty: true })}
-            />
+                <CharacterCard
+                  name={character.name}
+                  characterClass={character.class}
+                  level={character.level || 1}
+                  gameMode={character.gameMode}
+                  serverId={character.serverId}
+                />
 
-            <div className={styles.actionsContainer}>
-              <button
-                className={styles.actionButton}
-                onClick={() => character.id && (() => {
-                  setSelectedCharacterId(character.id);
-                  setAppearanceModalOpen(true);
-                })()}
-              >
-                <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
-                <span className={styles.actionLabel} style={!character.id ? { visibility: 'hidden' } : undefined}>Wygląd postaci</span>
-              </button>
-              <button
-                className={styles.actionButton}
-                onClick={() => character.id && openDeleteModal(character.id)}
-              >
-                <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
-                <span className={styles.actionLabel} style={!character.id ? { visibility: 'hidden' } : undefined}>Usuń postać</span>
-              </button>
-              <button
-                className={styles.actionButton}
-                onClick={() => character.id && openNickModal(character.id)}
-              >
-                <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
-                <span className={styles.actionLabel} style={!character.id ? { visibility: 'hidden' } : undefined}>Zmiana nicku</span>
-              </button>
-              <button
-                className={styles.actionButton}
-                onClick={() => character.id && openGenderModal(character.id)}
-              >
-                <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
-                <span className={styles.actionLabel} style={!character.id ? { visibility: 'hidden' } : undefined}>Zmiana płci</span>
-              </button>
-              <button
-                className={styles.actionButton}
-                onClick={() => character.id && openRaceModal(character.id)}
-              >
-                <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
-                <span className={styles.actionLabel} style={!character.id ? { visibility: 'hidden' } : undefined}>Zmiana rasy</span>
-              </button>
-            </div>
+                <div className={styles.actionsContainer}>
+                  <button
+                    className={styles.actionButton}
+                    onClick={() => {
+                      setSelectedCharacterId(character.id);
+                      setAppearanceModalOpen(true);
+                    }}
+                  >
+                    <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                    <span className={styles.actionLabel}>Wygląd postaci</span>
+                  </button>
+                  <button
+                    className={styles.actionButton}
+                    onClick={() => openDeleteModal(character.id)}
+                  >
+                    <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                    <span className={styles.actionLabel}>Usuń postać</span>
+                  </button>
+                  <button
+                    className={styles.actionButton}
+                    onClick={() => openNickModal(character.id)}
+                  >
+                    <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                    <span className={styles.actionLabel}>Zmiana nicku</span>
+                  </button>
+                  <button
+                    className={styles.actionButton}
+                    onClick={() => openGenderModal(character.id)}
+                  >
+                    <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                    <span className={styles.actionLabel}>Zmiana płci</span>
+                  </button>
+                  <button
+                    className={styles.actionButton}
+                    onClick={() => openRaceModal(character.id)}
+                  >
+                    <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                    <span className={styles.actionLabel}>Zmiana rasy</span>
+                  </button>
+                </div>
           </div>
         ))}
       </div>
