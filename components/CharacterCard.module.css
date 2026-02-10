@@ -55,6 +55,10 @@
     background-repeat: no-repeat;
     background-position: center;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .avatarImage {
@@ -62,6 +66,7 @@
     height: 100%;
     object-fit: contain;
 }
+
 
 .characterInfo {
     flex: 1;

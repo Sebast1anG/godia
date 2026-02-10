@@ -129,6 +129,11 @@
     border-color: #8b6914;
 }
 
+.costumeSlotEquipped {
+    border-color: #4caf50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+}
+
 .costumeSlotSelected {
     border-color: #ffd700;
     box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from './AppearanceModal.module.css';
+import { SpriteAvatar, getSprite } from './CharacterCard';
 
 interface Costume {
     id: string;
@@ -15,6 +16,9 @@ interface AppearanceModalProps {
     currentCostumeId?: string;
     ownedCostumes: Costume[];
     onConfirm: (characterId: string, costumeId: string) => void;
+    characterClass?: string;
+    gender?: string;
+    race?: string;
 }
 
 export default function AppearanceModal({
@@ -23,20 +27,25 @@ export default function AppearanceModal({
     characterId,
     currentCostumeId,
     ownedCostumes,
-    onConfirm
+    onConfirm,
+    characterClass,
+    gender,
+    race,
 }: AppearanceModalProps) {
     const [selectedCostumeId, setSelectedCostumeId] = useState<string | null>(null);
+    const [activeCostumeId, setActiveCostumeId] = useState<string | undefined>(currentCostumeId);
 
     if (!isOpen) return null;
 
-    const currentCostume = ownedCostumes.find(c => c.id === currentCostumeId);
+    const activeCostume = ownedCostumes.find(c => c.id === activeCostumeId);
     const selectedCostume = ownedCostumes.find(c => c.id === selectedCostumeId);
+    const baseSprite = getSprite(characterClass, gender, race);
 
     const handleConfirm = () => {
         if (selectedCostumeId) {
             onConfirm(characterId, selectedCostumeId);
+            setActiveCostumeId(selectedCostumeId);
             setSelectedCostumeId(null);
-            onClose();
         }
     };
 
@@ -51,6 +60,9 @@ export default function AppearanceModal({
         slots.push({ id: '', spriteUrl: '' });
     }
 
+    const activeSpriteUrl = activeCostume?.spriteUrl || baseSprite;
+    const selectedSpriteUrl = selectedCostume?.spriteUrl;
+
     return (
         <div className={styles.overlay} onClick={handleClose}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -62,24 +74,17 @@ export default function AppearanceModal({
                     <div className={styles.previewBox}>
                         <div className={styles.previewLabel}>Aktualny kostium</div>
                         <div className={styles.previewSlot}>
-                            <img
-                                src={currentCostume?.spriteUrl || '/images/activeCharacter.svg'}
-                                alt="Aktualny kostium"
-                                className={styles.spriteImage}
-                            />
+                            {activeSpriteUrl
+                                ? <SpriteAvatar src={activeSpriteUrl} />
+                                : <img src="/images/activeCharacter.svg" alt="" className={styles.spriteImage} />
+                            }
                         </div>
                     </div>
 
                     <div className={styles.previewBox}>
                         <div className={styles.previewLabel}>Podgląd wybranego</div>
                         <div className={styles.previewSlot}>
-                            {selectedCostume?.spriteUrl && (
-                                <img 
-                                    src={selectedCostume.spriteUrl} 
-                                    alt="Wybrany kostium" 
-                                    className={styles.spriteImage}
-                                />
-                            )}
+                            {selectedSpriteUrl && <SpriteAvatar src={selectedSpriteUrl} />}
                         </div>
                     </div>
                 </div>
@@ -88,17 +93,13 @@ export default function AppearanceModal({
                     <div className={styles.costumesLabel}>Posiadane kostiumy:</div>
                     <div className={styles.costumesGrid}>
                         {slots.map((costume, index) => (
-                            <div 
+                            <div
                                 key={costume.id || `empty-${index}`}
-                                className={`${styles.costumeSlot} ${costume.id ? styles.costumeSlotActive : ''} ${selectedCostumeId === costume.id ? styles.costumeSlotSelected : ''}`}
+                                className={`${styles.costumeSlot} ${costume.id ? styles.costumeSlotActive : ''} ${activeCostumeId === costume.id ? styles.costumeSlotEquipped : ''} ${selectedCostumeId === costume.id ? styles.costumeSlotSelected : ''}`}
                                 onClick={() => costume.id && setSelectedCostumeId(costume.id)}
                             >
                                 {costume.spriteUrl && (
-                                    <img 
-                                        src={costume.spriteUrl} 
-                                        alt="Kostium" 
-                                        className={styles.costumeImage}
-                                    />
+                                    <SpriteAvatar src={costume.spriteUrl} targetHeight={46} />
                                 )}
                             </div>
                         ))}
@@ -106,7 +107,7 @@ export default function AppearanceModal({
                 </div>
 
                 <div className={styles.buttonContainer}>
-                    <button 
+                    <button
                         className={styles.confirmButton}
                         onClick={handleConfirm}
                         disabled={!selectedCostumeId}

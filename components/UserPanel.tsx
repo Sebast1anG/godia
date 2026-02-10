@@ -38,6 +38,8 @@ export default function UserPanel({ onNavigateToCharacterSelection }: UserPanelP
                         level={selectedCharacter.level}
                         gameMode={selectedCharacter.gameMode}
                         serverId={selectedCharacter.serverId}
+                        gender={selectedCharacter.gender}
+                        race={selectedCharacter.race}
                     />
                 ) : (
                     <CharacterCard empty />

@@ -10,7 +10,7 @@ import Modal, {
   ModalText,
 } from "./Modal";
 import AppearanceModal from "./AppearanceModal";
-import CharacterCard from "./CharacterCard";
+import CharacterCard, { SPRITES } from "./CharacterCard";
 import { useCharacters } from "@/lib/CharactersContext";
 
 interface CharacterManagementProps {
@@ -155,6 +155,8 @@ export default function CharacterManagement({
                   level={character.level || 1}
                   gameMode={character.gameMode}
                   serverId={character.serverId}
+                  gender={character.gender}
+                  race={character.race}
                 />
 
                 <div className={styles.actionsContainer}>
@@ -313,10 +315,14 @@ export default function CharacterManagement({
         onClose={() => setAppearanceModalOpen(false)}
         characterId={selectedCharacterId || ""}
         currentCostumeId={getSelectedCharacter()?.costumeId}
+        characterClass={getSelectedCharacter()?.class}
+        gender={getSelectedCharacter()?.gender}
+        race={getSelectedCharacter()?.race}
         ownedCostumes={
-          [
-            // { id: 'costume1', spriteUrl: '/sprites/costume1.gif' },
-          ]
+          Object.entries(SPRITES)
+            .filter(([, url]) => url !== '')
+            .map(([key, url]) => ({ id: key, spriteUrl: url }))
+          // TODO: zastąpić kostiumami z API
         }
         onConfirm={(charId, costumeId) => {
           console.log("Change costume:", charId, costumeId);
