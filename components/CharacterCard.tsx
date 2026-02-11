@@ -5,35 +5,34 @@ import styles from './CharacterCard.module.css';
 
 export const SPRITES: Record<string, string> = {
     'warrior_male_human':   '/images/warrior-resize.png',
-    // warrior
-    'warrior_female_human': '',
-    'warrior_male_elf':     '',
-    'warrior_female_elf':   '',
+    'warrior_female_human': '/images/warrior-resize.png',
+    'warrior_male_elf':     '/images/warrior-resize.png',
+    'warrior_female_elf':   '/images/warrior-resize.png',
     // mag
     'mag_male_human':       '',
     'mag_female_human':     '',
     'mag_male_elf':         '',
     'mag_female_elf':       '',
-    // class3 (Rycerz Zaklęty Magią)
-    'class3_male_human':    '',
-    'class3_female_human':  '',
-    'class3_male_elf':      '',
-    'class3_female_elf':    '',
-    // class4 (Łowca Opętany Magią)
-    'class4_male_human':    '',
-    'class4_female_human':  '/images/witch-female-human.png',
-    'class4_male_elf':      '',
-    'class4_female_elf':    '',
-    // class5 (Łucznik)
-    'class5_male_human':    '/images/archer-male-human.png',
-    'class5_female_human':  '',
-    'class5_male_elf':      '',
-    'class5_female_elf':    '',
-    // class6 (Skrytobójca)
-    'class6_male_human':    '',
-    'class6_female_human':  '',
-    'class6_male_elf':      '',
-    'class6_female_elf':    '',
+    // knight (Rycerz Zaklęty Magią)
+    'knight_male_human':    '',
+    'knight_female_human':  '',
+    'knight_male_elf':      '',
+    'knight_female_elf':    '',
+    // hunter (Łowca Opętany Magią)
+    'hunter_male_human':    '',
+    'hunter_female_human':  '/images/witch-female-human.png',
+    'hunter_male_elf':      '',
+    'hunter_female_elf':    '',
+    // archer (Łucznik)
+    'archer_male_human':    '/images/archer-male-human.png',
+    'archer_female_human':  '',
+    'archer_male_elf':      '',
+    'archer_female_elf':    '',
+    // assassin (Skrytobójca)
+    'assassin_male_human':    '',
+    'assassin_female_human':  '',
+    'assassin_male_elf':      '',
+    'assassin_female_elf':    '',
 };
 
 export function getSprite(characterClass?: string, gender?: string, race?: string): string | null {

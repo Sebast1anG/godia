@@ -2,6 +2,7 @@
 
 import styles from './CharacterSelect.module.css';
 import { useCharacters } from '@/lib/CharactersContext';
+import { SpriteAvatar, getSprite } from './CharacterCard';
 
 interface CharacterSelectProps {
     onSelect?: (characterId: string) => void;
@@ -42,7 +43,12 @@ export default function CharacterSelect({ onSelect, onClose }: CharacterSelectPr
                             <div className={styles.characterLabel}>{character.name}</div>
                             <div className={styles.slotContent}>
                                 <div className={styles.avatar}>
-                                    <img src="/images/activeCharacter.svg" alt="" className={styles.avatarImage} />
+                                    {(() => {
+                                        const sprite = getSprite(character.class, character.gender, character.race);
+                                        return sprite
+                                            ? <SpriteAvatar src={sprite} targetHeight={70} />
+                                            : <img src="/images/activeCharacter.svg" alt="" className={styles.avatarImage} />;
+                                    })()}
                                 </div>
                                 <div className={styles.info}>
                                     <span className={styles.infoText}>{character.class}</span>

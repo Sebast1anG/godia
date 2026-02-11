@@ -5,6 +5,7 @@ import styles from './CharacterCreation.module.css';
 import Checkbox from './Checkbox';
 import { useTranslations } from '@/lib/useTranslations';
 import { authService } from '@/lib/authService';
+import { getSprite, SpriteAvatar } from './CharacterCard';
 
 interface CharacterCreationProps {
     onCharacterCreated?: () => void;
@@ -29,15 +30,14 @@ export default function CharacterCreation({
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const servers = Array(32).fill('');
-    const classes = [
-        { name: t('characterCreation.classWarrior'), id: 'warrior' },
-        { name: t('characterCreation.classMage'), id: 'mag' },
-        { name: t('characterCreation.className'), id: 'class3' },
-        { name: t('characterCreation.className'), id: 'class4' },
-        { name: t('characterCreation.className'), id: 'class5' },
-        { name: t('characterCreation.className'), id: 'class6' }
+    const servers = [
+        { id: 0, label: t('characterCreation.testServer') },
     ];
+    const classIds = ['warrior', 'mag', 'knight', 'hunter', 'archer', 'assassin'];
+    const classes = classIds.map(id => ({
+        id,
+        name: t(`characterCreation.classes.${id}`),
+    }));
 
     const validateCharacterName = (name: string): string | null => {
         const trimmedName = name.trim();
@@ -207,12 +207,12 @@ export default function CharacterCreation({
                 </div>
                 <div className={styles.sectionContent}>
                     <div className={styles.serverGrid}>
-                        {servers.map((_, index) => (
-                            <div key={index} className={styles.checkboxLabel}>
-                                {index === 0 && <span className={styles.labelText}>{t('characterCreation.testServer')}</span>}
+                        {servers.map((server) => (
+                            <div key={server.id} className={styles.checkboxLabel}>
+                                <span className={styles.labelText}>{server.label}</span>
                                 <Checkbox
-                                    checked={selectedServer === index}
-                                    onChange={() => setSelectedServer(index)}
+                                    checked={selectedServer === server.id}
+                                    onChange={() => setSelectedServer(server.id)}
                                 />
                             </div>
                         ))}
@@ -283,18 +283,23 @@ export default function CharacterCreation({
                 </div>
                 <div className={styles.sectionContent}>
                     <div className={styles.classesGrid}>
-                        {classes.map((cls) => (
-                            <div
-                                key={cls.id}
-                                className={styles.classItem}
-                                onClick={() => !loading && setSelectedClass(cls.id)}
-                            >
-                                <span className={styles.className}>{cls.name}</span>
+                        {classes.map((cls) => {
+                            const classSprite = getSprite(cls.id, gender, race);
+                            return (
                                 <div
-                                    className={`${styles.classIcon} ${selectedClass === cls.id ? styles.classIconSelected : ''}`}
-                                ></div>
-                            </div>
-                        ))}
+                                    key={cls.id}
+                                    className={styles.classItem}
+                                    onClick={() => !loading && setSelectedClass(cls.id)}
+                                >
+                                    <span className={styles.className}>{cls.name}</span>
+                                    <div
+                                        className={`${styles.classIcon} ${selectedClass === cls.id ? styles.classIconSelected : ''} ${classSprite ? styles.classIconHasSprite : ''}`}
+                                    >
+                                        {classSprite && <SpriteAvatar src={classSprite} targetHeight={60} />}
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

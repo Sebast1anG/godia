@@ -318,12 +318,13 @@ export default function CharacterManagement({
         characterClass={getSelectedCharacter()?.class}
         gender={getSelectedCharacter()?.gender}
         race={getSelectedCharacter()?.race}
-        ownedCostumes={
-          Object.entries(SPRITES)
-            .filter(([, url]) => url !== '')
-            .map(([key, url]) => ({ id: key, spriteUrl: url }))
+        ownedCostumes={(() => {
+          const charClass = getSelectedCharacter()?.class ?? '';
+          return Object.entries(SPRITES)
+            .filter(([key, url]) => url !== '' && key.startsWith(`${charClass}_`))
+            .map(([key, url]) => ({ id: key, spriteUrl: url }));
           // TODO: zastąpić kostiumami z API
-        }
+        })()}
         onConfirm={(charId, costumeId) => {
           console.log("Change costume:", charId, costumeId);
           // TODO: API do zmiany kostiumu
