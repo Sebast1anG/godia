@@ -319,10 +319,11 @@ export default function CharacterManagement({
         gender={getSelectedCharacter()?.gender}
         race={getSelectedCharacter()?.race}
         ownedCostumes={(() => {
-          const charClass = getSelectedCharacter()?.class ?? '';
+          const char = getSelectedCharacter();
+          const key = `${char?.class ?? ''}_${char?.gender ?? ''}_${char?.race ?? ''}`;
           return Object.entries(SPRITES)
-            .filter(([key, url]) => url !== '' && key.startsWith(`${charClass}_`))
-            .map(([key, url]) => ({ id: key, spriteUrl: url }));
+            .filter(([k, url]) => url !== '' && k === key)
+            .map(([k, url]) => ({ id: k, spriteUrl: url }));
           // TODO: zastąpić kostiumami z API
         })()}
         onConfirm={(charId, costumeId) => {
