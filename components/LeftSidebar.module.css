@@ -42,7 +42,6 @@
   letter-spacing: 1px;
   text-shadow: 0 3px 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.8),
     1px 1px 0 rgba(0, 0, 0, 0.5);
-  text-transform: uppercase;
   font-family: Tahoma, sans-serif;
   pointer-events: none;
   white-space: nowrap;

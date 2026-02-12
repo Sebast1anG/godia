@@ -7,10 +7,12 @@
     #3a0000 50%,
     #2a0000 100%
   );
-  border: 8px solid transparent;
-  padding: 9px 25px 30px 25px;
+  padding: 0px 23px 30px 23px;
   position: relative;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   box-shadow:
     0 0 0 1px #ac7500,
     0 0 0 2px #c48800,
@@ -87,7 +89,7 @@
 }
 
 .buttonImage {
-  width: 100%;
+  width: auto;
   height: auto;
   display: block;
 }

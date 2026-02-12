@@ -9,8 +9,10 @@ interface ForgotPasswordProps {
     onClose?: () => void;
 }
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
 export default function ForgotPassword({ onResetPassword, onClose }: ForgotPasswordProps) {
-    const [loginOrEmail, setLoginOrEmail] = useState('');
+    const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -18,16 +20,21 @@ export default function ForgotPassword({ onResetPassword, onClose }: ForgotPassw
     const handleSendResetLink = async () => {
         setError('');
 
-        if (!loginOrEmail.trim()) {
-            setError('Wprowadź login lub email');
+        if (!email.trim()) {
+            setError('Wprowadź adres email');
+            return;
+        }
+
+        if (!EMAIL_REGEX.test(email.trim())) {
+            setError('Podaj poprawny adres email');
             return;
         }
 
         setLoading(true);
         try {
-            await onResetPassword?.(loginOrEmail);
+            await onResetPassword?.(email);
             setShowSuccessModal(true);
-            setLoginOrEmail('');
+            setEmail('');
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Błąd wysyłania linku');
         } finally {
@@ -51,11 +58,11 @@ export default function ForgotPassword({ onResetPassword, onClose }: ForgotPassw
                     </p>
 
                     <div className={styles.inputSection}>
-                        <label className={styles.label}>Wpisz login lub email</label>
+                        <label className={styles.label}>Wpisz email</label>
                         <input
-                            type="text"
-                            value={loginOrEmail}
-                            onChange={(e) => setLoginOrEmail(e.target.value)}
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             className={styles.input}
                             disabled={loading}
                         />
