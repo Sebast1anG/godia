@@ -3,6 +3,17 @@
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { authService } from '@/lib/authService';
 
+interface RawCharacter {
+    id: string;
+    name: string;
+    level: number;
+    class: string;
+    game_mode: 'pve' | 'pvp';
+    gender: 'male' | 'female';
+    race: 'human' | 'elf';
+    server_id: number;
+}
+
 export interface Character {
     id: string;
     name: string;
@@ -31,7 +42,7 @@ const CharactersContext = createContext<CharactersContextType | null>(null);
 
 export function CharactersProvider({ children }: { children: ReactNode }) {
     const [characters, setCharacters] = useState<Character[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null);
 
@@ -163,32 +174,57 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         const init = async () => {
-            if (authService.isAuthenticated()) {
-                await fetchCharacters();
-                
-                // Pobierz wybraną postać z API
-                const token = authService.getToken();
-                if (token) {
-                    try {
-                        const response = await fetch('/api/user/selected-character', {
-                            headers: {
-                                'Authorization': `Bearer ${token}`
-                            }
-                        });
-                        if (response.ok) {
-                            const data = await response.json();
-                            if (data.selectedCharacterId) {
-                                setSelectedCharacterId(data.selectedCharacterId);
-                            }
-                        }
-                    } catch (err) {
-                        console.error('Błąd pobierania wybranej postaci:', err);
+            if (!authService.isAuthenticated()) {
+                setLoading(false);
+                return;
+            }
+
+            const token = authService.getToken();
+            if (!token) {
+                setLoading(false);
+                return;
+            }
+
+            setLoading(true);
+            setError(null);
+
+            try {
+                const [charsRes, selRes] = await Promise.all([
+                    fetch('/api/characters', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('/api/user/selected-character', { headers: { 'Authorization': `Bearer ${token}` } }),
+                ]);
+
+                if (charsRes.ok) {
+                    const data = await charsRes.json();
+                    setCharacters(data.characters.map((c: RawCharacter) => ({
+                        id: c.id,
+                        name: c.name,
+                        level: c.level,
+                        class: c.class,
+                        gameMode: c.game_mode,
+                        gender: c.gender,
+                        race: c.race,
+                        serverId: c.server_id,
+                    })));
+                } else {
+                    setError('Błąd pobierania postaci');
+                }
+
+                if (selRes.ok) {
+                    const data = await selRes.json();
+                    if (data.selectedCharacterId) {
+                        setSelectedCharacterId(data.selectedCharacterId);
                     }
                 }
+            } catch (err) {
+                console.error('Błąd inicjalizacji postaci:', err);
+                setError('Błąd połączenia');
+            } finally {
+                setLoading(false);
             }
         };
         init();
-    }, [fetchCharacters]);
+    }, []);
 
     return (
         <CharactersContext.Provider value={{
