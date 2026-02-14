@@ -111,7 +111,7 @@
     1px 1px 0 rgba(0, 0, 0, 0.5);
   font-family: Tahoma, sans-serif;
   position: absolute;
-  top: 50%;
+  top: 48%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 3;
@@ -165,7 +165,7 @@
     0 0 12px rgba(255, 215, 0, 0.6);
 }
 .buttonImage {
-  width: auto;
+  width: 114px;
   height: auto;
   display: block;
 }
