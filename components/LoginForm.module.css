@@ -197,6 +197,12 @@
     z-index: 1000;
 }
 
+.errorMessage {
+    color: #ff4444;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
 .forgotPassword {
     background: none;
     border: none;

@@ -59,13 +59,12 @@ export default function UserPanel({ onNavigateToCharacterSelection }: UserPanelP
 
                 <button
                     onClick={handleJoinGame}
-                    className={loginStyles.button}
-                    style={{ marginTop: '1rem' }}
+                    className={`${loginStyles.button} ${styles.joinButton}`}
                 >
                     <img
                         src="/images/joinToGame.svg"
                         alt=""
-                        className={loginStyles.buttonImage}
+                        className={styles.buttonImageWide}
                     />
                     <span className={loginStyles.buttonLabel}>Dołącz do rozgrywki</span>
                 </button>

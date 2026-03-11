@@ -28,10 +28,9 @@ export default function TopBar({ onLogoClick }: TopBarProps) {
                 />
                 <div className={styles.overlay}></div>
 
-                <div 
+                <div
                     className={styles.logoWrapper}
                     onClick={onLogoClick}
-                    style={{ cursor: 'pointer' }}
                 >
                     <img
                         src="/images/godiaBg.svg"

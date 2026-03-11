@@ -254,13 +254,7 @@ export default function CharacterManagement({
         title="Ustaw płeć postaci"
         width={450}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            marginBottom: 20,
-          }}
-        >
+        <div className={styles.modalOptionsRow}>
           <ModalCheckbox
             label="Męska"
             checked={selectedGender === "male"}
@@ -285,13 +279,7 @@ export default function CharacterManagement({
         title="Ustaw rasę postaci"
         width={450}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            marginBottom: 20,
-          }}
-        >
+        <div className={styles.modalOptionsRow}>
           <ModalCheckbox
             label="Człowiek"
             checked={selectedRace === "human"}

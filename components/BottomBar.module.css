@@ -1,6 +1,7 @@
 .wrapper {
   width: 100%;
   position: relative;
+  background-color: #1a1a1a;
 }
 
 .bottomBorder {

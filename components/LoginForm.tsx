@@ -55,7 +55,7 @@ export default function LoginForm() {
                 </div>
 
                 {error && (
-                    <div style={{ color: '#ff4444', marginBottom: '1rem', textAlign: 'center' }}>
+                    <div className={styles.errorMessage}>
                         {error}
                     </div>
                 )}

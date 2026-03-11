@@ -1,14 +1,84 @@
+.sidebar {
+  position: relative;
+}
+
 .menuContainer {
-  background: url("/images/bg-sidebar.svg") center / 115% 104% no-repeat;
+  background-color: #2a0000;
+  background-image: url("/images/bgLeftSIdebar.svg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
   width: 206px;
   height: 550px;
   padding-top: 10px;
-  background-size: center/100% 100% no-repeat;
-  border: 1px solid #a56b00;
-  outline: 1px solid #f2ae00;
-  outline-offset: 1px;
-  box-shadow: 0 0 0 3px #dea000, 0 0 0 4px #8a5900, 0 0 0 5px #c58a00,
-    0 0 0 6px #d4a512;
+  position: relative;
+  z-index: 3;
+}
+
+.frameTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.frameRight {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.frameBottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.frameLeft {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.corner {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cornerTL {
+  top: 0;
+  left: 0;
+}
+
+.cornerTR {
+  top: 0;
+  right: 0;
+}
+
+.cornerBL {
+  bottom: 0;
+  left: 0;
+}
+
+.cornerBR {
+  bottom: 0;
+  right: 0;
 }
 
 .button {

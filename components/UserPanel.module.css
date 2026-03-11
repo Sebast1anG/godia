@@ -75,3 +75,13 @@
   margin-bottom: 1.5rem;
   color: #999;
 }
+
+.joinButton {
+  margin-top: 1rem;
+}
+
+.buttonImageWide {
+  width: 150px;
+  height: auto;
+  display: block;
+}

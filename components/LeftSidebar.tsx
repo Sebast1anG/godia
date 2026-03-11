@@ -16,9 +16,16 @@ export default function LeftSidebar() {
 
     return (
         <div className={styles.sidebar}>
-            <div className={styles.innerFrame}></div>
-
             <div className={styles.menuContainer}>
+                <img src="/images/topFrameLeftSidebar.svg" alt="" className={styles.frameTop} />
+                <img src="/images/rightFrameLeftSidebar.svg" alt="" className={styles.frameRight} />
+                <img src="/images/bottomFrameLeftSidebar.svg" alt="" className={styles.frameBottom} />
+                <img src="/images/leftFrameLeftSidebar.svg" alt="" className={styles.frameLeft} />
+
+                <img src="/images/TLframeLeftSidebar.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
+                <img src="/images/TRframeLeftSidebar.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />
+                <img src="/images/LBframeLeftSidebar.svg" alt="" className={`${styles.corner} ${styles.cornerBL}`} />
+                <img src="/images/RBframeLeftSidebar.svg" alt="" className={`${styles.corner} ${styles.cornerBR}`} />
                 {menuItems.map((item, index) => (
                     <div key={index}>
                         <div className={styles.menuItem}>

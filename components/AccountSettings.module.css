@@ -48,17 +48,17 @@
 }
 
 .statBar1 {
-    background-image: url("/images/statbar1.svg");
+    background-image: url("/images/accountAndCreateCharacterBtn.svg");
     width: 109px;
 }
 
 .statBar3 {
-    background-image: url("/images/statbar3.svg");
+    background-image: url("/images/characterManagementBtn.svg");
     width: 175px;
 }
 
 .logoutButton {
-    padding: 8px 25px;
+    padding: 8px 38px;
     background: linear-gradient(180deg, #8b0000 0%, #6b0000 50%, #4a0000 100%);
     border: 2px solid #3a0000;
     border-radius: 4px;

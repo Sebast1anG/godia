@@ -25,6 +25,14 @@ export default function SettingsPanel({ onNavigate, isAuthenticated }: SettingsP
 
     return (
         <div className={styles.container}>
+            <div className={styles.frame}>
+                <img src="/images/frameSettings.svg" alt="" className={styles.frameImage} />
+            </div>
+            <img src="/images/TLframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
+            <img src="/images/TRframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />
+            <img src="/images/LBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBL}`} />
+            <img src="/images/RBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBR}`} />
+
             <div className={styles.menuContainer}>
                 {menuItems.map((item, index) => (
                     <div key={index}>

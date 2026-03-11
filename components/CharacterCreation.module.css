@@ -47,12 +47,12 @@
 }
 
 .statBar1 {
-  background-image: url("/images/statbar1.svg");
+  background-image: url("/images/accountAndCreateCharacterBtn.svg");
   width: 109px;
 }
 
 .statBar3 {
-  background-image: url("/images/statbar3.svg");
+  background-image: url("/images/characterManagementBtn.svg");
   width: 175px;
 }
 
