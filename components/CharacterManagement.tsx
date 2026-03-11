@@ -237,15 +237,29 @@ export default function CharacterManagement({
       <Modal
         isOpen={nickModalOpen}
         onClose={() => setNickModalOpen(false)}
-        title="Zatwierdzasz akcję zmiany nicku postaci?"
+        showHeader={false}
         width={480}
       >
-        <ModalInput label="Nowy nick:" value={newNick} onChange={setNewNick} />
-        <ModalButtonsRow>
-          <ModalButton onClick={handleNickConfirm} disabled={!newNick}>
-            Zmień nick (Koszt 1000GM)
-          </ModalButton>
-        </ModalButtonsRow>
+        <div className={styles.nickModal}>
+          <button className={styles.nickCloseBtn} onClick={() => setNickModalOpen(false)}>
+            <span>×</span>
+          </button>
+          <div className={styles.nickTitle}>Zatwierdzasz akcję zmiany nicku postaci?</div>
+          <div className={styles.nickInputRow}>
+            <label className={styles.nickLabel}>Nowy nick:</label>
+            <input
+              type="text"
+              value={newNick}
+              onChange={(e) => setNewNick(e.target.value)}
+              className={styles.nickInput}
+            />
+          </div>
+          <div className={styles.nickButtonRow}>
+            <ModalButton onClick={handleNickConfirm} disabled={!newNick}>
+              Zmień nick{'\n'}(Koszt 1000GM)
+            </ModalButton>
+          </div>
+        </div>
       </Modal>
 
       <Modal

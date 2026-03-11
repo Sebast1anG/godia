@@ -18,9 +18,9 @@ export default function LeftSidebar() {
         <div className={styles.sidebar}>
             <div className={styles.menuContainer}>
                 <img src="/images/topFrameLeftSidebar.svg" alt="" className={styles.frameTop} />
-                <img src="/images/rightFrameLeftSidebar.svg" alt="" className={styles.frameRight} />
+                <img src="/images/rightFrameLeftSidebar.webp" alt="" className={styles.frameRight} />
                 <img src="/images/bottomFrameLeftSidebar.svg" alt="" className={styles.frameBottom} />
-                <img src="/images/leftFrameLeftSidebar.svg" alt="" className={styles.frameLeft} />
+                <img src="/images/leftFrameLeftSidebar.webp" alt="" className={styles.frameLeft} />
 
                 <img src="/images/TLframeLeftSidebar.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
                 <img src="/images/TRframeLeftSidebar.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />

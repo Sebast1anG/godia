@@ -26,7 +26,7 @@ export default function SettingsPanel({ onNavigate, isAuthenticated }: SettingsP
     return (
         <div className={styles.container}>
             <div className={styles.frame}>
-                <img src="/images/frameSettings.svg" alt="" className={styles.frameImage} />
+                <img src="/images/frameSettings.webp" alt="" className={styles.frameImage} />
             </div>
             <img src="/images/TLframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
             <img src="/images/TRframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />

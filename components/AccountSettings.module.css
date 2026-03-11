@@ -1,6 +1,6 @@
 .container {
     box-sizing: border-box;
-    background: url(/images/bg-create-char.svg) center / 107% 160% no-repeat; 
+    background: url(/images/bg-create-char.webp) center / 107% 160% no-repeat; 
     border: 6px solid transparent;
     border-image: linear-gradient(#8b6914 0%, orange 50%, #8b6914 100%) 1;
     width: 879px;
