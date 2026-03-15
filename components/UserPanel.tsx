@@ -8,9 +8,10 @@ import CharacterCard from './CharacterCard';
 
 interface UserPanelProps {
     onNavigateToCharacterSelection?: () => void;
+    onJoinGame?: () => void;
 }
 
-export default function UserPanel({ onNavigateToCharacterSelection }: UserPanelProps) {
+export default function UserPanel({ onNavigateToCharacterSelection, onJoinGame }: UserPanelProps) {
     const user = authService.getUser();
     const { selectedCharacter, loading } = useCharacters();
 
@@ -19,14 +20,21 @@ export default function UserPanel({ onNavigateToCharacterSelection }: UserPanelP
     };
 
     const handleJoinGame = () => {
-        window.location.href = '/game';
+        onJoinGame?.();
     };
 
     if (!user) return null;
 
     return (
         <div className={styles.container}>
-            <div className={loginStyles.formContent}>
+            <div className={styles.frame}>
+                <img src="/images/frameSettings.webp" alt="" className={styles.frameImage} />
+            </div>
+            <img src="/images/TLframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
+            <img src="/images/TRframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />
+            <img src="/images/LBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBL}`} />
+            <img src="/images/RBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBR}`} />
+            <div className={`${loginStyles.formContent} ${styles.content}`}>
                 {loading ? (
                     <div className={styles.loading}>
                         Ładowanie postaci...

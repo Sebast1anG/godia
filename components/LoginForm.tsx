@@ -30,6 +30,13 @@ export default function LoginForm() {
 
     return (
         <div className={styles.container}>
+            <div className={styles.frame}>
+                <img src="/images/frameSettings.webp" alt="" className={styles.frameImage} />
+            </div>
+            <img src="/images/TLframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
+            <img src="/images/TRframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />
+            <img src="/images/LBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBL}`} />
+            <img src="/images/RBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBR}`} />
             <form className={styles.formContent} onSubmit={handleSubmit}>
                 <div className={styles.inputWrapper}>
                     <label className={styles.label}>Login</label>

@@ -28,10 +28,6 @@ export async function POST(request: NextRequest) {
     }
 
     const user = await db.findUserByUsername(login);
-    console.log("[LOGIN] login:", login);
-    console.log("[LOGIN] password typed:", password);
-    console.log("[LOGIN] user found:", !!user);
-    console.log("[LOGIN] hash in DB:", user?.password);
 
     if (!user) {
       return NextResponse.json(
@@ -41,7 +37,6 @@ export async function POST(request: NextRequest) {
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
-    console.log("[LOGIN] bcrypt compare result:", isValidPassword);
 
     if (!isValidPassword) {
       return NextResponse.json(

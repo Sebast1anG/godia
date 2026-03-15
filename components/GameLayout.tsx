@@ -11,6 +11,7 @@ import AccountSettings from '@/components/AccountSettings'
 import CharacterManagement from '@/components/CharacterManagement'
 import CharacterCreation from '@/components/CharacterCreation'
 import CharacterSelect from '@/components/CharacterSelect'
+import GameLoadingScreen from '@/components/GameLoadingScreen'
 import GameNews from '@/components/GameNews'
 import { CharactersProvider, useCharacters } from '@/lib/CharactersContext'
 import { authService } from '@/lib/authService'
@@ -43,6 +44,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
     const [loading, setLoading] = useState(true);
     const [currentView, setCurrentView] = useState<ViewType>(pathToView(pathname));
     const [showCharacterSelect, setShowCharacterSelect] = useState(false);
+    const [showGameLoading, setShowGameLoading] = useState(false);
     const { refetch } = useCharacters();
 
     useEffect(() => {
@@ -185,6 +187,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                         isAuthenticated ? (
                             <UserPanel
                                 onNavigateToCharacterSelection={() => setShowCharacterSelect(true)}
+                                onJoinGame={() => setShowGameLoading(true)}
                             />
                         ) : <LoginForm />
                     )}
@@ -198,6 +201,15 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
             <div className={styles.bottomBarWrapper}>
                 <BottomBar />
             </div>
+
+            {showGameLoading && (
+                <GameLoadingScreen
+                    onLoadingComplete={() => {
+                        setShowGameLoading(false);
+                        window.location.href = '/game';
+                    }}
+                />
+            )}
 
             {/* Modal wyboru postaci */}
             {showCharacterSelect && (
