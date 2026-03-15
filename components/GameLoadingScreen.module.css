@@ -15,15 +15,15 @@
 .logo {
   width: 320px;
   height: auto;
-  margin-bottom: 40px;
+  margin-bottom: 34px;
   user-select: none;
   pointer-events: none;
 }
 
 .barContainer {
   position: relative;
-  width: 627px;
-  height: 43px;
+  width: 1238px;
+  height: 39px;
 }
 
 .barTrack {
@@ -34,14 +34,14 @@
 
 .barFillWrapper {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  height: calc(100% - 4px);
+  top: 0;
+  left: 0;
+  height: 100%;
   overflow: hidden;
 }
 
 .barFillImg {
   display: block;
-  width: 623px;
+  width: 1238px;
   height: 100%;
 }
