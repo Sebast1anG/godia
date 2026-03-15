@@ -34,6 +34,7 @@ export default function AccountSettings({
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [passwordSuccess, setPasswordSuccess] = useState('');
   const [passwordLoading, setPasswordLoading] = useState(false);
 
   const [currentEmail, setCurrentEmail] = useState('');
@@ -81,6 +82,7 @@ export default function AccountSettings({
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setPasswordError('');
+    setPasswordSuccess('');
 
     if (!currentPassword) {
       setPasswordError('Wprowadź aktualne hasło');
@@ -104,6 +106,7 @@ export default function AccountSettings({
       setCurrentPassword('');
       setNewPassword('');
       setConfirmNewPassword('');
+      setPasswordSuccess('Hasło zostało zmienione');
     } catch (err) {
       setPasswordError(err instanceof Error ? err.message : 'Błąd zmiany hasła');
     } finally {
@@ -237,6 +240,7 @@ export default function AccountSettings({
               </div>
 
               {passwordError && <div className={styles.error}>{passwordError}</div>}
+              {passwordSuccess && <div className={styles.success}>{passwordSuccess}</div>}
 
               <div className={styles.buttonWrapper}>
                 <button type="submit" className={styles.shortButton} disabled={passwordLoading}>
