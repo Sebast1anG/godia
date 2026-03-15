@@ -46,7 +46,7 @@ export default function GameLoadingScreen({ onLoadingComplete }: GameLoadingScre
                         style={{ width: `${step}%` }}
                     >
                         <img
-                            src="/images/barFull.svg"
+                            src="/images/barFull2.svg"
                             alt=""
                             className={styles.barFillImg}
                         />
