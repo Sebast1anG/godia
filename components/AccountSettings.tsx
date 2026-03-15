@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import styles from './AccountSettings.module.css';
-import { authService } from '@/lib/authService';
 
 interface AccountInfo {
   login: string;
@@ -82,6 +81,11 @@ export default function AccountSettings({
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setPasswordError('');
+
+    if (!currentPassword) {
+      setPasswordError('Wprowadź aktualne hasło');
+      return;
+    }
 
     const passwordValidationError = validatePassword(newPassword);
     if (passwordValidationError) {
@@ -188,45 +192,55 @@ export default function AccountSettings({
             <form onSubmit={handleChangePassword}>
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Aktualne hasło:</label>
-                <input
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  className={styles.input}
-                  disabled={passwordLoading}
-                />
+                <div className={styles.inputField}>
+                  <img src="/images/accountTextField.svg" alt="" className={styles.inputBg} />
+                  <input
+                    type="password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    className={styles.input}
+                    disabled={passwordLoading}
+                  />
+                </div>
               </div>
 
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Nowe hasło:</label>
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className={styles.input}
-                  minLength={8}
-                  maxLength={17}
-                  disabled={passwordLoading}
-                />
+                <div className={styles.inputField}>
+                  <img src="/images/accountTextField.svg" alt="" className={styles.inputBg} />
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className={styles.input}
+                    minLength={8}
+                    maxLength={17}
+                    disabled={passwordLoading}
+                  />
+                </div>
               </div>
 
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Zatwierdź nowe hasło:</label>
-                <input
-                  type="password"
-                  value={confirmNewPassword}
-                  onChange={(e) => setConfirmNewPassword(e.target.value)}
-                  className={styles.input}
-                  minLength={8}
-                  maxLength={17}
-                  disabled={passwordLoading}
-                />
+                <div className={styles.inputField}>
+                  <img src="/images/accountTextField.svg" alt="" className={styles.inputBg} />
+                  <input
+                    type="password"
+                    value={confirmNewPassword}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    className={styles.input}
+                    minLength={8}
+                    maxLength={17}
+                    disabled={passwordLoading}
+                  />
+                </div>
               </div>
 
               {passwordError && <div className={styles.error}>{passwordError}</div>}
 
               <div className={styles.buttonWrapper}>
-                <button type="submit" className={styles.button} disabled={passwordLoading}>
+                <button type="submit" className={styles.shortButton} disabled={passwordLoading}>
+                  <img src="/images/accountShortBtn.svg" alt="" className={styles.buttonImage} />
                   <span className={styles.buttonLabel}>
                     {passwordLoading ? 'Zmieniam...' : 'Zmień hasło'}
                   </span>
@@ -252,46 +266,58 @@ export default function AccountSettings({
             <form onSubmit={handleChangeEmail}>
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Aktualny</label>
-                <input
-                  type="email"
-                  value={currentEmail}
-                  onChange={(e) => setCurrentEmail(e.target.value)}
-                  className={styles.input}
-                  disabled={emailLoading}
-                />
+                <div className={styles.inputField}>
+                  <img src="/images/accountTextField.svg" alt="" className={styles.inputBg} />
+                  <input
+                    type="email"
+                    value={currentEmail}
+                    onChange={(e) => setCurrentEmail(e.target.value)}
+                    className={styles.input}
+                    disabled={emailLoading}
+                  />
+                </div>
               </div>
 
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Nowy email:</label>
-                <input
-                  type="email"
-                  value={newEmail}
-                  onChange={(e) => setNewEmail(e.target.value)}
-                  className={styles.input}
-                  disabled={emailLoading}
-                />
+                <div className={styles.inputField}>
+                  <img src="/images/accountTextField.svg" alt="" className={styles.inputBg} />
+                  <input
+                    type="email"
+                    value={newEmail}
+                    onChange={(e) => setNewEmail(e.target.value)}
+                    className={styles.input}
+                    disabled={emailLoading}
+                  />
+                </div>
               </div>
 
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Zatwierdź nowy email:</label>
-                <input
-                  type="email"
-                  value={confirmNewEmail}
-                  onChange={(e) => setConfirmNewEmail(e.target.value)}
-                  className={styles.input}
-                  disabled={emailLoading}
-                />
+                <div className={styles.inputField}>
+                  <img src="/images/accountTextField.svg" alt="" className={styles.inputBg} />
+                  <input
+                    type="email"
+                    value={confirmNewEmail}
+                    onChange={(e) => setConfirmNewEmail(e.target.value)}
+                    className={styles.input}
+                    disabled={emailLoading}
+                  />
+                </div>
               </div>
 
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Kod weryfikacji:</label>
-                <input
-                  type="text"
-                  value={verificationCode}
-                  onChange={(e) => setVerificationCode(e.target.value)}
-                  className={styles.input}
-                  disabled={emailLoading}
-                />
+                <div className={styles.inputField}>
+                  <img src="/images/accountTextField.svg" alt="" className={styles.inputBg} />
+                  <input
+                    type="text"
+                    value={verificationCode}
+                    onChange={(e) => setVerificationCode(e.target.value)}
+                    className={styles.input}
+                    disabled={emailLoading}
+                  />
+                </div>
               </div>
 
               {emailError && <div className={styles.error}>{emailError}</div>}
@@ -299,10 +325,11 @@ export default function AccountSettings({
               <div className={styles.buttonWrapperRight}>
                 <button
                   type="button"
-                  className={styles.button}
+                  className={styles.longButton}
                   onClick={handleSendCode}
                   disabled={emailLoading}
                 >
+                  <img src="/images/accountLongBtn.svg" alt="" className={styles.buttonImage} />
                   <span className={styles.buttonLabel}>
                     {codeSent ? 'Kod wysłany' : 'Wyślij kod na email'}
                   </span>
@@ -310,7 +337,8 @@ export default function AccountSettings({
               </div>
 
               <div className={styles.buttonWrapper}>
-                <button type="submit" className={styles.button} disabled={emailLoading}>
+                <button type="submit" className={styles.shortButton} disabled={emailLoading}>
+                  <img src="/images/accountShortBtn.svg" alt="" className={styles.buttonImage} />
                   <span className={styles.buttonLabel}>
                     {emailLoading ? 'Zmieniam...' : 'Zmień email'}
                   </span>

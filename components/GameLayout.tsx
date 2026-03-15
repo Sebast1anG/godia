@@ -59,8 +59,9 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
         return () => window.removeEventListener('popstate', handlePopState);
     }, []);
 
+    const authRequiredViews: ViewType[] = ['account-settings', 'character-management', 'create-character'];
+
     const navigateTo = (view: ViewType) => {
-        const authRequiredViews: ViewType[] = ['account-settings', 'character-management', 'create-character'];
         if (authRequiredViews.includes(view) && !isAuthenticated) {
             return;
         }
@@ -81,9 +82,11 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
             if (currentView === 'home') return <GameNews />;
             return <div className={styles.placeholder} />;
         }
+        if (authRequiredViews.includes(currentView) && !isAuthenticated) {
+            return <GameNews />;
+        }
         switch (currentView) {
             case 'account-settings':
-                if (!isAuthenticated) return <GameNews />;
                 return (
                     <AccountSettings
                         accountInfo={{
@@ -95,7 +98,19 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                             goldCoins: 0
                         }}
                         onChangePassword={async (current, newPass) => {
-                            console.log('Change password', current, newPass);
+                            const token = authService.getToken();
+                            const response = await fetch('/api/auth/change-password', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${token}`
+                                },
+                                body: JSON.stringify({ currentPassword: current, newPassword: newPass })
+                            });
+                            const data = await response.json();
+                            if (!response.ok) {
+                                throw new Error(data.error || 'Błąd zmiany hasła');
+                            }
                         }}
                         onChangeEmail={async (email, code) => {
                             console.log('Change email', email, code);

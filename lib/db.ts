@@ -22,6 +22,7 @@ export interface Character {
   race: 'human' | 'elf';
   class: string;
   level: number;
+  last_online: Date | null;
   created_at: Date;
 }
 
@@ -57,8 +58,18 @@ export async function initDb() {
       race VARCHAR(20) NOT NULL DEFAULT 'human',
       class VARCHAR(50) NOT NULL,
       level INTEGER NOT NULL DEFAULT 1,
+      last_online TIMESTAMP DEFAULT NULL,
       created_at TIMESTAMP DEFAULT NOW()
     )
+  `;
+
+  await sql`
+    DO $$
+    BEGIN
+      IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='characters' AND column_name='last_online') THEN
+        ALTER TABLE characters ADD COLUMN last_online TIMESTAMP DEFAULT NULL;
+      END IF;
+    END $$;
   `;
 }
 
@@ -173,5 +184,15 @@ export const db = {
   getSelectedCharacterId: async (userId: string): Promise<string | null> => {
     const rows = await sql`SELECT selected_character_id FROM users WHERE id = ${userId}`;
     return rows[0]?.selected_character_id || null;
+  },
+
+  findCharacterByNameAndServer: async (name: string, serverId: number): Promise<Character | null> => {
+    const rows = await sql`SELECT * FROM characters WHERE LOWER(name) = LOWER(${name}) AND server_id = ${serverId}`;
+    return rows[0] as Character || null;
+  },
+
+  updateUserPassword: async (userId: string, hashedPassword: string): Promise<boolean> => {
+    await sql`UPDATE users SET password = ${hashedPassword} WHERE id = ${userId}`;
+    return true;
   }
 };

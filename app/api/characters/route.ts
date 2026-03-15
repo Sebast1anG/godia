@@ -72,6 +72,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const existingByName = await db.findCharacterByNameAndServer(name, serverId || 0);
+    if (existingByName) {
+      return NextResponse.json(
+        { error: "Postać o tej nazwie już istnieje na tym serwerze" },
+        { status: 400 }
+      );
+    }
+
     await initDb();
 
     const character = await db.createCharacter({
@@ -180,6 +188,18 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json(
         { error: "Postać nie istnieje lub nie należy do Ciebie" },
         { status: 404 }
+      );
+    }
+
+    const twoDaysMs = 2 * 24 * 60 * 60 * 1000;
+    const lastOnline = character.last_online ? new Date(character.last_online).getTime() : null;
+    const now = Date.now();
+
+    if (lastOnline && (now - lastOnline) < twoDaysMs) {
+      const remaining = Math.ceil((twoDaysMs - (now - lastOnline)) / (60 * 60 * 1000));
+      return NextResponse.json(
+        { error: `Postać musi być offline przez 2 dni przed usunięciem. Pozostało ${remaining}h` },
+        { status: 400 }
       );
     }
 
