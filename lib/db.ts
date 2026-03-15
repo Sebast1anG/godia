@@ -192,7 +192,7 @@ export const db = {
   },
 
   updateUserPassword: async (userId: string, hashedPassword: string): Promise<boolean> => {
-    await sql`UPDATE users SET password = ${hashedPassword} WHERE id = ${userId}`;
-    return true;
+    const rows = await sql`UPDATE users SET password = ${hashedPassword} WHERE id = ${userId} RETURNING id`;
+    return rows.length > 0;
   }
 };

@@ -52,8 +52,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log("[CHANGE-PWD] userId:", user.id);
+    console.log("[CHANGE-PWD] old hash in DB:", user.password);
+
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await db.updateUserPassword(user.id, hashedPassword);
+    console.log("[CHANGE-PWD] new hash:", hashedPassword);
+
+    const updated = await db.updateUserPassword(user.id, hashedPassword);
+    console.log("[CHANGE-PWD] update result:", updated);
+
+    // Sprawdź co jest w bazie po update
+    const afterUser = await db.findUserById(user.id);
+    console.log("[CHANGE-PWD] hash in DB after update:", afterUser?.password);
+    console.log("[CHANGE-PWD] hashes match:", afterUser?.password === hashedPassword);
+
+    if (!updated) {
+      return NextResponse.json(
+        { error: "Nie udało się zaktualizować hasła" },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
