@@ -109,7 +109,7 @@ export const db = {
     return rows[0] as Character || null;
   },
 
-  createCharacter: async (character: Omit<Character, 'id' | 'created_at' | 'level'>): Promise<Character> => {
+  createCharacter: async (character: Omit<Character, 'id' | 'created_at' | 'level' | 'last_online'>): Promise<Character> => {
     const id = uuidv4();
     const rows = await sql`
       INSERT INTO characters (id, user_id, name, server_id, game_mode, gender, race, class)
