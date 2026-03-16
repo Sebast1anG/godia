@@ -13,14 +13,14 @@ export default function GameLoadingScreen({ onLoadingComplete }: GameLoadingScre
     useEffect(() => {
         const timeouts: NodeJS.Timeout[] = [];
 
-        timeouts.push(setTimeout(() => setStep(25), 1000));
-        timeouts.push(setTimeout(() => setStep(50), 2000));
-        timeouts.push(setTimeout(() => setStep(75), 3000));
-        timeouts.push(setTimeout(() => setStep(100), 4000));
+        timeouts.push(setTimeout(() => setStep(25), 800));
+        timeouts.push(setTimeout(() => setStep(50), 1600));
+        timeouts.push(setTimeout(() => setStep(75), 1900));
+        timeouts.push(setTimeout(() => setStep(100), 2000));
 
         timeouts.push(setTimeout(() => {
             onLoadingComplete?.();
-        }, 4600));
+        }, 2500));
 
         return () => {
             timeouts.forEach(clearTimeout);
