@@ -152,6 +152,16 @@ export default function CharacterCreation({
 
     return (
         <div className={styles.container}>
+            <img src="/images/topFrameCreateChar.svg" alt="" className={styles.frameTop} />
+            <img src="/images/rightFrameCreateChar.svg" alt="" className={styles.frameRight} />
+            <img src="/images/botomFrameCreateChar.svg" alt="" className={styles.frameBottom} />
+            <img src="/images/leftFrameCreateChar.svg" alt="" className={styles.frameLeft} />
+            <img src="/images/TLframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
+            <img src="/images/TRframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />
+            <img src="/images/LBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBL}`} />
+            <img src="/images/RBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBR}`} />
+
+            <div className={styles.content}>
             <div className={styles.topBar}>
                 <div className={styles.statsContainer}>
                     <button
@@ -211,6 +221,7 @@ export default function CharacterCreation({
                             <div key={server.id} className={styles.checkboxLabel}>
                                 <span className={styles.labelText}>{server.label}</span>
                                 <Checkbox
+                                    variant="createCharacter"
                                     checked={selectedServer === server.id}
                                     onChange={() => setSelectedServer(server.id)}
                                 />
@@ -231,11 +242,13 @@ export default function CharacterCreation({
                             <div className={styles.radioGroup}>
                                 <Checkbox
                                     label={t('characterCreation.modePvE')}
+                                    variant="createCharacter"
                                     checked={gameMode === 'pve'}
                                     onChange={() => setGameMode('pve')}
                                 />
                                 <Checkbox
                                     label={t('characterCreation.modePvP')}
+                                    variant="createCharacter"
                                     checked={gameMode === 'pvp'}
                                     onChange={() => setGameMode('pvp')}
                                 />
@@ -247,11 +260,13 @@ export default function CharacterCreation({
                             <div className={styles.radioGroup}>
                                 <Checkbox
                                     label={t('characterCreation.genderMale')}
+                                    variant="createCharacter"
                                     checked={gender === 'male'}
                                     onChange={() => setGender('male')}
                                 />
                                 <Checkbox
                                     label={t('characterCreation.genderFemale')}
+                                    variant="createCharacter"
                                     checked={gender === 'female'}
                                     onChange={() => setGender('female')}
                                 />
@@ -263,11 +278,13 @@ export default function CharacterCreation({
                             <div className={styles.radioGroup}>
                                 <Checkbox
                                     label={t('characterCreation.raceHuman')}
+                                    variant="createCharacter"
                                     checked={race === 'human'}
                                     onChange={() => setRace('human')}
                                 />
                                 <Checkbox
                                     label={t('characterCreation.raceElf')}
+                                    variant="createCharacter"
                                     checked={race === 'elf'}
                                     onChange={() => setRace('elf')}
                                 />
@@ -331,6 +348,7 @@ export default function CharacterCreation({
                 <p className={styles.footerText}>
                     {t('characterCreation.footer')}
                 </p>
+            </div>
             </div>
         </div>
     );

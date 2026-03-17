@@ -162,6 +162,15 @@ export default function AccountSettings({
 
   return (
     <div className={styles.container}>
+      <img src="/images/topFrameCreateChar.svg" alt="" className={styles.frameTop} />
+      <img src="/images/rightFrameCreateChar.svg" alt="" className={styles.frameRight} />
+      <img src="/images/botomFrameCreateChar.svg" alt="" className={styles.frameBottom} />
+      <img src="/images/leftFrameCreateChar.svg" alt="" className={styles.frameLeft} />
+      <img src="/images/TLframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
+      <img src="/images/TRframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />
+      <img src="/images/LBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBL}`} />
+      <img src="/images/RBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBR}`} />
+      <div className={styles.frameContent}>
       <div className={styles.topBar}>
         <div className={styles.statsContainer}>
           <button
@@ -351,6 +360,7 @@ export default function AccountSettings({
             </form>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

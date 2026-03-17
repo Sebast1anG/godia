@@ -5,16 +5,32 @@ interface CheckboxProps {
     checked?: boolean;
     onChange?: (checked: boolean) => void;
     disabled?: boolean;
+    variant?: 'default' | 'createCharacter';
 }
 
 export default function Checkbox({
     label,
     checked = false,
     onChange,
-    disabled = false
+    disabled = false,
+    variant = 'default'
 }: CheckboxProps) {
+    const isCreateCharacterVariant = variant === 'createCharacter';
+    const wrapperClassName = [
+        styles.checkboxWrapper,
+        isCreateCharacterVariant ? styles.checkboxWrapperCreateCharacter : '',
+    ].filter(Boolean).join(' ');
+    const customClassName = [
+        styles.checkboxCustom,
+        isCreateCharacterVariant ? styles.checkboxCustomCreateCharacter : '',
+    ].filter(Boolean).join(' ');
+    const labelClassName = [
+        styles.checkboxLabel,
+        isCreateCharacterVariant ? styles.checkboxLabelCreateCharacter : '',
+    ].filter(Boolean).join(' ');
+
     return (
-        <label className={styles.checkboxWrapper}>
+        <label className={wrapperClassName}>
             <input
                 type="checkbox"
                 className={styles.checkboxInput}
@@ -22,8 +38,8 @@ export default function Checkbox({
                 onChange={(e) => onChange?.(e.target.checked)}
                 disabled={disabled}
             />
-            <span className={styles.checkboxCustom}></span>
-            {label && <span className={styles.checkboxLabel}>{label}</span>}
+            <span className={customClassName}></span>
+            {label && <span className={labelClassName}>{label}</span>}
         </label>
     );
 }

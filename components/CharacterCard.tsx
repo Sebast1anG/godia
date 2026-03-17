@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import styles from './CharacterCard.module.css';
 
 export const SPRITES: Record<string, string> = {
-    'warrior_male_human':   '/images/warrior-resize.png',
-    'warrior_female_human': '/images/warrior-resize.png',
-    'warrior_male_elf':     '/images/warrior-resize.png',
-    'warrior_female_elf':   '/images/warrior-resize.png',
+    'warrior_male_human':   '/images/warrior-resize.webp',
+    'warrior_female_human': '/images/warrior-resize.webp',
+    'warrior_male_elf':     '/images/warrior-resize.webp',
+    'warrior_female_elf':   '/images/warrior-resize.webp',
     // mag
     'mag_male_human':       '',
     'mag_female_human':     '',
@@ -20,11 +20,11 @@ export const SPRITES: Record<string, string> = {
     'knight_female_elf':    '',
     // hunter (Łowca Opętany Magią)
     'hunter_male_human':    '',
-    'hunter_female_human':  '/images/witch-female-human.png',
+    'hunter_female_human':  '/images/witch-female-human.webp',
     'hunter_male_elf':      '',
     'hunter_female_elf':    '',
     // archer (Łucznik)
-    'archer_male_human':    '/images/archer-male-human.png',
+    'archer_male_human':    '/images/archer-male-human.webp',
     'archer_female_human':  '',
     'archer_male_elf':      '',
     'archer_female_elf':    '',
@@ -89,14 +89,37 @@ interface CharacterCardProps {
     race?: string;
     empty?: boolean;
     direction?: number;
+    size?: 'default' | 'selection';
+    selected?: boolean;
 }
 
-export default function CharacterCard({ name, characterClass, level, gameMode, serverId, gender, race, empty, direction }: CharacterCardProps) {
+export default function CharacterCard({
+    name,
+    characterClass,
+    level,
+    gameMode,
+    serverId,
+    gender,
+    race,
+    empty,
+    direction,
+    size = 'default',
+    selected = false,
+}: CharacterCardProps) {
+    const spriteHeight = size === 'selection' ? 54 : 58;
+    const sectionClassName = [
+        styles.characterSection,
+        size === 'selection' ? styles.characterSectionSelection : '',
+        selected ? styles.characterSectionSelected : '',
+    ].filter(Boolean).join(' ');
+
     return (
-        <div className={styles.characterSection}>
+        <div className={sectionClassName}>
+            <div className={styles.characterFrame} />
+
             <div className={styles.characterName}>
                 <img
-                    src="/images/nick-background.svg"
+                    src="/images/bgFrameNick.svg"
                     alt=""
                     className={styles.characterNameBackground}
                 />
@@ -105,16 +128,24 @@ export default function CharacterCard({ name, characterClass, level, gameMode, s
 
             <div className={styles.characterContainer}>
                 <div className={styles.characterAvatar}>
-                    {(() => {
-                        if (empty) {
-                            return <img src="/images/emptyCharacter.svg" alt="" className={styles.avatarImage} />;
-                        }
-                        const sprite = getSprite(characterClass, gender, race);
-                        if (sprite) {
-                            return <SpriteAvatar src={sprite} direction={direction} />;
-                        }
-                        return <img src="/images/activeCharacter.svg" alt="" className={styles.avatarImage} />;
-                    })()}
+                    <img
+                        src="/images/bgFrameCharacter.svg"
+                        alt=""
+                        className={styles.characterAvatarBackground}
+                    />
+
+                    <div className={styles.avatarContent}>
+                        {(() => {
+                            if (empty) {
+                                return <img src="/images/emptyCharacter.svg" alt="" className={styles.avatarImage} />;
+                            }
+                            const sprite = getSprite(characterClass, gender, race);
+                            if (sprite) {
+                                return <SpriteAvatar src={sprite} direction={direction} targetHeight={spriteHeight} />;
+                            }
+                            return <img src="/images/activeCharacter.svg" alt="" className={styles.avatarImage} />;
+                        })()}
+                    </div>
                 </div>
 
                 {!empty && (

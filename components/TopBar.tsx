@@ -38,7 +38,7 @@ export default function TopBar({ onLogoClick }: TopBarProps) {
                         className={styles.titleBackground}
                     />
                     <img
-                        src="/images/godiaText.png"
+                        src="/images/godiaText.webp"
                         alt="GODIA.PL"
                         className={styles.logoImage}
                     />

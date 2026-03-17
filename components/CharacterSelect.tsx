@@ -2,14 +2,14 @@
 
 import styles from './CharacterSelect.module.css';
 import { useCharacters } from '@/lib/CharactersContext';
-import { SpriteAvatar, getSprite } from './CharacterCard';
+import CharacterCard from './CharacterCard';
 
 interface CharacterSelectProps {
     onSelect?: (characterId: string) => void;
     onClose?: () => void;
 }
 
-export default function CharacterSelect({ onSelect, onClose }: CharacterSelectProps) {
+export default function CharacterSelect({ onSelect }: CharacterSelectProps) {
     const { characters, selectedCharacterId, selectCharacter } = useCharacters();
 
     const sortedCharacters = [...characters].sort((a, b) => {
@@ -35,29 +35,25 @@ export default function CharacterSelect({ onSelect, onClose }: CharacterSelectPr
             <div className={styles.content}>
                 <div className={styles.grid}>
                     {sortedCharacters.map((character) => (
-                        <div
+                        <button
+                            type="button"
                             key={character.id}
-                            className={`${styles.slot} ${styles.slotActive} ${selectedCharacterId === character.id ? styles.slotSelected : ''}`}
+                            className={styles.cardButton}
                             onClick={() => handleSelect(character.id)}
+                            aria-pressed={selectedCharacterId === character.id}
                         >
-                            <div className={styles.characterLabel}>{character.name}</div>
-                            <div className={styles.slotContent}>
-                                <div className={styles.avatar}>
-                                    {(() => {
-                                        const sprite = getSprite(character.class, character.gender, character.race);
-                                        return sprite
-                                            ? <SpriteAvatar src={sprite} targetHeight={70} />
-                                            : <img src="/images/activeCharacter.svg" alt="" className={styles.avatarImage} />;
-                                    })()}
-                                </div>
-                                <div className={styles.info}>
-                                    <span className={styles.infoText}>{character.class}</span>
-                                    <span className={styles.infoText}>{character.level}lvl</span>
-                                    <span className={styles.infoText}>{character.gameMode === 'pvp' ? 'PvP' : 'PvE'}</span>
-                                    <span className={styles.infoText}>Serwer {character.serverId}</span>
-                                </div>
-                            </div>
-                        </div>
+                            <CharacterCard
+                                size="selection"
+                                selected={selectedCharacterId === character.id}
+                                name={character.name}
+                                characterClass={character.class}
+                                level={character.level}
+                                gameMode={character.gameMode}
+                                serverId={character.serverId}
+                                gender={character.gender}
+                                race={character.race}
+                            />
+                        </button>
                     ))}
                 </div>
             </div>

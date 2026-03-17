@@ -1,84 +1,162 @@
 .characterSection {
-    margin-bottom: 1.5rem;
+    --card-width: 201px;
+    --card-height: 104px;
+    --name-height: 23px;
+    --container-top: 24px;
+    --avatar-width: 73px;
+    --avatar-height: 74px;
+    --avatar-top: 3px;
+    --avatar-left: 1px;
+    --info-top: 12px;
+    --info-left: 84px;
+    --info-right: 12px;
+    --info-gap: 2px;
+    --name-padding-left: 14px;
+    --name-padding-right: 16px;
+    --name-font-size: 11px;
+    --info-font-size: 11px;
+    position: relative;
+    margin: 0 auto 1.5rem;
+    top: 0.5rem;
+    width: var(--card-width);
+    height: var(--card-height);
+}
+
+.characterSectionSelection {
+    --card-width: 254px;
+    --card-height: 96px;
+    --avatar-width: 70px;
+    --avatar-height: 70px;
+    --avatar-top: 1px;
+    --info-top: 8px;
+    --info-left: 81px;
+    --info-right: 14px;
+    --info-gap: 1px;
+    margin: 0;
+    top: 0;
+}
+
+.characterSectionSelected {
+    filter: brightness(1.04);
+    box-shadow:
+        0 0 0 1px rgba(255, 215, 0, 0.9),
+        0 0 12px rgba(255, 215, 0, 0.4);
+}
+
+.characterFrame {
+    position: absolute;
+    inset: 0;
+    background: url("/images/frame.svg") top left / var(--card-width) var(--card-height) no-repeat;
+    pointer-events: none;
 }
 
 .characterName {
-    position: relative;
-    width: 201px;
-    height: 25px;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    z-index: 1;
+    width: calc(var(--card-width) - 2px);
+    height: var(--name-height);
     display: flex;
     align-items: center;
-    padding-left: 8px;
+    padding: 0 var(--name-padding-right) 1px var(--name-padding-left);
+    box-sizing: border-box;
 }
 
 .characterNameBackground {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
+    display: block;
+    width: calc(var(--card-width) - 2px);
+    height: var(--name-height);
     pointer-events: none;
 }
 
 .characterNameText {
     position: relative;
     z-index: 1;
-    font-size: 12px;
-    letter-spacing: 1px;
+    font-size: var(--name-font-size);
+    line-height: 1;
+    letter-spacing: 0.3px;
     color: #ffffff;
     font-weight: bold;
-    font-family: "Tahoma";
+    font-family: Tahoma, sans-serif;
     text-align: left;
     text-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.8),
-        0 0 4px rgba(0, 0, 0, 0.5);
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 0 4px rgba(0, 0, 0, 0.55);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .characterContainer {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    width: 201px;
-    height: 80px;
-    background-image: url(/images/backgroundCharacterInfo.svg);
-    background-size: 201px 80px;
-    background-repeat: no-repeat;
-    background-position: center;
-    padding: 3px;
+    position: absolute;
+    top: var(--container-top);
+    left: 0;
+    width: var(--card-width);
+    height: calc(var(--card-height) - var(--container-top));
 }
 
 .characterAvatar {
-    width: 71px;
-    height: 72px;
-    background-image: url(/images/backgroundCharacter.svg);
-    background-size: 71px 72px;
-    background-repeat: no-repeat;
-    background-position: center;
-    flex-shrink: 0;
+    position: absolute;
+    top: var(--avatar-top);
+    left: var(--avatar-left);
+    width: var(--avatar-width);
+    height: var(--avatar-height);
+}
+
+.characterAvatarBackground {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: var(--avatar-width);
+    height: var(--avatar-height);
+    pointer-events: none;
+}
+
+.avatarContent {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     overflow: hidden;
+    padding: 4px 5px 3px;
+    box-sizing: border-box;
 }
 
 .avatarImage {
-    width: 100%;
-    height: 100%;
+    max-width: calc(var(--avatar-width) - 12px);
+    max-height: calc(var(--avatar-height) - 10px);
+    width: auto;
+    height: auto;
     object-fit: contain;
+    image-rendering: pixelated;
 }
 
 
 .characterInfo {
-    flex: 1;
-    padding: 4px 8px;
+    position: absolute;
+    z-index: 1;
+    top: var(--info-top);
+    left: var(--info-left);
+    right: var(--info-right);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    gap: var(--info-gap);
 }
 
 .characterProperty {
-    font-size: 12px;
-    font-weight: bolder;
-    color: rgb(170, 170, 170);
-    font-family: "TAHOMA";
+    font-size: var(--info-font-size);
+    line-height: 1.1;
+    font-weight: 700;
+    color: #d3d0ca;
+    font-family: Tahoma, sans-serif;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

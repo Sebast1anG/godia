@@ -6,6 +6,10 @@
   position: relative;
 }
 
+.checkboxWrapperCreateCharacter {
+  gap: 6px;
+}
+
 .checkboxInput {
   position: absolute;
   opacity: 0;
@@ -41,6 +45,14 @@
   image-rendering: crisp-edges;
 }
 
+.checkboxCustomCreateCharacter {
+  width: 17px;
+  height: 17px;
+  border: none;
+  background: url("/images/bgCheckbox.svg") center / 100% 100% no-repeat;
+  box-shadow: none;
+}
+
 .checkboxCustom::after {
   content: "";
   position: absolute;
@@ -59,8 +71,20 @@
   image-rendering: pixelated;
 }
 
+.checkboxCustomCreateCharacter::after {
+  top: 43%;
+  width: 4px;
+  height: 8px;
+  border-width: 0 2px 2px 0;
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.9));
+}
+
 .checkboxInput:checked + .checkboxCustom::after {
   display: block;
+}
+
+.checkboxInput:checked + .checkboxCustomCreateCharacter {
+  filter: brightness(1.08);
 }
 
 .checkboxWrapper:hover .checkboxCustom {
@@ -75,4 +99,8 @@
   letter-spacing: 1px;
   filter: drop-shadow(0 0 2.5px rgba(0, 0, 0, 0.46));
   user-select: none;
+}
+
+.checkboxLabelCreateCharacter {
+  font-size: 12px;
 }

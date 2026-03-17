@@ -33,81 +33,21 @@
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(3, 254px);
+    justify-content: center;
+    gap: 14px 18px;
 }
 
-.slot {
-    background: linear-gradient(180deg, #2a2015 0%, #1a140a 100%);
-    border: 2px solid #4a3a20;
-    min-height: 95px;
+.cardButton {
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: none;
     cursor: pointer;
-    transition: all 0.15s ease;
-    position: relative;
+    text-align: left;
 }
 
-.slot:hover {
-    border-color: #6a5a30;
-}
-
-.slotActive {
-    border-color: #8b6914;
-    background: linear-gradient(180deg, #3a2a15 0%, #2a1a0a 100%);
-}
-
-.slotActive:hover {
-    border-color: #a07a1a;
-    box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
-}
-
-.slotSelected {
-    border-color: #ffd700;
-    box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
-    background: linear-gradient(180deg, #4a3a1a 0%, #3a2a10 100%);
-}
-
-.characterLabel {
-    position: absolute;
-    top: 4px;
-    left: 8px;
-    color: #b09060;
-    font-size: 11px;
-    font-family: Tahoma, sans-serif;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-}
-
-.slotContent {
-    display: flex;
-    height: 100%;
-    padding-top: 20px;
-}
-
-.avatar {
-    width: 65px;
-    height: 75px;
-    background: linear-gradient(180deg, #1a1005 0%, #0d0803 100%);
-    border-right: 2px solid #4a3a20;
-    flex-shrink: 0;
-}
-
-.avatarImage {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.info {
-    flex: 1;
-    padding: 8px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-}
-
-.infoText {
-    color: #d4c4a0;
-    font-size: 12px;
-    font-family: Tahoma, sans-serif;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+.cardButton:focus-visible {
+    outline: 2px solid #ffd700;
+    outline-offset: 2px;
 }

@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "optimize:svg": "npx svgo -f public --config=svgo.config.mjs --multipass"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
