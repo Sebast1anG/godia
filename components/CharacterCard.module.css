@@ -1,6 +1,11 @@
 .characterSection {
     --card-width: 201px;
     --card-height: 104px;
+    --frame-image: url("/images/frame.svg");
+    --frame-width: var(--card-width);
+    --frame-height: var(--card-height);
+    --frame-offset-x: 0px;
+    --frame-offset-y: 0px;
     --name-height: 23px;
     --container-top: 24px;
     --avatar-width: 73px;
@@ -15,6 +20,7 @@
     --name-padding-right: 16px;
     --name-font-size: 11px;
     --info-font-size: 11px;
+    --info-color: #d3d0ca;
     position: relative;
     margin: 0 auto 1.5rem;
     top: 0.5rem;
@@ -25,13 +31,22 @@
 .characterSectionSelection {
     --card-width: 254px;
     --card-height: 96px;
+    --frame-image: url("/images/frameMainChooseCharacter.svg");
+    --frame-width: 260px;
+    --frame-height: 102px;
+    --frame-offset-x: -3px;
+    --frame-offset-y: -3px;
+    --name-height: 20px;
+    --name-padding-left: 12px;
+    --name-padding-right: 12px;
     --avatar-width: 70px;
     --avatar-height: 70px;
     --avatar-top: 1px;
-    --info-top: 8px;
+    --info-top: 9px;
     --info-left: 81px;
     --info-right: 14px;
     --info-gap: 1px;
+    --info-color: #ffffff;
     margin: 0;
     top: 0;
 }
@@ -45,8 +60,11 @@
 
 .characterFrame {
     position: absolute;
-    inset: 0;
-    background: url("/images/frame.svg") top left / var(--card-width) var(--card-height) no-repeat;
+    top: var(--frame-offset-y);
+    left: var(--frame-offset-x);
+    width: var(--frame-width);
+    height: var(--frame-height);
+    background: var(--frame-image) top left / var(--frame-width) var(--frame-height) no-repeat;
     pointer-events: none;
 }
 
@@ -153,7 +171,7 @@
     font-size: var(--info-font-size);
     line-height: 1.1;
     font-weight: 700;
-    color: #d3d0ca;
+    color: var(--info-color);
     font-family: Tahoma, sans-serif;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
     overflow: hidden;

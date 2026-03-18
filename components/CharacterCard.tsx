@@ -107,6 +107,10 @@ export default function CharacterCard({
     selected = false,
 }: CharacterCardProps) {
     const spriteHeight = size === 'selection' ? 54 : 58;
+    const useSelectionFrameOnly = size === 'selection';
+    const nameBackgroundSrc = size === 'selection'
+        ? '/images/bgNickChooseCharacter.svg'
+        : '/images/bgFrameNick.svg';
     const sectionClassName = [
         styles.characterSection,
         size === 'selection' ? styles.characterSectionSelection : '',
@@ -119,7 +123,7 @@ export default function CharacterCard({
 
             <div className={styles.characterName}>
                 <img
-                    src="/images/bgFrameNick.svg"
+                    src={nameBackgroundSrc}
                     alt=""
                     className={styles.characterNameBackground}
                 />
@@ -128,11 +132,13 @@ export default function CharacterCard({
 
             <div className={styles.characterContainer}>
                 <div className={styles.characterAvatar}>
-                    <img
-                        src="/images/bgFrameCharacter.svg"
-                        alt=""
-                        className={styles.characterAvatarBackground}
-                    />
+                    {!useSelectionFrameOnly && (
+                        <img
+                            src="/images/bgFrameCharacter.svg"
+                            alt=""
+                            className={styles.characterAvatarBackground}
+                        />
+                    )}
 
                     <div className={styles.avatarContent}>
                         {(() => {

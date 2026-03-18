@@ -16,27 +16,39 @@ interface GameNewsProps {
 export default function GameNews({ news = [] }: GameNewsProps) {
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <span className={styles.headerText}>Wiadomości z gry:</span>
-            </div>
+            <img src="/images/topFrameCreateChar.svg" alt="" className={styles.frameTop} />
+            <img src="/images/rightFrameCreateChar.svg" alt="" className={styles.frameRight} />
+            <img src="/images/botomFrameCreateChar.svg" alt="" className={styles.frameBottom} />
+            <img src="/images/leftFrameCreateChar.svg" alt="" className={styles.frameLeft} />
+            <img src="/images/TLframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
+            <img src="/images/TRframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />
+            <img src="/images/LBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBL}`} />
+            <img src="/images/RBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBR}`} />
 
-            <div className={styles.content}>
-                {news.length > 0 ? (
-                    <div className={styles.newsList}>
-                        {news.map((item) => (
-                            <div key={item.id} className={styles.newsItem}>
-                                {item.title && (
-                                    <div className={styles.newsTitle}>{item.title}</div>
-                                )}
-                                <div className={styles.newsContent}>{item.content}</div>
-                                <div className={styles.newsDate}>{item.date}</div>
-                            </div>
-                        ))}
+            <div className={styles.frameContent}>
+                <div className={styles.header}>
+                    <div className={styles.headerTitle}>
+                        <span className={styles.headerText}>Wiadomo{"\u015b"}ci z gry:</span>
                     </div>
-                ) : (
-                    <div className={styles.empty}>
-                    </div>
-                )}
+                </div>
+
+                <div className={styles.content}>
+                    {news.length > 0 ? (
+                        <div className={styles.newsList}>
+                            {news.map((item) => (
+                                <div key={item.id} className={styles.newsItem}>
+                                    {item.title && (
+                                        <div className={styles.newsTitle}>{item.title}</div>
+                                    )}
+                                    <div className={styles.newsContent}>{item.content}</div>
+                                    <div className={styles.newsDate}>{item.date}</div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className={styles.empty} />
+                    )}
+                </div>
             </div>
         </div>
     );

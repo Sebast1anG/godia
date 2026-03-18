@@ -28,33 +28,46 @@ export default function CharacterSelect({ onSelect }: CharacterSelectProps) {
 
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <span className={styles.headerText}>WYBÓR POSTACI</span>
-            </div>
+            <img src="/images/TBFrameChooseCharacter.svg" alt="" className={styles.frameTop} />
+            <img src="/images/TBFrameChooseCharacter.svg" alt="" className={styles.frameBottom} />
+            <img src="/images/LRChooseCharacter.svg" alt="" className={styles.frameLeft} />
+            <img src="/images/LRChooseCharacter.svg" alt="" className={styles.frameRight} />
+            <img src="/images/TLframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
+            <img src="/images/TRframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />
+            <img src="/images/LBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBL}`} />
+            <img src="/images/RBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBR}`} />
 
-            <div className={styles.content}>
-                <div className={styles.grid}>
-                    {sortedCharacters.map((character) => (
-                        <button
-                            type="button"
-                            key={character.id}
-                            className={styles.cardButton}
-                            onClick={() => handleSelect(character.id)}
-                            aria-pressed={selectedCharacterId === character.id}
-                        >
-                            <CharacterCard
-                                size="selection"
-                                selected={selectedCharacterId === character.id}
-                                name={character.name}
-                                characterClass={character.class}
-                                level={character.level}
-                                gameMode={character.gameMode}
-                                serverId={character.serverId}
-                                gender={character.gender}
-                                race={character.race}
-                            />
-                        </button>
-                    ))}
+            <div className={styles.frameContent}>
+                <div className={styles.header}>
+                    <div className={styles.headerTitle}>
+                        <span className={styles.headerText}>WYB{"\u00d3"}R POSTACI</span>
+                    </div>
+                </div>
+
+                <div className={styles.content}>
+                    <div className={styles.grid}>
+                        {sortedCharacters.map((character) => (
+                            <button
+                                type="button"
+                                key={character.id}
+                                className={styles.cardButton}
+                                onClick={() => handleSelect(character.id)}
+                                aria-pressed={selectedCharacterId === character.id}
+                            >
+                                <CharacterCard
+                                    size="selection"
+                                    selected={selectedCharacterId === character.id}
+                                    name={character.name}
+                                    characterClass={character.class}
+                                    level={character.level}
+                                    gameMode={character.gameMode}
+                                    serverId={character.serverId}
+                                    gender={character.gender}
+                                    race={character.race}
+                                />
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
