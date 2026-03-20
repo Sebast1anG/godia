@@ -28,10 +28,10 @@ export default function CharacterSelect({ onSelect }: CharacterSelectProps) {
 
     return (
         <div className={styles.container}>
-            <img src="/images/TBFrameChooseCharacter.svg" alt="" className={styles.frameTop} />
-            <img src="/images/TBFrameChooseCharacter.svg" alt="" className={styles.frameBottom} />
-            <img src="/images/LRChooseCharacter.svg" alt="" className={styles.frameLeft} />
-            <img src="/images/LRChooseCharacter.svg" alt="" className={styles.frameRight} />
+            <img src="/images/TBFrameChooseCharacter.webp" alt="" className={styles.frameTop} />
+            <img src="/images/TBFrameChooseCharacter.webp" alt="" className={styles.frameBottom} />
+            <img src="/images/LRChooseCharacter.webp" alt="" className={styles.frameLeft} />
+            <img src="/images/LRChooseCharacter.webp" alt="" className={styles.frameRight} />
             <img src="/images/TLframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
             <img src="/images/TRframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />
             <img src="/images/LBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBL}`} />

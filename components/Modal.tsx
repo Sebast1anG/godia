@@ -104,7 +104,7 @@ export function ModalButton({ children, onClick, variant = 'gold', disabled }: M
             onClick={onClick}
             disabled={disabled}
         >
-            <img src="/images/button.svg" alt="" className={styles.buttonImage} />
+            <img src="/images/button.webp" alt="" className={styles.buttonImage} />
             <span className={styles.buttonLabel}>{children}</span>
         </button>
     );

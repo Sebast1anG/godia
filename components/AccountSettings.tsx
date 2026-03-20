@@ -162,10 +162,10 @@ export default function AccountSettings({
 
   return (
     <div className={styles.container}>
-      <img src="/images/topFrameCreateChar.svg" alt="" className={styles.frameTop} />
-      <img src="/images/rightFrameCreateChar.svg" alt="" className={styles.frameRight} />
-      <img src="/images/botomFrameCreateChar.svg" alt="" className={styles.frameBottom} />
-      <img src="/images/leftFrameCreateChar.svg" alt="" className={styles.frameLeft} />
+      <img src="/images/topFrameCreateChar.webp" alt="" className={styles.frameTop} />
+      <img src="/images/rightFrameCreateChar.webp" alt="" className={styles.frameRight} />
+      <img src="/images/botomFrameCreateChar.webp" alt="" className={styles.frameBottom} />
+      <img src="/images/leftFrameCreateChar.webp" alt="" className={styles.frameLeft} />
       <img src="/images/TLframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
       <img src="/images/TRframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />
       <img src="/images/LBframeSettings.svg" alt="" className={`${styles.corner} ${styles.cornerBL}`} />
@@ -205,7 +205,7 @@ export default function AccountSettings({
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Aktualne hasło:</label>
                 <div className={styles.inputField}>
-                  <img src="/images/accountTextField.svg" alt="" className={styles.inputBg} />
+                  <img src="/images/accountTextField.webp" alt="" className={styles.inputBg} />
                   <input
                     type="password"
                     value={currentPassword}
@@ -219,7 +219,7 @@ export default function AccountSettings({
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Nowe hasło:</label>
                 <div className={styles.inputField}>
-                  <img src="/images/accountTextField.svg" alt="" className={styles.inputBg} />
+                  <img src="/images/accountTextField.webp" alt="" className={styles.inputBg} />
                   <input
                     type="password"
                     value={newPassword}
@@ -235,7 +235,7 @@ export default function AccountSettings({
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Zatwierdź nowe hasło:</label>
                 <div className={styles.inputField}>
-                  <img src="/images/accountTextField.svg" alt="" className={styles.inputBg} />
+                  <img src="/images/accountTextField.webp" alt="" className={styles.inputBg} />
                   <input
                     type="password"
                     value={confirmNewPassword}
@@ -253,7 +253,7 @@ export default function AccountSettings({
 
               <div className={styles.buttonWrapper}>
                 <button type="submit" className={styles.shortButton} disabled={passwordLoading}>
-                  <img src="/images/accountShortBtn.svg" alt="" className={styles.buttonImage} />
+                  <img src="/images/accountShortBtn.webp" alt="" className={styles.buttonImage} />
                   <span className={styles.buttonLabel}>
                     {passwordLoading ? 'Zmieniam...' : 'Zmień hasło'}
                   </span>
@@ -280,7 +280,7 @@ export default function AccountSettings({
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Aktualny</label>
                 <div className={styles.inputField}>
-                  <img src="/images/accountTextField.svg" alt="" className={styles.inputBg} />
+                  <img src="/images/accountTextField.webp" alt="" className={styles.inputBg} />
                   <input
                     type="email"
                     value={currentEmail}
@@ -294,7 +294,7 @@ export default function AccountSettings({
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Nowy email:</label>
                 <div className={styles.inputField}>
-                  <img src="/images/accountTextField.svg" alt="" className={styles.inputBg} />
+                  <img src="/images/accountTextField.webp" alt="" className={styles.inputBg} />
                   <input
                     type="email"
                     value={newEmail}
@@ -308,7 +308,7 @@ export default function AccountSettings({
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Zatwierdź nowy email:</label>
                 <div className={styles.inputField}>
-                  <img src="/images/accountTextField.svg" alt="" className={styles.inputBg} />
+                  <img src="/images/accountTextField.webp" alt="" className={styles.inputBg} />
                   <input
                     type="email"
                     value={confirmNewEmail}
@@ -322,7 +322,7 @@ export default function AccountSettings({
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Kod weryfikacji:</label>
                 <div className={styles.inputField}>
-                  <img src="/images/accountTextField.svg" alt="" className={styles.inputBg} />
+                  <img src="/images/accountTextField.webp" alt="" className={styles.inputBg} />
                   <input
                     type="text"
                     value={verificationCode}
@@ -342,7 +342,7 @@ export default function AccountSettings({
                   onClick={handleSendCode}
                   disabled={emailLoading}
                 >
-                  <img src="/images/accountLongBtn.svg" alt="" className={styles.buttonImage} />
+                  <img src="/images/accountLongBtn.webp" alt="" className={styles.buttonImage} />
                   <span className={styles.buttonLabel}>
                     {codeSent ? 'Kod wysłany' : 'Wyślij kod na email'}
                   </span>
@@ -351,7 +351,7 @@ export default function AccountSettings({
 
               <div className={styles.buttonWrapper}>
                 <button type="submit" className={styles.shortButton} disabled={emailLoading}>
-                  <img src="/images/accountShortBtn.svg" alt="" className={styles.buttonImage} />
+                  <img src="/images/accountShortBtn.webp" alt="" className={styles.buttonImage} />
                   <span className={styles.buttonLabel}>
                     {emailLoading ? 'Zmieniam...' : 'Zmień email'}
                   </span>

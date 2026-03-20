@@ -166,7 +166,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
     return (
         <main className={styles.main}>
             <img
-                src="/images/main-bg.svg"
+                src="/images/main-bg.webp"
                 alt=""
                 className={styles.backgroundOverlay}
             />

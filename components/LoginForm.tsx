@@ -69,7 +69,7 @@ export default function LoginForm() {
 
                 <button type="submit" className={styles.button} disabled={loading}>
                     <img
-                        src="/images/button.svg"
+                        src="/images/button.webp"
                         alt=""
                         className={styles.buttonImage}
                     />

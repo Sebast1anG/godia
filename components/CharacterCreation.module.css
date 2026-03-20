@@ -116,12 +116,12 @@
 }
 
 .statBar1 {
-  background-image: url("/images/accountAndCreateCharacterBtn.svg");
+  background-image: url("/images/accountAndCreateCharacterBtn.webp");
   width: 109px;
 }
 
 .statBar3 {
-  background-image: url("/images/characterManagementBtn.svg");
+  background-image: url("/images/characterManagementBtn.webp");
   width: 175px;
 }
 
@@ -135,7 +135,7 @@
 .logoutButton {
     position: relative;
     padding: 8px 38px;
-    background: url("/images/logout.svg") center / contain no-repeat;
+    background: url("/images/logout.webp") center / contain no-repeat;
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -305,7 +305,7 @@
 .classIcon {
   width: 70px;
   height: 70px;
-  background-image: url("/images/bgCharacterAvatar.svg");
+  background-image: url("/images/bgCharacterAvatar.webp");
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
@@ -321,7 +321,7 @@
 }
 
 .classIconHasSprite {
-  background-image: url("/images/bgCharacterAvatar.svg");
+  background-image: url("/images/bgCharacterAvatar.webp");
 }
 
 .classIconSelected {

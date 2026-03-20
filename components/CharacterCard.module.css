@@ -1,7 +1,7 @@
 .characterSection {
     --card-width: 201px;
     --card-height: 104px;
-    --frame-image: url("/images/frame.svg");
+    --frame-image: url("/images/frame.webp");
     --frame-width: var(--card-width);
     --frame-height: var(--card-height);
     --frame-offset-x: 0px;
@@ -31,7 +31,7 @@
 .characterSectionSelection {
     --card-width: 254px;
     --card-height: 96px;
-    --frame-image: url("/images/frameMainChooseCharacter.svg");
+    --frame-image: url("/images/frameMainChooseCharacter.webp");
     --frame-width: 260px;
     --frame-height: 102px;
     --frame-offset-x: -3px;

@@ -30,13 +30,13 @@ export default function GameLoadingScreen({ onLoadingComplete }: GameLoadingScre
     return (
         <div className={styles.overlay}>
             <img
-                src="/images/logo.svg"
+                src="/images/logo.webp"
                 alt="Godia"
                 className={styles.logo}
             />
             <div className={styles.barContainer}>
                 <img
-                    src="/images/bgLoading.svg"
+                    src="/images/bgLoading.webp"
                     alt=""
                     className={styles.barTrack}
                 />

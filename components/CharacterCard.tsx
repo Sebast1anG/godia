@@ -134,7 +134,7 @@ export default function CharacterCard({
                 <div className={styles.characterAvatar}>
                     {!useSelectionFrameOnly && (
                         <img
-                            src="/images/bgFrameCharacter.svg"
+                            src="/images/bgFrameCharacter.webp"
                             alt=""
                             className={styles.characterAvatarBackground}
                         />

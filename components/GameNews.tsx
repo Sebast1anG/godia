@@ -16,10 +16,10 @@ interface GameNewsProps {
 export default function GameNews({ news = [] }: GameNewsProps) {
     return (
         <div className={styles.container}>
-            <img src="/images/topFrameCreateChar.svg" alt="" className={styles.frameTop} />
-            <img src="/images/rightFrameCreateChar.svg" alt="" className={styles.frameRight} />
-            <img src="/images/botomFrameCreateChar.svg" alt="" className={styles.frameBottom} />
-            <img src="/images/leftFrameCreateChar.svg" alt="" className={styles.frameLeft} />
+            <img src="/images/topFrameCreateChar.webp" alt="" className={styles.frameTop} />
+            <img src="/images/rightFrameCreateChar.webp" alt="" className={styles.frameRight} />
+            <img src="/images/botomFrameCreateChar.webp" alt="" className={styles.frameBottom} />
+            <img src="/images/leftFrameCreateChar.webp" alt="" className={styles.frameLeft} />
 
             <div className={styles.frameContent}>
                 <div className={styles.header}>

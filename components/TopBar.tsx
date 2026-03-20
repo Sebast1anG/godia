@@ -12,7 +12,7 @@ export default function TopBar({ onLogoClick }: TopBarProps) {
         <div className={styles.wrapper}>
             <div className={styles.header}>
                 <Image
-                    src="/images/header.svg"
+                    src="/images/header.webp"
                     alt="header"
                     fill
                     className={styles.headerImage}
@@ -21,7 +21,7 @@ export default function TopBar({ onLogoClick }: TopBarProps) {
             <div className={styles.topBorder}></div>
             <div className={styles.container}>
                 <Image
-                    src="/images/top-bar.svg"
+                    src="/images/top-bar.webp"
                     alt="background"
                     fill
                     className={styles.backgroundImage}

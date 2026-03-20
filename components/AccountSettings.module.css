@@ -118,19 +118,19 @@
 }
 
 .statBar1 {
-    background-image: url("/images/accountAndCreateCharacterBtn.svg");
+    background-image: url("/images/accountAndCreateCharacterBtn.webp");
     width: 109px;
 }
 
 .statBar3 {
-    background-image: url("/images/characterManagementBtn.svg");
+    background-image: url("/images/characterManagementBtn.webp");
     width: 175px;
 }
 
 .logoutButton {
     position: relative;
     padding: 8px 38px;
-    background: url("/images/logout.svg") center / contain no-repeat;
+    background: url("/images/logout.webp") center / contain no-repeat;
     background-color: transparent;
     border: none;
     cursor: pointer;

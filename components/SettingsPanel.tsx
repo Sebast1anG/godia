@@ -43,7 +43,7 @@ export default function SettingsPanel({ onNavigate, isAuthenticated }: SettingsP
                                 disabled={item.requiresAuth && !isAuthenticated}
                             >
                                 <img
-                                    src="/images/button.svg"
+                                    src="/images/button.webp"
                                     alt=""
                                     className={styles.buttonImage}
                                 />

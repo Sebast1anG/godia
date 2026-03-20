@@ -31,7 +31,7 @@ export default function LeftSidebar() {
                         <div className={styles.menuItem}>
                             <a href={item.href} className={styles.button}>
                                 <img
-                                    src="/images/button.svg"
+                                    src="/images/button.webp"
                                     alt={item.label}
                                     className={styles.buttonImage}
                                 />

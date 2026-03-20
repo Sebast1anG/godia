@@ -112,7 +112,7 @@ export default function AppearanceModal({
                         onClick={handleConfirm}
                         disabled={!selectedCostumeId}
                     >
-                        <img src="/images/button.svg" alt="" className={styles.buttonImage} />
+                        <img src="/images/button.webp" alt="" className={styles.buttonImage} />
                         <span className={styles.buttonLabel}>Zatwierdź zmianę kostiumu</span>
                     </button>
                 </div>

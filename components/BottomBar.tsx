@@ -11,7 +11,7 @@ export default function BottomBar() {
 
             <div className={styles.header}>
                 <Image
-                    src="/images/header.svg"
+                    src="/images/header.webp"
                     alt="header"
                     fill
                     className={styles.headerImage}
