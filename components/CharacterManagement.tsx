@@ -248,26 +248,37 @@ export default function CharacterManagement({
         isOpen={nickModalOpen}
         onClose={() => setNickModalOpen(false)}
         showHeader={false}
-        width={480}
+        width={612}
+        className={styles.nickModalWrapper}
       >
         <div className={styles.nickModal}>
+          <img src="/images/tbFrameChangeNick.webp" alt="" className={styles.nickFrameTop} />
+          <img src="/images/tbFrameChangeNick.webp" alt="" className={styles.nickFrameBottom} />
+          <img src="/images/lrFrameChangeNick.webp" alt="" className={styles.nickFrameLeft} />
+          <img src="/images/lrFrameChangeNick.webp" alt="" className={styles.nickFrameRight} />
+          <img src="/images/corner-TL.svg" alt="" className={`${styles.nickCorner} ${styles.nickCornerTL}`} />
+          <img src="/images/corner TR.svg" alt="" className={`${styles.nickCorner} ${styles.nickCornerTR}`} />
+          <img src="/images/corner BL.svg" alt="" className={`${styles.nickCorner} ${styles.nickCornerBL}`} />
+          <img src="/images/corner-BR.svg" alt="" className={`${styles.nickCorner} ${styles.nickCornerBR}`} />
           <button className={styles.nickCloseBtn} onClick={() => setNickModalOpen(false)}>
-            <span>×</span>
+            <img src="/images/closeChangeNick.webp" alt="Zamknij" />
           </button>
           <div className={styles.nickTitle}>Zatwierdzasz akcję zmiany nicku postaci?</div>
-          <div className={styles.nickInputRow}>
-            <label className={styles.nickLabel}>Nowy nick:</label>
-            <input
-              type="text"
-              value={newNick}
-              onChange={(e) => setNewNick(e.target.value)}
-              className={styles.nickInput}
-            />
-          </div>
-          <div className={styles.nickButtonRow}>
-            <ModalButton onClick={handleNickConfirm} disabled={!newNick}>
-              Zmień nick{'\n'}(Koszt 1000GM)
-            </ModalButton>
+          <label className={styles.nickLabel}>Nowy nick:</label>
+          <div className={styles.nickContentRow}>
+            <div className={styles.nickInputWrapper}>
+              <img src="/images/textFieldChangeNick.webp" alt="" className={styles.nickInputBg} />
+              <input
+                type="text"
+                value={newNick}
+                onChange={(e) => setNewNick(e.target.value)}
+                className={styles.nickInput}
+              />
+            </div>
+            <button className={styles.nickSubmitBtn} onClick={handleNickConfirm} disabled={!newNick}>
+              <img src="/images/btnChangeNick.webp" alt="" className={styles.nickSubmitBtnBg} />
+              <span className={styles.nickSubmitBtnLabel}>Zmień nick{'\n'}(Koszt 1000GM)</span>
+            </button>
           </div>
         </div>
       </Modal>

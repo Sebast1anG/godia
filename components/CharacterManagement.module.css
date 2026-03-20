@@ -293,80 +293,221 @@
 }
 
 /* Nick change modal */
+.nickModalWrapper {
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+}
+
+.nickModalWrapper > div {
+    padding: 0;
+}
+
 .nickModal {
     position: relative;
+    width: 612px;
+    height: 151px;
+    background: url(/images/bgChangeNick.webp) center / cover no-repeat;
+    box-sizing: border-box;
+    padding: 15px 20px 15px 20px;
+}
+
+.nickFrameTop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.nickFrameBottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    pointer-events: none;
+    z-index: 1;
+    transform: scaleY(-1);
+}
+
+.nickFrameLeft {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.nickFrameRight {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6px;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    transform: scaleX(-1);
+}
+
+.nickCorner {
+    position: absolute;
+    pointer-events: none;
+    z-index: 2;
+    width: 13px;
+    height: 16px;
+}
+
+.nickCornerTL {
+    top: 0;
+    left: 0;
+}
+
+.nickCornerTR {
+    top: 0;
+    right: 0;
+}
+
+.nickCornerBL {
+    bottom: 0;
+    left: 0;
+}
+
+.nickCornerBR {
+    bottom: 0;
+    right: 0;
 }
 
 .nickCloseBtn {
     position: absolute;
-    top: -10px;
-    right: -15px;
-    width: 22px;
-    height: 22px;
-    background: linear-gradient(180deg, #5c4a2a 0%, #4a3a1a 100%);
-    border: 2px solid #8b6914;
-    border-radius: 50%;
+    top: 8px;
+    right: 10px;
+    background: none;
+    border: none;
     cursor: pointer;
+    padding: 0;
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
-    color: #c9a875;
-    font-size: 16px;
-    line-height: 1;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    z-index: 10;
+}
+
+.nickCloseBtn img {
+    width: 21px;
+    height: 20px;
+    display: block;
 }
 
 .nickCloseBtn:hover {
-    background: linear-gradient(180deg, #6c5a3a 0%, #5a4a2a 100%);
+    filter: brightness(1.3);
 }
 
 .nickTitle {
-    color: #ffd700;
-    font-size: 14px;
+    color: #ffffff;
+    font-size: 15px;
     font-weight: bold;
     font-family: Tahoma, sans-serif;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    text-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.9),
+        0 0 10px rgba(0, 0, 0, 0.8),
+        1px 1px 0 rgba(0, 0, 0, 0.5);
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
-.nickInputRow {
+.nickContentRow {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 34px;
 }
 
 .nickLabel {
-    color: #c9a875;
-    font-size: 13px;
+    display: block;
+    color: #ffffff;
+    font-size: 15px;
     font-family: Tahoma, sans-serif;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    text-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.9),
+        0 0 10px rgba(0, 0, 0, 0.8),
+        1px 1px 0 rgba(0, 0, 0, 0.5);
     white-space: nowrap;
+    margin-bottom: 4px;
+}
+
+.nickInputWrapper {
+    position: relative;
+    width: 335px;
+    height: 28px;
     flex-shrink: 0;
 }
 
+.nickInputBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 335px;
+    height: 28px;
+    pointer-events: none;
+}
+
 .nickInput {
-    flex: 1;
-    padding: 8px 12px;
-    background: linear-gradient(180deg, #3a2a15 0%, #2a1a0a 100%);
-    border: 2px solid #5c4a2a;
-    border-radius: 3px;
+    position: relative;
+    width: 335px;
+    height: 28px;
+    padding: 4px 10px;
+    background: transparent;
+    border: none;
     color: #d4c4a0;
-    font-size: 14px;
+    font-size: 13px;
     font-family: Tahoma, sans-serif;
     box-sizing: border-box;
     outline: none;
-    transition: border-color 0.2s ease;
+    z-index: 1;
 }
 
-.nickInput:focus {
-    border-color: #8b6914;
+.nickSubmitBtn {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    align-self: center;
 }
 
-.nickButtonRow {
-    display: flex;
-    justify-content: flex-end;
+.nickSubmitBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.nickSubmitBtn:not(:disabled):hover {
+    filter: brightness(1.15);
+}
+
+.nickSubmitBtnBg {
+    display: block;
+    width: 151px;
+    height: 71px;
+}
+
+.nickSubmitBtnLabel {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Tahoma, sans-serif;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    white-space: pre-line;
+    text-align: center;
+    pointer-events: none;
+    z-index: 1;
 }

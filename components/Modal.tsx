@@ -9,22 +9,24 @@ interface ModalProps {
     showHeader?: boolean;
     children: ReactNode;
     width?: number;
+    className?: string;
 }
 
-export default function Modal({ 
-    isOpen, 
-    onClose, 
-    title, 
+export default function Modal({
+    isOpen,
+    onClose,
+    title,
     showHeader = true,
     children,
-    width = 450
+    width = 450,
+    className
 }: ModalProps) {
     if (!isOpen) return null;
 
     return (
         <div className={styles.overlay} onClick={onClose}>
-            <div 
-                className={styles.modal} 
+            <div
+                className={`${styles.modal} ${className || ''}`}
                 style={{ width }}
                 onClick={(e) => e.stopPropagation()}
             >

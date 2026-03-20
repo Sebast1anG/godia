@@ -83,7 +83,6 @@
   display: flex;
   justify-content: space-between;
   padding: 10px 15px;
-  background: url("/images/topBarMiddleWindow.svg") center / 100% 100% no-repeat;
   border-bottom: 3px solid #3e2723;
 }
 
