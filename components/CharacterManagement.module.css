@@ -310,7 +310,7 @@
     height: 151px;
     background: url(/images/bgChangeNick.webp) center / cover no-repeat;
     box-sizing: border-box;
-    padding: 15px 20px 15px 20px;
+    padding: 21px 20px 0 20px;
 }
 
 .nickFrameTop {
@@ -417,13 +417,18 @@
         0 0 10px rgba(0, 0, 0, 0.8),
         1px 1px 0 rgba(0, 0, 0, 0.5);
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: 13px;
 }
 
 .nickContentRow {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 34px;
+}
+
+.nickLeftCol {
+    display: flex;
+    flex-direction: column;
 }
 
 .nickLabel {
@@ -436,7 +441,7 @@
         0 0 10px rgba(0, 0, 0, 0.8),
         1px 1px 0 rgba(0, 0, 0, 0.5);
     white-space: nowrap;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 .nickInputWrapper {
@@ -475,6 +480,7 @@
     background: none;
     border: none;
     cursor: pointer;
+    margin-bottom: -21px;
     padding: 0;
     flex-shrink: 0;
     align-self: center;
@@ -508,6 +514,396 @@
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
     white-space: pre-line;
     text-align: center;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Delete character modal */
+.deleteModalWrapper {
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+}
+
+.deleteModalWrapper > div {
+    padding: 0;
+}
+
+.deleteModal {
+    position: relative;
+    width: 643px;
+    height: 204px;
+    background: url(/images/bgDeleteChar.webp) center / cover no-repeat;
+    box-sizing: border-box;
+    padding: 15px 25px 15px 25px;
+}
+
+.deleteFrameTop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.deleteFrameBottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    pointer-events: none;
+    z-index: 1;
+    transform: scaleY(-1);
+}
+
+.deleteFrameLeft {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.deleteFrameRight {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6px;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    transform: scaleX(-1);
+}
+
+.deleteCorner {
+    position: absolute;
+    pointer-events: none;
+    z-index: 2;
+    width: 13px;
+    height: 16px;
+}
+
+.deleteCornerTL {
+    top: 0;
+    left: 0;
+}
+
+.deleteCornerTR {
+    top: 0;
+    right: 0;
+}
+
+.deleteCornerBL {
+    bottom: 0;
+    left: 0;
+}
+
+.deleteCornerBR {
+    bottom: 0;
+    right: 0;
+}
+
+.deleteTitle {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Tahoma, sans-serif;
+    text-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.9),
+        0 0 10px rgba(0, 0, 0, 0.8),
+        1px 1px 0 rgba(0, 0, 0, 0.5);
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.deleteSubtitle {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Tahoma, sans-serif;
+    text-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.9),
+        0 0 10px rgba(0, 0, 0, 0.8),
+        1px 1px 0 rgba(0, 0, 0, 0.5);
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.deleteContentRow {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.deleteInputWrapper {
+    position: relative;
+    width: 336px;
+    height: 28px;
+}
+
+.deleteInputBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 336px;
+    height: 28px;
+    pointer-events: none;
+}
+
+.deleteInput {
+    position: relative;
+    width: 336px;
+    height: 28px;
+    padding: 4px 10px;
+    background: transparent;
+    border: none;
+    color: #d4c4a0;
+    font-size: 13px;
+    font-family: Tahoma, sans-serif;
+    box-sizing: border-box;
+    outline: none;
+    z-index: 1;
+}
+
+.deleteButtonsRow {
+    display: flex;
+    justify-content: center;
+    gap: 185px;
+    padding-bottom: 17px;
+}
+
+.deleteBtn {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.deleteBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.deleteBtn:not(:disabled):hover {
+    filter: brightness(1.15);
+}
+
+.deleteBtnBg {
+    display: block;
+    width: 148px;
+    height: 37px;
+}
+
+.deleteBtnLabel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Tahoma, sans-serif;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Gender modal */
+.genderModalWrapper {
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+}
+
+.genderModalWrapper > div {
+    padding: 0;
+}
+
+.genderModal {
+    position: relative;
+    width: 612px;
+    height: 151px;
+    background: url(/images/bgGenderRace.webp) center / cover no-repeat;
+    box-sizing: border-box;
+    padding: 0 20px 15px 20px;
+}
+
+.genderFrameTop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.genderFrameBottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    pointer-events: none;
+    z-index: 1;
+    transform: scaleY(-1);
+}
+
+.genderFrameLeft {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.genderFrameRight {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6px;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    transform: scaleX(-1);
+}
+
+.genderCorner {
+    position: absolute;
+    pointer-events: none;
+    z-index: 2;
+    width: 13px;
+    height: 16px;
+}
+
+.genderCornerTL {
+    top: 0;
+    left: 0;
+}
+
+.genderCornerTR {
+    top: 0;
+    right: 0;
+}
+
+.genderCornerBL {
+    bottom: 0;
+    left: 0;
+}
+
+.genderCornerBR {
+    bottom: 0;
+    right: 0;
+}
+
+.genderHeader {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+}
+
+.genderHeaderBg {
+    width: 601px;
+    height: 34px;
+    display: block;
+    margin: 0 auto;
+}
+
+.genderHeaderTitle {
+    position: absolute;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Tahoma, sans-serif;
+    text-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.9),
+        0 0 10px rgba(0, 0, 0, 0.8),
+        1px 1px 0 rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+}
+
+.genderCloseBtn {
+    position: absolute;
+    top: 8px;
+    right: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.genderCloseBtn img {
+    width: 21px;
+    height: 20px;
+    display: block;
+}
+
+.genderCloseBtn:hover {
+    filter: brightness(1.3);
+}
+
+.genderOptionsRow {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+}
+
+.genderBtnRow {
+    display: flex;
+    justify-content: center;
+}
+
+.genderBtn {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.genderBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.genderBtn:not(:disabled):hover {
+    filter: brightness(1.15);
+}
+
+.genderBtnBg {
+    display: block;
+    width: 188px;
+    height: 32px;
+}
+
+.genderBtnLabel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+    font-family: Tahoma, sans-serif;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
     pointer-events: none;
     z-index: 1;
 }

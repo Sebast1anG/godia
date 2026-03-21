@@ -65,9 +65,9 @@ export async function POST(request: NextRequest) {
     }
 
     const existingCharacters = await db.findCharactersByUserId(payload.userId);
-    if (existingCharacters.length >= 5) {
+    if (existingCharacters.length >= 21) {
       return NextResponse.json(
-        { error: "Osiągnięto maksymalną liczbę postaci (5)" },
+        { error: "Osiągnięto maksymalną liczbę postaci (21)" },
         { status: 400 }
       );
     }

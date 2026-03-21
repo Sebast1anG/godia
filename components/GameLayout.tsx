@@ -165,12 +165,6 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
 
     return (
         <main className={styles.main}>
-            <img
-                src="/images/main-bg.webp"
-                alt=""
-                className={styles.backgroundOverlay}
-            />
-
             <TopBar onLogoClick={handleGoHome} />
 
             <div className={styles.contentArea}>

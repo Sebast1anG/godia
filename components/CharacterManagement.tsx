@@ -2,13 +2,8 @@
 
 import { useState } from "react";
 import styles from "./CharacterManagement.module.css";
-import Modal, {
-  ModalInput,
-  ModalCheckbox,
-  ModalButton,
-  ModalButtonsRow,
-  ModalText,
-} from "./Modal";
+import Modal from "./Modal";
+import Checkbox from "./Checkbox";
 import AppearanceModal from "./AppearanceModal";
 import CharacterCard, { SPRITES } from "./CharacterCard";
 import { useCharacters } from "@/lib/CharactersContext";
@@ -217,31 +212,44 @@ export default function CharacterManagement({
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         showHeader={false}
-        width={500}
+        width={643}
+        className={styles.deleteModalWrapper}
       >
-        <ModalText centered>
-          Zatwierdzasz akcję usunięcia postaci o nicku{" "}
-          {getSelectedCharacter()?.name}?
-        </ModalText>
-        <ModalText centered bold>
-          Napisz &quot;TAK&quot;
-        </ModalText>
-        <ModalInput
-          value={deleteConfirmation}
-          onChange={setDeleteConfirmation}
-        />
-        <ModalButtonsRow>
-          <ModalButton
-            variant="green"
-            onClick={handleDeleteConfirm}
-            disabled={deleteConfirmation !== "TAK"}
-          >
-            Zatwierdź
-          </ModalButton>
-          <ModalButton variant="red" onClick={() => setDeleteModalOpen(false)}>
-            Anuluj
-          </ModalButton>
-        </ModalButtonsRow>
+        <div className={styles.deleteModal}>
+          <img src="/images/tbFrameDeleteChar.webp" alt="" className={styles.deleteFrameTop} />
+          <img src="/images/tbFrameDeleteChar.webp" alt="" className={styles.deleteFrameBottom} />
+          <img src="/images/lrFrameDeleteChar.webp" alt="" className={styles.deleteFrameLeft} />
+          <img src="/images/lrFrameDeleteChar.webp" alt="" className={styles.deleteFrameRight} />
+          <img src="/images/corner-TL.svg" alt="" className={`${styles.deleteCorner} ${styles.deleteCornerTL}`} />
+          <img src="/images/corner TR.svg" alt="" className={`${styles.deleteCorner} ${styles.deleteCornerTR}`} />
+          <img src="/images/corner BL.svg" alt="" className={`${styles.deleteCorner} ${styles.deleteCornerBL}`} />
+          <img src="/images/corner-BR.svg" alt="" className={`${styles.deleteCorner} ${styles.deleteCornerBR}`} />
+          <div className={styles.deleteTitle}>
+            Zatwierdzasz akcję usunięcia postaci o nicku {getSelectedCharacter()?.name}?
+          </div>
+          <div className={styles.deleteSubtitle}>Napisz &quot;TAK&quot;</div>
+          <div className={styles.deleteContentRow}>
+            <div className={styles.deleteInputWrapper}>
+              <img src="/images/textFieldModal.webp" alt="" className={styles.deleteInputBg} />
+              <input
+                type="text"
+                value={deleteConfirmation}
+                onChange={(e) => setDeleteConfirmation(e.target.value)}
+                className={styles.deleteInput}
+              />
+            </div>
+          </div>
+          <div className={styles.deleteButtonsRow}>
+            <button className={styles.deleteBtn} onClick={handleDeleteConfirm} disabled={deleteConfirmation !== "TAK"}>
+              <img src="/images/btnConfirmDeleteChar.webp" alt="" className={styles.deleteBtnBg} />
+              <span className={styles.deleteBtnLabel}>Zatwierdź</span>
+            </button>
+            <button className={styles.deleteBtn} onClick={() => setDeleteModalOpen(false)}>
+              <img src="/images/btnCancelDeleteChar.webp" alt="" className={styles.deleteBtnBg} />
+              <span className={styles.deleteBtnLabel}>Anuluj</span>
+            </button>
+          </div>
+        </div>
       </Modal>
 
       <Modal
@@ -264,16 +272,18 @@ export default function CharacterManagement({
             <img src="/images/closeChangeNick.webp" alt="Zamknij" />
           </button>
           <div className={styles.nickTitle}>Zatwierdzasz akcję zmiany nicku postaci?</div>
-          <label className={styles.nickLabel}>Nowy nick:</label>
           <div className={styles.nickContentRow}>
-            <div className={styles.nickInputWrapper}>
-              <img src="/images/textFieldChangeNick.webp" alt="" className={styles.nickInputBg} />
-              <input
-                type="text"
-                value={newNick}
-                onChange={(e) => setNewNick(e.target.value)}
-                className={styles.nickInput}
-              />
+            <div className={styles.nickLeftCol}>
+              <label className={styles.nickLabel}>Nowy nick:</label>
+              <div className={styles.nickInputWrapper}>
+                <img src="/images/textFieldChangeNick.webp" alt="" className={styles.nickInputBg} />
+                <input
+                  type="text"
+                  value={newNick}
+                  onChange={(e) => setNewNick(e.target.value)}
+                  className={styles.nickInput}
+                />
+              </div>
             </div>
             <button className={styles.nickSubmitBtn} onClick={handleNickConfirm} disabled={!newNick}>
               <img src="/images/btnChangeNick.webp" alt="" className={styles.nickSubmitBtnBg} />
@@ -286,51 +296,89 @@ export default function CharacterManagement({
       <Modal
         isOpen={genderModalOpen}
         onClose={() => setGenderModalOpen(false)}
-        title="Ustaw płeć postaci"
-        width={450}
+        showHeader={false}
+        width={612}
+        className={styles.genderModalWrapper}
       >
-        <div className={styles.modalOptionsRow}>
-          <ModalCheckbox
-            label="Męska"
-            checked={selectedGender === "male"}
-            onChange={() => setSelectedGender("male")}
-          />
-          <ModalCheckbox
-            label="Damska"
-            checked={selectedGender === "female"}
-            onChange={() => setSelectedGender("female")}
-          />
+        <div className={styles.genderModal}>
+          <img src="/images/tbFrameGenderRace.webp" alt="" className={styles.genderFrameTop} />
+          <img src="/images/tbFrameGenderRace.webp" alt="" className={styles.genderFrameBottom} />
+          <img src="/images/lrFrameGenderRace.webp" alt="" className={styles.genderFrameLeft} />
+          <img src="/images/lrFrameGenderRace.webp" alt="" className={styles.genderFrameRight} />
+          <img src="/images/corner-TL.svg" alt="" className={`${styles.genderCorner} ${styles.genderCornerTL}`} />
+          <img src="/images/corner TR.svg" alt="" className={`${styles.genderCorner} ${styles.genderCornerTR}`} />
+          <img src="/images/corner BL.svg" alt="" className={`${styles.genderCorner} ${styles.genderCornerBL}`} />
+          <img src="/images/corner-BR.svg" alt="" className={`${styles.genderCorner} ${styles.genderCornerBR}`} />
+          <button className={styles.genderCloseBtn} onClick={() => setGenderModalOpen(false)}>
+            <img src="/images/closeChangeNick.webp" alt="Zamknij" />
+          </button>
+          <div className={styles.genderHeader}>
+            <img src="/images/bgTitleGenderRace.webp" alt="" className={styles.genderHeaderBg} />
+            <span className={styles.genderHeaderTitle}>Ustaw płeć postaci</span>
+          </div>
+          <div className={styles.genderOptionsRow}>
+            <Checkbox
+              label="Męska"
+              checked={selectedGender === "male"}
+              onChange={() => setSelectedGender("male")}
+            />
+            <Checkbox
+              label="Damska"
+              checked={selectedGender === "female"}
+              onChange={() => setSelectedGender("female")}
+            />
+          </div>
+          <div className={styles.genderBtnRow}>
+            <button className={styles.genderBtn} onClick={handleGenderConfirm} disabled={!selectedGender}>
+              <img src="/images/btnGenderRace.webp" alt="" className={styles.genderBtnBg} />
+              <span className={styles.genderBtnLabel}>Ustaw(Koszt 1000GM)</span>
+            </button>
+          </div>
         </div>
-        <ModalButtonsRow>
-          <ModalButton onClick={handleGenderConfirm} disabled={!selectedGender}>
-            Ustaw (Koszt 1000GM)
-          </ModalButton>
-        </ModalButtonsRow>
       </Modal>
 
       <Modal
         isOpen={raceModalOpen}
         onClose={() => setRaceModalOpen(false)}
-        title="Ustaw rasę postaci"
-        width={450}
+        showHeader={false}
+        width={612}
+        className={styles.genderModalWrapper}
       >
-        <div className={styles.modalOptionsRow}>
-          <ModalCheckbox
-            label="Człowiek"
-            checked={selectedRace === "human"}
-            onChange={() => setSelectedRace("human")}
-          />
-          <ModalCheckbox
-            label="Elf"
-            checked={selectedRace === "elf"}
-            onChange={() => setSelectedRace("elf")}
-          />
+        <div className={styles.genderModal}>
+          <img src="/images/tbFrameGenderRace.webp" alt="" className={styles.genderFrameTop} />
+          <img src="/images/tbFrameGenderRace.webp" alt="" className={styles.genderFrameBottom} />
+          <img src="/images/lrFrameGenderRace.webp" alt="" className={styles.genderFrameLeft} />
+          <img src="/images/lrFrameGenderRace.webp" alt="" className={styles.genderFrameRight} />
+          <img src="/images/corner-TL.svg" alt="" className={`${styles.genderCorner} ${styles.genderCornerTL}`} />
+          <img src="/images/corner TR.svg" alt="" className={`${styles.genderCorner} ${styles.genderCornerTR}`} />
+          <img src="/images/corner BL.svg" alt="" className={`${styles.genderCorner} ${styles.genderCornerBL}`} />
+          <img src="/images/corner-BR.svg" alt="" className={`${styles.genderCorner} ${styles.genderCornerBR}`} />
+          <button className={styles.genderCloseBtn} onClick={() => setRaceModalOpen(false)}>
+            <img src="/images/closeChangeNick.webp" alt="Zamknij" />
+          </button>
+          <div className={styles.genderHeader}>
+            <img src="/images/bgTitleGenderRace.webp" alt="" className={styles.genderHeaderBg} />
+            <span className={styles.genderHeaderTitle}>Ustawienie rasy postaci</span>
+          </div>
+          <div className={styles.genderOptionsRow}>
+            <Checkbox
+              label="Human"
+              checked={selectedRace === "human"}
+              onChange={() => setSelectedRace("human")}
+            />
+            <Checkbox
+              label="Elf"
+              checked={selectedRace === "elf"}
+              onChange={() => setSelectedRace("elf")}
+            />
+          </div>
+          <div className={styles.genderBtnRow}>
+            <button className={styles.genderBtn} onClick={handleRaceConfirm} disabled={!selectedRace}>
+              <img src="/images/btnGenderRace.webp" alt="" className={styles.genderBtnBg} />
+              <span className={styles.genderBtnLabel}>Ustaw(Koszt 2000GM)</span>
+            </button>
+          </div>
         </div>
-        <ModalButtonsRow>
-          <ModalButton onClick={handleRaceConfirm} disabled={!selectedRace}>
-            Ustaw (Koszt 1000GM)
-          </ModalButton>
-        </ModalButtonsRow>
       </Modal>
 
       <AppearanceModal
