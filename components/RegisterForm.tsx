@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { authService } from '@/lib/authService';
+import Checkbox from './Checkbox';
 import styles from './RegisterForm.module.css';
 
 export default function RegisterForm() {
@@ -100,114 +101,127 @@ export default function RegisterForm() {
 
     return (
         <div className={styles.container}>
+            <img src="/images/tbFrameRegister.webp" alt="" className={styles.frameTop} />
+            <img src="/images/tbFrameRegister.webp" alt="" className={styles.frameBottom} />
+            <img src="/images/lrFrameRegister.webp" alt="" className={styles.frameLeft} />
+            <img src="/images/lrFrameRegister.webp" alt="" className={styles.frameRight} />
+            <img src="/images/corner-TL.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
+            <img src="/images/corner TR.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />
+            <img src="/images/corner BL.svg" alt="" className={`${styles.corner} ${styles.cornerBL}`} />
+            <img src="/images/corner-BR.svg" alt="" className={`${styles.corner} ${styles.cornerBR}`} />
+
             <div className={styles.header}>
+                <img src="/images/bgTitleRegister.webp" alt="" className={styles.headerBg} />
                 <span className={styles.headerText}>REJESTRACJA</span>
             </div>
-            
+
             <form className={styles.formContent} onSubmit={handleSubmit}>
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputGroup}>
                     <label className={styles.label}>Login</label>
-                    <input
-                        type="text"
-                        value={login}
-                        onChange={(e) => setLogin(e.target.value)}
-                        className={styles.input}
-                        required
-                        minLength={6}
-                        maxLength={17}
-                        disabled={loading}
-                    />
+                    <div className={styles.inputWrapper}>
+                        <img src="/images/textFieldRegister.webp" alt="" className={styles.inputBg} />
+                        <input
+                            type="text"
+                            value={login}
+                            onChange={(e) => setLogin(e.target.value)}
+                            className={styles.input}
+                            required
+                            minLength={6}
+                            maxLength={17}
+                            disabled={loading}
+                        />
+                    </div>
                 </div>
 
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputGroup}>
                     <label className={styles.label}>Hasło</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className={styles.input}
-                        required
-                        minLength={8}
-                        maxLength={17}
-                        disabled={loading}
-                    />
+                    <div className={styles.inputWrapper}>
+                        <img src="/images/textFieldRegister.webp" alt="" className={styles.inputBg} />
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className={styles.input}
+                            required
+                            minLength={8}
+                            maxLength={17}
+                            disabled={loading}
+                        />
+                    </div>
                 </div>
 
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputGroup}>
                     <label className={styles.label}>Zatwierdź hasło</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        className={styles.input}
-                        required
-                        minLength={8}
-                        maxLength={17}
-                        disabled={loading}
-                    />
+                    <div className={styles.inputWrapper}>
+                        <img src="/images/textFieldRegister.webp" alt="" className={styles.inputBg} />
+                        <input
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className={styles.input}
+                            required
+                            minLength={8}
+                            maxLength={17}
+                            disabled={loading}
+                        />
+                    </div>
                 </div>
 
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputGroup}>
                     <label className={styles.label}>Email</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className={styles.input}
-                        required
-                        disabled={loading}
-                    />
+                    <div className={styles.inputWrapper}>
+                        <img src="/images/textFieldRegister.webp" alt="" className={styles.inputBg} />
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className={styles.input}
+                            required
+                            disabled={loading}
+                        />
+                    </div>
                 </div>
 
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputGroup}>
                     <label className={styles.label}>Zatwierdź email</label>
-                    <input
-                        type="email"
-                        value={confirmEmail}
-                        onChange={(e) => setConfirmEmail(e.target.value)}
-                        className={styles.input}
-                        required
+                    <div className={styles.inputWrapper}>
+                        <img src="/images/textFieldRegister.webp" alt="" className={styles.inputBg} />
+                        <input
+                            type="email"
+                            value={confirmEmail}
+                            onChange={(e) => setConfirmEmail(e.target.value)}
+                            className={styles.input}
+                            required
+                            disabled={loading}
+                        />
+                    </div>
+                </div>
+
+                <div className={styles.checkboxGroup}>
+                    <Checkbox
+                        label="Akceptuje regulamin"
+                        checked={acceptTerms}
+                        onChange={setAcceptTerms}
                         disabled={loading}
                     />
                 </div>
-
-                <div className={styles.checkboxWrapper}>
-                    <label className={styles.checkboxLabel}>
-                        <input
-                            type="checkbox"
-                            checked={acceptTerms}
-                            onChange={(e) => setAcceptTerms(e.target.checked)}
-                            className={styles.checkbox}
-                            disabled={loading}
-                        />
-                        <span className={styles.checkboxCustom}></span>
-                        <span className={styles.checkboxText}>Akceptuję regulamin</span>
-                    </label>
-                </div>
-
-                <div className={styles.checkboxWrapper}>
-                    <label className={styles.checkboxLabel}>
-                        <input
-                            type="checkbox"
-                            checked={acceptPrivacy}
-                            onChange={(e) => setAcceptPrivacy(e.target.checked)}
-                            className={styles.checkbox}
-                            disabled={loading}
-                        />
-                        <span className={styles.checkboxCustom}></span>
-                        <span className={styles.checkboxText}>Akceptuję politykę prywatności</span>
-                    </label>
+                <div className={styles.checkboxGroup}>
+                    <Checkbox
+                        label="Akceptuje politykę prywatności"
+                        checked={acceptPrivacy}
+                        onChange={setAcceptPrivacy}
+                        disabled={loading}
+                    />
                 </div>
 
                 {error && (
-                    <div className={styles.error}>
-                        {error}
-                    </div>
+                    <div className={styles.error}>{error}</div>
                 )}
 
                 <div className={styles.buttonWrapper}>
-                    <button type="submit" className={styles.button} disabled={loading}>
-                        <span className={styles.buttonLabel}>
+                    <button type="submit" className={styles.submitBtn} disabled={loading}>
+                        <img src="/images/btnRegister.webp" alt="" className={styles.submitBtnBg} />
+                        <span className={styles.submitBtnLabel}>
                             {loading ? 'Rejestracja...' : 'Utwórz konto'}
                         </span>
                     </button>

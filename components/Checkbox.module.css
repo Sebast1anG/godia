@@ -53,22 +53,27 @@
   box-shadow: none;
 }
 
+.checkboxCustomGenderRace {
+  width: 29px;
+  height: 27px;
+  border: none;
+  background: url("/images/bgCheckboxGenderRace.webp") center / 100% 100% no-repeat;
+  box-shadow: none;
+}
+
 .checkboxCustom::after {
   content: "";
   position: absolute;
   display: none;
 
   left: 50%;
-  top: 45%;
-  transform: translate(-50%, -50%) rotate(45deg);
+  top: 50%;
+  transform: translate(-50%, -50%);
 
-  width: 6px;
-  height: 10px;
+  width: 12px;
+  height: 9px;
 
-  border: solid #ffffff;
-  border-width: 0 2px 2px 0;
-
-  image-rendering: pixelated;
+  background: url("/images/checkmark.webp") center / contain no-repeat;
 }
 
 .checkboxCustomCreateCharacter::after {

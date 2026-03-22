@@ -171,35 +171,35 @@ export default function CharacterManagement({
                       setAppearanceModalOpen(true);
                     }}
                   >
-                    <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                    <img src="/images/btnCharacterManagement.webp" alt="" className={styles.actionButtonImage} />
                     <span className={styles.actionLabel}>Wygląd postaci</span>
                   </button>
                   <button
                     className={styles.actionButton}
                     onClick={() => openDeleteModal(character.id)}
                   >
-                    <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                    <img src="/images/btnCharacterManagement.webp" alt="" className={styles.actionButtonImage} />
                     <span className={styles.actionLabel}>Usuń postać</span>
                   </button>
                   <button
                     className={styles.actionButton}
                     onClick={() => openNickModal(character.id)}
                   >
-                    <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                    <img src="/images/btnCharacterManagement.webp" alt="" className={styles.actionButtonImage} />
                     <span className={styles.actionLabel}>Zmiana nicku</span>
                   </button>
                   <button
                     className={styles.actionButton}
                     onClick={() => openGenderModal(character.id)}
                   >
-                    <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                    <img src="/images/btnCharacterManagement.webp" alt="" className={styles.actionButtonImage} />
                     <span className={styles.actionLabel}>Zmiana płci</span>
                   </button>
                   <button
                     className={styles.actionButton}
                     onClick={() => openRaceModal(character.id)}
                   >
-                    <img src="/images/gray-btn.svg" alt="" className={styles.actionButtonImage} />
+                    <img src="/images/btnCharacterManagement.webp" alt="" className={styles.actionButtonImage} />
                     <span className={styles.actionLabel}>Zmiana rasy</span>
                   </button>
                 </div>
@@ -321,11 +321,13 @@ export default function CharacterManagement({
               label="Męska"
               checked={selectedGender === "male"}
               onChange={() => setSelectedGender("male")}
+              variant="genderRace"
             />
             <Checkbox
               label="Damska"
               checked={selectedGender === "female"}
               onChange={() => setSelectedGender("female")}
+              variant="genderRace"
             />
           </div>
           <div className={styles.genderBtnRow}>
@@ -365,11 +367,13 @@ export default function CharacterManagement({
               label="Human"
               checked={selectedRace === "human"}
               onChange={() => setSelectedRace("human")}
+              variant="genderRace"
             />
             <Checkbox
               label="Elf"
               checked={selectedRace === "elf"}
               onChange={() => setSelectedRace("elf")}
+              variant="genderRace"
             />
           </div>
           <div className={styles.genderBtnRow}>
