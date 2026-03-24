@@ -261,18 +261,9 @@ export default function AccountSettings({
               </div>
             </form>
 
-            <div className={styles.accountInfoSection}>
-              <h2 className={styles.sectionTitleCentered}>Informacje o koncie:</h2>
-              <div className={styles.infoText}>Login: {maskLogin(accountInfo.login)}</div>
-              <div className={styles.infoText}>konto założone: {accountInfo.createdAt}</div>
-              <div className={styles.infoText}>Ilość postów na forum: {accountInfo.forumPosts}</div>
-              <div className={styles.infoText}>Renoma: {accountInfo.reputation}</div>
-              {accountInfo.email && (
-                <div className={styles.infoText}>Email: {maskEmail(accountInfo.email)}</div>
-              )}
-              <div className={styles.infoText}>Godijskie monety: {accountInfo.goldCoins}</div>
-            </div>
           </div>
+
+          <div className={styles.columnDivider} />
 
           <div className={styles.column}>
             <h2 className={styles.sectionTitle}>Zmień email:</h2>
@@ -321,33 +312,32 @@ export default function AccountSettings({
 
               <div className={styles.inputWrapper}>
                 <label className={styles.label}>Kod weryfikacji:</label>
-                <div className={styles.inputField}>
-                  <img src="/images/accountTextField.webp" alt="" className={styles.inputBg} />
-                  <input
-                    type="text"
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value)}
-                    className={styles.input}
+                <div className={styles.verificationRow}>
+                  <div className={styles.inputField}>
+                    <img src="/images/accountTextField.webp" alt="" className={styles.inputBg} />
+                    <input
+                      type="text"
+                      value={verificationCode}
+                      onChange={(e) => setVerificationCode(e.target.value)}
+                      className={styles.input}
+                      disabled={emailLoading}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className={styles.longButton}
+                    onClick={handleSendCode}
                     disabled={emailLoading}
-                  />
+                  >
+                    <img src="/images/accountLongBtn.webp" alt="" className={styles.buttonImage} />
+                    <span className={styles.buttonLabel}>
+                      {codeSent ? 'Kod wysłany' : 'Wyślij kod na email'}
+                    </span>
+                  </button>
                 </div>
               </div>
 
               {emailError && <div className={styles.error}>{emailError}</div>}
-
-              <div className={styles.buttonWrapperRight}>
-                <button
-                  type="button"
-                  className={styles.longButton}
-                  onClick={handleSendCode}
-                  disabled={emailLoading}
-                >
-                  <img src="/images/accountLongBtn.webp" alt="" className={styles.buttonImage} />
-                  <span className={styles.buttonLabel}>
-                    {codeSent ? 'Kod wysłany' : 'Wyślij kod na email'}
-                  </span>
-                </button>
-              </div>
 
               <div className={styles.buttonWrapper}>
                 <button type="submit" className={styles.shortButton} disabled={emailLoading}>
@@ -359,6 +349,18 @@ export default function AccountSettings({
               </div>
             </form>
           </div>
+        </div>
+
+        <div className={styles.accountInfoSection}>
+          <h2 className={styles.sectionTitleCentered}>Informacje o koncie:</h2>
+          <div className={styles.infoText}>Login: {maskLogin(accountInfo.login)}</div>
+          <div className={styles.infoText}>konto założone: {accountInfo.createdAt}</div>
+          <div className={styles.infoText}>Ilość postów na forum: {accountInfo.forumPosts}</div>
+          <div className={styles.infoText}>Renoma: {accountInfo.reputation}</div>
+          {accountInfo.email && (
+            <div className={styles.infoText}>Email: {maskEmail(accountInfo.email)}</div>
+          )}
+          <div className={styles.infoText}>Godijskie monety: {accountInfo.goldCoins}</div>
         </div>
       </div>
       </div>

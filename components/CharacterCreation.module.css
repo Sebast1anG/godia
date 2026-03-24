@@ -1,7 +1,7 @@
 .container {
   position: relative;
   box-sizing: border-box;
-  background: url(/images/bg-create-char.webp) center / 107% 128% no-repeat;
+  background: url(/images/bg-create-char.webp) center / 107% 151% no-repeat;
   width: 879px;
   font-family: Tahoma, sans-serif;
   box-shadow: 0 10px 40px #000c;
@@ -383,6 +383,7 @@ img.buttonImage {
   letter-spacing: 1px;
   filter: drop-shadow(0 0 2.5px rgba(0, 0, 0, 0.46));
   margin: 0;
+  padding-bottom: 11px;
   text-align: center;
 }
 
