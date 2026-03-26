@@ -329,11 +329,14 @@
     background: url("/images/innerFrameVertical.webp") center / 6px 100% no-repeat;
 }
 
+.rowDivider {
+    height: 6px;
+    background: url("/images/innerFrameHorizontal.webp") center / 100% 6px no-repeat;
+    margin: 15px -30px;
+}
+
 .accountInfoSection {
-    margin-top: 15px;
     padding-top: 10px;
-    background: url("/images/innerFrameHorizontal.webp") top center / 100% 6px no-repeat;
-    border-top: 2px solid rgba(139, 105, 20, 0.3);
 }
 
 .infoText {

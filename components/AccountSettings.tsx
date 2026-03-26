@@ -261,6 +261,19 @@ export default function AccountSettings({
               </div>
             </form>
 
+            <div className={styles.rowDivider} />
+
+            <div className={styles.accountInfoSection}>
+              <h2 className={styles.sectionTitleCentered}>Informacje o koncie:</h2>
+              <div className={styles.infoText}>Login: {maskLogin(accountInfo.login)}</div>
+              <div className={styles.infoText}>konto założone: {accountInfo.createdAt}</div>
+              <div className={styles.infoText}>Ilość postów na forum: {accountInfo.forumPosts}</div>
+              <div className={styles.infoText}>Renoma: {accountInfo.reputation}</div>
+              {accountInfo.email && (
+                <div className={styles.infoText}>Email: {maskEmail(accountInfo.email)}</div>
+              )}
+              <div className={styles.infoText}>Godijskie monety: {accountInfo.goldCoins}</div>
+            </div>
           </div>
 
           <div className={styles.columnDivider} />
@@ -349,18 +362,6 @@ export default function AccountSettings({
               </div>
             </form>
           </div>
-        </div>
-
-        <div className={styles.accountInfoSection}>
-          <h2 className={styles.sectionTitleCentered}>Informacje o koncie:</h2>
-          <div className={styles.infoText}>Login: {maskLogin(accountInfo.login)}</div>
-          <div className={styles.infoText}>konto założone: {accountInfo.createdAt}</div>
-          <div className={styles.infoText}>Ilość postów na forum: {accountInfo.forumPosts}</div>
-          <div className={styles.infoText}>Renoma: {accountInfo.reputation}</div>
-          {accountInfo.email && (
-            <div className={styles.infoText}>Email: {maskEmail(accountInfo.email)}</div>
-          )}
-          <div className={styles.infoText}>Godijskie monety: {accountInfo.goldCoins}</div>
         </div>
       </div>
       </div>
