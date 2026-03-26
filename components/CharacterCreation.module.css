@@ -82,7 +82,9 @@
 .topBar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 10px 15px;
+  background: linear-gradient(180deg, #9f7400 0%, #966e00 100%);
   border-bottom: 3px solid #3e2723;
 }
 
