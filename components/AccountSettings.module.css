@@ -1,7 +1,7 @@
 .container {
     position: relative;
     box-sizing: border-box;
-    background: url(/images/bg-create-char.webp) center / 107% 160% no-repeat; 
+    background: url(/images/bgAccountFull.webp) center / 107% 151% no-repeat;
     width: 879px;
     font-family: Tahoma, sans-serif;
     box-shadow: 0 10px 40px #000c;
@@ -187,7 +187,7 @@
 
 .label {
     color: #ffffff;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: bold;
     margin-bottom: 4px;
     display: block;
