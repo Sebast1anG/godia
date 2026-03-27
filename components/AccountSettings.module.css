@@ -323,16 +323,18 @@
 }
 
 .columnDivider {
-    width: 6px;
+    width: 5px;
     flex-shrink: 0;
     align-self: stretch;
+    margin-top: -15px;
+    margin-bottom: -15px;
     background: url("/images/innerFrameVertical.webp") center / 6px 100% no-repeat;
 }
 
 .rowDivider {
     height: 6px;
     background: url("/images/innerFrameHorizontal.webp") center / 100% 6px no-repeat;
-    margin: 15px -30px;
+    margin: 25px -35px 25px -30px;
 }
 
 .accountInfoSection {

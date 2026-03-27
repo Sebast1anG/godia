@@ -217,6 +217,15 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    transition: filter 0.2s ease;
+}
+
+.actionButton:hover {
+    filter: brightness(1.2);
+}
+
+.actionButton:active {
+    filter: brightness(0.9);
 }
 
 .actionButtonImage {
