@@ -46,14 +46,24 @@
 }
 
 .checkboxCustomCreateCharacter {
+  width: 14px;
+  height: 15px;
+  border: none;
+  background: url("/images/bgCheckboxCreateChar.webp") center / 100% 100% no-repeat;
+  box-shadow: none;
+  image-rendering: auto;
+}
+
+.checkboxCustomGenderRace {
   width: 29px;
   height: 27px;
   border: none;
   background: url("/images/bgCheckboxGenderRace.webp") center / 100% 100% no-repeat;
   box-shadow: none;
+  image-rendering: auto;
 }
 
-.checkboxCustomGenderRace {
+.checkboxCustomCharManagement {
   width: 17px;
   height: 17px;
   border: none;
@@ -78,12 +88,18 @@
 }
 
 .checkboxCustomCreateCharacter::after {
+  width: 9px;
+  height: 9px;
+  background: url("/images/checkmarkGenderRace.webp") center / contain no-repeat;
+}
+
+.checkboxCustomGenderRace::after {
   width: 19px;
   height: 17px;
   background: url("/images/checkmarkGenderRace.webp") center / contain no-repeat;
 }
 
-.checkboxCustomGenderRace::after {
+.checkboxCustomCharManagement::after {
   width: 11px;
   height: 11px;
   background: url("/images/checkmarkCharMgmt.webp") center / contain no-repeat;

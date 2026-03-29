@@ -126,7 +126,7 @@
 
 .characterAvatarBackground {
     position: absolute;
-    inset: 0;
+    left: 2px;
     display: block;
     width: var(--avatar-width);
     height: var(--avatar-height);
