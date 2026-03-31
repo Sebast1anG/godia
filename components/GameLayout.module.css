@@ -14,6 +14,10 @@
   justify-content: center;
 }
 
+.contentAreaCreateCharacter {
+  padding-bottom: calc(6.52vh + 75px);
+}
+
 .centerColumn {
   display: flex;
   flex-direction: column;
@@ -27,7 +31,9 @@
 }
 
 .bottomBarWrapper {
-  position: relative;
+  position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100%;
   z-index: 100;
 }

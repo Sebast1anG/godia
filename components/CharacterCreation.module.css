@@ -195,8 +195,8 @@
 .serverGrid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  gap: 12px 8px;
-  padding: 5px;
+  gap: 17px 8px;
+  padding: 8px 5px 38px;
 }
 
 .checkbox {

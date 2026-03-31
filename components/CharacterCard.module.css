@@ -18,8 +18,8 @@
     --info-gap: 2px;
     --name-padding-left: 14px;
     --name-padding-right: 16px;
-    --name-font-size: 11px;
-    --info-font-size: 11px;
+    --name-font-size: 12px;
+    --info-font-size: 12px;
     --info-color: #d3d0ca;
     position: relative;
     margin: 0 auto 1.5rem;
@@ -95,7 +95,7 @@
     z-index: 1;
     font-size: var(--name-font-size);
     line-height: 1;
-    letter-spacing: 0.3px;
+    letter-spacing: 1px;
     color: #ffffff;
     font-weight: bold;
     font-family: Tahoma, sans-serif;
@@ -169,6 +169,7 @@
 
 .characterProperty {
     font-size: var(--info-font-size);
+    letter-spacing: 1px;
     line-height: 1.1;
     font-weight: 700;
     color: var(--info-color);

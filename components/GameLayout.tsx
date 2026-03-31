@@ -167,7 +167,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
         <main className={styles.main}>
             <TopBar onLogoClick={handleGoHome} />
 
-            <div className={styles.contentArea}>
+            <div className={`${styles.contentArea}${currentView === 'create-character' ? ` ${styles.contentAreaCreateCharacter}` : ''}`}>
                 <LeftSidebar />
 
                 <div className={styles.centerColumn}>
