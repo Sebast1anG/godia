@@ -4,17 +4,17 @@ import { useState } from 'react';
 import styles from './CharacterCreation.module.css';
 import Checkbox from './Checkbox';
 import { useTranslations } from '@/lib/useTranslations';
-import { authService } from '@/lib/authService';
+import { SESSION_EXPIRED_MESSAGE, authService } from '@/lib/authService';
 import { getSprite, SpriteAvatar } from './CharacterCard';
 
 interface CharacterCreationProps {
-    onCharacterCreated?: () => void;
+    onCharacterCreated?: () => void | Promise<void>;
     onNavigateToAccount?: () => void;
     onNavigateToCharacterManagement?: () => void;
     onLogout?: () => void;
 }
 
-export default function CharacterCreation({ 
+export default function CharacterCreation({
     onCharacterCreated,
     onNavigateToAccount,
     onNavigateToCharacterManagement,
@@ -113,7 +113,8 @@ export default function CharacterCreation({
         try {
             const token = authService.getToken();
             if (!token) {
-                setError('Musisz być zalogowany');
+                authService.logout('session-expired');
+                setError(SESSION_EXPIRED_MESSAGE);
                 return;
             }
 
@@ -133,16 +134,21 @@ export default function CharacterCreation({
                 })
             });
 
-            const data = await response.json();
+            const data = await response.json().catch(() => null);
 
             if (!response.ok) {
-                throw new Error(data.error || 'Błąd tworzenia postaci');
+                if (response.status === 401) {
+                    authService.logout('session-expired');
+                    throw new Error(SESSION_EXPIRED_MESSAGE);
+                }
+
+                throw new Error(data?.error || 'Błąd tworzenia postaci');
             }
 
             setCharacterName('');
             setSelectedClass(null);
-            
-            onCharacterCreated?.();
+
+            await onCharacterCreated?.();
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Błąd tworzenia postaci');
         } finally {

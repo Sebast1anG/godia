@@ -1,7 +1,7 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { authService } from '@/lib/authService';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import { AUTH_STATE_EVENT, SESSION_EXPIRED_MESSAGE, authService } from '@/lib/authService';
 
 interface RawCharacter {
     id: string;
@@ -40,38 +40,70 @@ interface CharactersContextType {
 
 const CharactersContext = createContext<CharactersContextType | null>(null);
 
+const mapCharacter = (character: RawCharacter): Character => ({
+    id: character.id,
+    name: character.name,
+    level: character.level,
+    class: character.class,
+    gameMode: character.game_mode,
+    gender: character.gender,
+    race: character.race,
+    serverId: character.server_id,
+});
+
 export function CharactersProvider({ children }: { children: ReactNode }) {
     const [characters, setCharacters] = useState<Character[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null);
 
+    const clearCharacterState = useCallback(() => {
+        setCharacters([]);
+        setSelectedCharacterId(null);
+    }, []);
+
+    const handleUnauthorized = useCallback(() => {
+        clearCharacterState();
+        setError(SESSION_EXPIRED_MESSAGE);
+        setLoading(false);
+        authService.logout('session-expired');
+    }, [clearCharacterState]);
+
     const selectedCharacter = characters.find(c => c.id === selectedCharacterId) || characters[0] || null;
 
     const selectCharacter = useCallback(async (id: string) => {
         setSelectedCharacterId(id);
-        
+
         const token = authService.getToken();
-        if (token) {
-            try {
-                await fetch('/api/user/selected-character', {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ characterId: id })
-                });
-            } catch (err) {
-                console.error('Błąd zapisu wybranej postaci:', err);
-            }
+        if (!token) {
+            handleUnauthorized();
+            return;
         }
-    }, []);
+
+        try {
+            const response = await fetch('/api/user/selected-character', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ characterId: id })
+            });
+
+            if (response.status === 401) {
+                handleUnauthorized();
+            }
+        } catch (err) {
+            console.error('Błąd zapisu wybranej postaci:', err);
+        }
+    }, [handleUnauthorized]);
 
     const fetchCharacters = useCallback(async () => {
         const token = authService.getToken();
         if (!token) {
-            setCharacters([]);
+            clearCharacterState();
+            setError(null);
+            setLoading(false);
             return;
         }
 
@@ -85,33 +117,32 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
                 }
             });
 
+            if (response.status === 401) {
+                handleUnauthorized();
+                return;
+            }
+
             if (response.ok) {
                 const data = await response.json();
-                const mapped = data.characters.map((c: any) => ({
-                    id: c.id,
-                    name: c.name,
-                    level: c.level,
-                    class: c.class,
-                    gameMode: c.game_mode,
-                    gender: c.gender,
-                    race: c.race,
-                    serverId: c.server_id
-                }));
-                setCharacters(mapped);
-            } else {
-                setError('Błąd pobierania postaci');
+                setCharacters(data.characters.map(mapCharacter));
+                return;
             }
+
+            setError('Błąd pobierania postaci');
         } catch (err) {
             console.error('Błąd pobierania postaci:', err);
             setError('Błąd połączenia');
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [clearCharacterState, handleUnauthorized]);
 
     const deleteCharacter = useCallback(async (id: string): Promise<boolean> => {
         const token = authService.getToken();
-        if (!token) return false;
+        if (!token) {
+            handleUnauthorized();
+            return false;
+        }
 
         const previousCharacters = characters;
         setCharacters(prev => prev.filter(c => c.id !== id));
@@ -124,26 +155,35 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
                 }
             });
 
+            if (response.status === 401) {
+                handleUnauthorized();
+                return false;
+            }
+
             if (!response.ok) {
                 setCharacters(previousCharacters);
                 return false;
             }
+
             return true;
         } catch (err) {
             console.error('Błąd usuwania postaci:', err);
             setCharacters(previousCharacters);
             return false;
         }
-    }, [characters]);
+    }, [characters, handleUnauthorized]);
 
     const updateCharacter = useCallback(async (
-        id: string, 
+        id: string,
         updates: Partial<Pick<Character, 'name' | 'gender' | 'race'>>
     ): Promise<boolean> => {
         const token = authService.getToken();
-        if (!token) return false;
+        if (!token) {
+            handleUnauthorized();
+            return false;
+        }
 
-        setCharacters(prev => prev.map(c => 
+        setCharacters(prev => prev.map(c =>
             c.id === id ? { ...c, ...updates } : c
         ));
 
@@ -160,71 +200,87 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
                 })
             });
 
+            if (response.status === 401) {
+                handleUnauthorized();
+                return false;
+            }
+
             if (!response.ok) {
                 await fetchCharacters();
                 return false;
             }
+
             return true;
         } catch (err) {
             console.error('Błąd aktualizacji postaci:', err);
             await fetchCharacters();
             return false;
         }
-    }, [fetchCharacters]);
+    }, [fetchCharacters, handleUnauthorized]);
+
+    const init = useCallback(async () => {
+        const token = authService.getToken();
+
+        if (!token) {
+            clearCharacterState();
+            setError(null);
+            setLoading(false);
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
+
+        try {
+            const [charsRes, selRes] = await Promise.all([
+                fetch('/api/characters', { headers: { 'Authorization': `Bearer ${token}` } }),
+                fetch('/api/user/selected-character', { headers: { 'Authorization': `Bearer ${token}` } }),
+            ]);
+
+            if (charsRes.status === 401 || selRes.status === 401) {
+                handleUnauthorized();
+                return;
+            }
+
+            if (charsRes.ok) {
+                const data = await charsRes.json();
+                setCharacters(data.characters.map(mapCharacter));
+            } else {
+                clearCharacterState();
+                setError('Błąd pobierania postaci');
+            }
+
+            if (selRes.ok) {
+                const data = await selRes.json();
+                setSelectedCharacterId(data.selectedCharacterId || null);
+            } else if (!charsRes.ok) {
+                setSelectedCharacterId(null);
+            }
+        } catch (err) {
+            console.error('Błąd inicjalizacji postaci:', err);
+            setError('Błąd połączenia');
+        } finally {
+            setLoading(false);
+        }
+    }, [clearCharacterState, handleUnauthorized]);
 
     useEffect(() => {
-        const init = async () => {
-            if (!authService.isAuthenticated()) {
-                setLoading(false);
-                return;
-            }
+        void init();
 
-            const token = authService.getToken();
-            if (!token) {
-                setLoading(false);
-                return;
-            }
-
-            setLoading(true);
-            setError(null);
-
-            try {
-                const [charsRes, selRes] = await Promise.all([
-                    fetch('/api/characters', { headers: { 'Authorization': `Bearer ${token}` } }),
-                    fetch('/api/user/selected-character', { headers: { 'Authorization': `Bearer ${token}` } }),
-                ]);
-
-                if (charsRes.ok) {
-                    const data = await charsRes.json();
-                    setCharacters(data.characters.map((c: RawCharacter) => ({
-                        id: c.id,
-                        name: c.name,
-                        level: c.level,
-                        class: c.class,
-                        gameMode: c.game_mode,
-                        gender: c.gender,
-                        race: c.race,
-                        serverId: c.server_id,
-                    })));
-                } else {
-                    setError('Błąd pobierania postaci');
-                }
-
-                if (selRes.ok) {
-                    const data = await selRes.json();
-                    if (data.selectedCharacterId) {
-                        setSelectedCharacterId(data.selectedCharacterId);
-                    }
-                }
-            } catch (err) {
-                console.error('Błąd inicjalizacji postaci:', err);
-                setError('Błąd połączenia');
-            } finally {
-                setLoading(false);
-            }
+        const syncCharacters = () => {
+            void init();
         };
-        init();
-    }, []);
+
+        window.addEventListener(AUTH_STATE_EVENT, syncCharacters);
+        window.addEventListener('storage', syncCharacters);
+        window.addEventListener('focus', syncCharacters);
+
+        return () => {
+            window.removeEventListener(AUTH_STATE_EVENT, syncCharacters);
+            window.removeEventListener('storage', syncCharacters);
+            window.removeEventListener('focus', syncCharacters);
+        };
+    }, [init]);
 
     return (
         <CharactersContext.Provider value={{

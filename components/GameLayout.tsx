@@ -1,32 +1,40 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import TopBar from '@/components/TopBar'
-import LeftSidebar from '@/components/LeftSidebar'
-import SettingsPanel from '@/components/SettingsPanel'
-import BottomBar from '@/components/BottomBar'
-import LoginForm from '@/components/LoginForm'
-import UserPanel from '@/components/UserPanel'
-import AccountSettings from '@/components/AccountSettings'
-import CharacterManagement from '@/components/CharacterManagement'
-import CharacterCreation from '@/components/CharacterCreation'
-import CharacterSelect from '@/components/CharacterSelect'
-import GameLoadingScreen from '@/components/GameLoadingScreen'
-import GameNews from '@/components/GameNews'
-import { CharactersProvider, useCharacters } from '@/lib/CharactersContext'
-import { authService } from '@/lib/authService'
-import styles from './GameLayout.module.css'
+import TopBar from '@/components/TopBar';
+import LeftSidebar from '@/components/LeftSidebar';
+import SettingsPanel from '@/components/SettingsPanel';
+import BottomBar from '@/components/BottomBar';
+import LoginForm from '@/components/LoginForm';
+import UserPanel from '@/components/UserPanel';
+import AccountSettings from '@/components/AccountSettings';
+import CharacterManagement from '@/components/CharacterManagement';
+import CharacterCreation from '@/components/CharacterCreation';
+import CharacterSelect from '@/components/CharacterSelect';
+import GameLoadingScreen from '@/components/GameLoadingScreen';
+import GameNews from '@/components/GameNews';
+import { CharactersProvider, useCharacters } from '@/lib/CharactersContext';
+import {
+    AUTH_STATE_EVENT,
+    AuthStateChangeDetail,
+    SESSION_EXPIRED_MESSAGE,
+    authService
+} from '@/lib/authService';
+import styles from './GameLayout.module.css';
 
 type ViewType = 'home' | 'account-settings' | 'premium' | 'regulations' | 'character-management' | 'create-character';
 
 const viewToPath: Record<ViewType, string> = {
-    'home': '/',
+    home: '/',
     'account-settings': '/account-settings',
-    'premium': '/premium',
-    'regulations': '/regulations',
+    premium: '/premium',
+    regulations: '/regulations',
     'character-management': '/character-management',
     'create-character': '/create-character',
 };
+
+const authRequiredViews: ViewType[] = ['account-settings', 'character-management', 'create-character'];
 
 const pathToView = (pathname: string): ViewType => {
     const entry = Object.entries(viewToPath).find(([, path]) => path === pathname);
@@ -45,28 +53,74 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
     const [currentView, setCurrentView] = useState<ViewType>(pathToView(pathname));
     const [showCharacterSelect, setShowCharacterSelect] = useState(false);
     const [showGameLoading, setShowGameLoading] = useState(false);
+    const [globalNotice, setGlobalNotice] = useState<string | null>(null);
     const { refetch } = useCharacters();
 
     useEffect(() => {
+        const syncAuthState = (event?: Event) => {
+            setIsAuthenticated(authService.isAuthenticated());
+
+            const authEvent = event as CustomEvent<AuthStateChangeDetail> | undefined;
+            if (authEvent?.detail.reason === 'session-expired') {
+                setGlobalNotice(SESSION_EXPIRED_MESSAGE);
+                setShowCharacterSelect(false);
+            }
+
+            if (authEvent?.detail.reason === 'signed-in') {
+                setGlobalNotice(null);
+            }
+        };
+
+        const syncAuthStateFromStorage = () => {
+            setIsAuthenticated(authService.isAuthenticated());
+        };
+
+        window.addEventListener(AUTH_STATE_EVENT, syncAuthState as EventListener);
+        window.addEventListener('storage', syncAuthStateFromStorage);
+
         setMounted(true);
-        setIsAuthenticated(authService.isAuthenticated());
+        syncAuthState();
         setLoading(false);
+
+        return () => {
+            window.removeEventListener(AUTH_STATE_EVENT, syncAuthState as EventListener);
+            window.removeEventListener('storage', syncAuthStateFromStorage);
+        };
     }, []);
+
+    useEffect(() => {
+        if (!globalNotice) {
+            return;
+        }
+
+        const timeoutId = window.setTimeout(() => {
+            setGlobalNotice(null);
+        }, 6000);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [globalNotice]);
 
     useEffect(() => {
         const handlePopState = () => {
             setCurrentView(pathToView(window.location.pathname));
         };
+
         window.addEventListener('popstate', handlePopState);
         return () => window.removeEventListener('popstate', handlePopState);
     }, []);
 
-    const authRequiredViews: ViewType[] = ['account-settings', 'character-management', 'create-character'];
+    useEffect(() => {
+        if (!isAuthenticated && authRequiredViews.includes(currentView)) {
+            setCurrentView('home');
+            window.history.pushState(null, '', '/');
+        }
+    }, [currentView, isAuthenticated]);
 
     const navigateTo = (view: ViewType) => {
         if (authRequiredViews.includes(view) && !isAuthenticated) {
             return;
         }
+
         setCurrentView(view);
         window.history.pushState(null, '', viewToPath[view]);
     };
@@ -81,12 +135,16 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
 
     const renderCenterContent = () => {
         if (!mounted) {
-            if (currentView === 'home') return <GameNews />;
+            if (currentView === 'home') {
+                return <GameNews />;
+            }
             return <div className={styles.placeholder} />;
         }
+
         if (authRequiredViews.includes(currentView) && !isAuthenticated) {
             return <GameNews />;
         }
+
         switch (currentView) {
             case 'account-settings':
                 return (
@@ -101,6 +159,11 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                         }}
                         onChangePassword={async (current, newPass) => {
                             const token = authService.getToken();
+                            if (!token) {
+                                authService.logout('session-expired');
+                                throw new Error(SESSION_EXPIRED_MESSAGE);
+                            }
+
                             const response = await fetch('/api/auth/change-password', {
                                 method: 'POST',
                                 headers: {
@@ -111,6 +174,11 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                             });
                             const data = await response.json();
                             if (!response.ok) {
+                                if (response.status === 401) {
+                                    authService.logout('session-expired');
+                                    throw new Error(SESSION_EXPIRED_MESSAGE);
+                                }
+
                                 throw new Error(data.error || 'Błąd zmiany hasła');
                             }
                         }}
@@ -146,8 +214,8 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
             case 'create-character':
                 return (
                     <CharacterCreation
-                        onCharacterCreated={() => {
-                            refetch();
+                        onCharacterCreated={async () => {
+                            await refetch();
                             navigateTo('character-management');
                         }}
                         onLogout={() => {
@@ -167,6 +235,22 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
         <main className={styles.main}>
             <TopBar onLogoClick={handleGoHome} />
 
+            {globalNotice && (
+                <div className={styles.globalNoticeWrapper}>
+                    <div className={styles.globalNotice} role="status" aria-live="polite">
+                        <span>{globalNotice}</span>
+                        <button
+                            type="button"
+                            className={styles.globalNoticeClose}
+                            onClick={() => setGlobalNotice(null)}
+                            aria-label="Zamknij komunikat"
+                        >
+                            Zamknij
+                        </button>
+                    </div>
+                </div>
+            )}
+
             <div className={`${styles.contentArea}${currentView === 'create-character' ? ` ${styles.contentAreaCreateCharacter}` : ''}`}>
                 <LeftSidebar />
 
@@ -185,7 +269,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                             />
                         ) : <LoginForm />
                     )}
-                    <SettingsPanel 
+                    <SettingsPanel
                         onNavigate={navigateTo}
                         isAuthenticated={isAuthenticated}
                     />
@@ -205,7 +289,6 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                 />
             )}
 
-            {/* Modal wyboru postaci */}
             {showCharacterSelect && (
                 <div
                     className={styles.modalOverlay}
@@ -213,7 +296,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                 >
                     <div onClick={(e) => e.stopPropagation()}>
                         <CharacterSelect
-                            onSelect={(id) => {
+                            onSelect={() => {
                                 setShowCharacterSelect(false);
                             }}
                             onClose={() => setShowCharacterSelect(false)}

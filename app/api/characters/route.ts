@@ -2,6 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import { db, initDb } from "@/lib/db";
 
+const CHARACTER_CREATION_COOLDOWN_MS = 2 * 60 * 1000;
+
+const formatCreationCooldown = (remainingMs: number): string => {
+  const remainingSeconds = Math.max(1, Math.ceil(remainingMs / 1000));
+  const minutes = Math.floor(remainingSeconds / 60);
+  const seconds = remainingSeconds % 60;
+
+  if (minutes <= 0) {
+    return `${remainingSeconds}s`;
+  }
+
+  if (seconds === 0) {
+    return `${minutes} min`;
+  }
+
+  return `${minutes} min ${seconds}s`;
+};
+
 export async function GET(request: NextRequest) {
   try {
     await initDb();
@@ -35,6 +53,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    await initDb();
     const authHeader = request.headers.get("authorization");
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -72,6 +91,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const latestCharacter = existingCharacters[0];
+    if (latestCharacter?.created_at) {
+      const elapsedMs = Date.now() - new Date(latestCharacter.created_at).getTime();
+
+      if (elapsedMs < CHARACTER_CREATION_COOLDOWN_MS) {
+        const remaining = formatCreationCooldown(CHARACTER_CREATION_COOLDOWN_MS - elapsedMs);
+        return NextResponse.json(
+          { error: `Nową postać możesz utworzyć maksymalnie raz na 2 minuty. Spróbuj ponownie za ${remaining}.` },
+          { status: 429 }
+        );
+      }
+    }
+
     const existingByName = await db.findCharacterByNameAndServer(name, serverId || 0);
     if (existingByName) {
       return NextResponse.json(
@@ -80,15 +112,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await initDb();
-
     const character = await db.createCharacter({
       user_id: payload.userId,
       name,
       server_id: serverId || 0,
-      game_mode: gameMode || 'pve',
-      gender: gender || 'male',
-      race: race || 'human',
+      game_mode: gameMode || "pve",
+      gender: gender || "male",
+      race: race || "human",
       class: characterClass
     });
 
@@ -138,7 +168,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const updates: any = {};
+    const updates: Record<string, string> = {};
     if (name) updates.name = name;
     if (gender) updates.gender = gender;
     if (race) updates.race = race;
@@ -174,7 +204,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url);
-    const characterId = searchParams.get('id');
+    const characterId = searchParams.get("id");
 
     if (!characterId) {
       return NextResponse.json(
@@ -195,7 +225,7 @@ export async function DELETE(request: NextRequest) {
     const lastOnline = character.last_online ? new Date(character.last_online).getTime() : null;
     const now = Date.now();
 
-    if (lastOnline && (now - lastOnline) < twoDaysMs) {
+    if (lastOnline && now - lastOnline < twoDaysMs) {
       const remaining = Math.ceil((twoDaysMs - (now - lastOnline)) / (60 * 60 * 1000));
       return NextResponse.json(
         { error: `Postać musi być offline przez 2 dni przed usunięciem. Pozostało ${remaining}h` },
