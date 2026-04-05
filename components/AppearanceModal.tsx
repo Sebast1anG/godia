@@ -54,7 +54,7 @@ export default function AppearanceModal({
         onClose();
     };
 
-    const maxSlots = 28;
+    const maxSlots = 27;
     const slots = [...ownedCostumes];
     while (slots.length < maxSlots) {
         slots.push({ id: '', spriteUrl: '' });
@@ -66,6 +66,14 @@ export default function AppearanceModal({
     return (
         <div className={styles.overlay} onClick={handleClose}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+                <img src="/images/tbFrameChangeCostume.svg" alt="" className={styles.frameTop} />
+                <img src="/images/tbFrameChangeCostume.svg" alt="" className={styles.frameBottom} />
+                <img src="/images/lrFrameChangeCostume.svg" alt="" className={styles.frameLeft} />
+                <img src="/images/lrFrameChangeCostume.svg" alt="" className={styles.frameRight} />
+                <img src="/images/corner-TL.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
+                <img src="/images/corner TR.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />
+                <img src="/images/corner BL.svg" alt="" className={`${styles.corner} ${styles.cornerBL}`} />
+                <img src="/images/corner-BR.svg" alt="" className={`${styles.corner} ${styles.cornerBR}`} />
                 <button className={styles.closeButton} onClick={handleClose}>
                     <span className={styles.closeIcon}>×</span>
                 </button>
@@ -75,7 +83,7 @@ export default function AppearanceModal({
                         <div className={styles.previewLabel}>Aktualny kostium</div>
                         <div className={styles.previewSlot}>
                             {activeSpriteUrl
-                                ? <SpriteAvatar src={activeSpriteUrl} />
+                                ? <SpriteAvatar src={activeSpriteUrl} targetHeight={74} />
                                 : <img src="/images/activeCharacter.svg" alt="" className={styles.spriteImage} />
                             }
                         </div>
@@ -84,7 +92,7 @@ export default function AppearanceModal({
                     <div className={styles.previewBox}>
                         <div className={styles.previewLabel}>Podgląd wybranego</div>
                         <div className={styles.previewSlot}>
-                            {selectedSpriteUrl && <SpriteAvatar src={selectedSpriteUrl} />}
+                            {selectedSpriteUrl && <SpriteAvatar src={selectedSpriteUrl} targetHeight={74} />}
                         </div>
                     </div>
                 </div>

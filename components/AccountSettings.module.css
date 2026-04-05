@@ -188,7 +188,7 @@
 
 .label {
     color: #ffffff;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
     letter-spacing: 1px;
     margin-bottom: 4px;
@@ -268,7 +268,16 @@
     margin-top: 10px;
 }
 
-.shortButton,
+.shortButton {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: filter 0.2s ease;
+    width: fit-content;
+}
+
 .longButton {
     position: relative;
     background: none;
@@ -296,7 +305,7 @@
 
 .buttonImage {
     display: block;
-    width: 100%;
+    width: auto;
     height: auto;
 }
 

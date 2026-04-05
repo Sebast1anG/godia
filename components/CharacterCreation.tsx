@@ -340,7 +340,7 @@ export default function CharacterCreation({
                     disabled={loading}
                 >
                     <img
-                        src="/images/createCharacterButton.svg"
+                        src="/images/accountShortBtn.webp"
                         alt=""
                         className={styles.buttonImage}
                     />
