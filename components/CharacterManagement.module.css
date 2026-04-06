@@ -552,7 +552,7 @@
 .deleteModal {
     position: relative;
     width: 643px;
-    height: 204px;
+    height: 220px;
     background: url(/images/bgDeleteChar.webp) center / cover no-repeat;
     box-sizing: border-box;
     padding: 15px 25px 15px 25px;
@@ -631,6 +631,7 @@
 .deleteTitle {
     color: #ffffff;
     font-size: 15px;
+    letter-spacing: 1px;
     font-weight: bold;
     font-family: Tahoma, sans-serif;
     text-shadow:
@@ -638,12 +639,13 @@
         0 0 10px rgba(0, 0, 0, 0.8),
         1px 1px 0 rgba(0, 0, 0, 0.5);
     text-align: center;
-    margin-bottom: 4px;
+    margin-top: 12px;
 }
 
 .deleteSubtitle {
     color: #ffffff;
     font-size: 15px;
+    letter-spacing: 1px;
     font-weight: bold;
     font-family: Tahoma, sans-serif;
     text-shadow:
@@ -651,7 +653,7 @@
         0 0 10px rgba(0, 0, 0, 0.8),
         1px 1px 0 rgba(0, 0, 0, 0.5);
     text-align: center;
-    margin-bottom: 8px;
+    margin: 14px 0;
 }
 
 .deleteContentRow {
