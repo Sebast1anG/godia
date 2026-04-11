@@ -2,7 +2,7 @@
   width: 218px;
   height: 267px;
   background: url("/images/bgRightSIdebar.webp") center / 100% 100% no-repeat;
-  padding: 0px 23px 30px 23px;
+  padding: 0px 23px 20px 23px;
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -76,9 +76,17 @@
 }
 
 .buttonImage {
-  width: auto;
-  height: auto;
+  width: 100%;
   display: block;
+  object-fit: cover;
+  object-position: center;
+  margin-top: -5px;
+  margin-bottom: -5px;
+}
+
+.buttonImageFirst {
+  margin-top: 0;
+  margin-bottom: -5px;
 }
 
 .buttonLabel {
@@ -164,8 +172,8 @@
 }
 
 .discordIcon {
-  width: 52px;
-  height: 52px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   display: flex;
   align-items: center;

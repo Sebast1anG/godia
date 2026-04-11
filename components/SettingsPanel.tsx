@@ -45,7 +45,7 @@ export default function SettingsPanel({ onNavigate, isAuthenticated }: SettingsP
                                 <img
                                     src="/images/button.webp"
                                     alt=""
-                                    className={styles.buttonImage}
+                                    className={`${styles.buttonImage} ${index === 0 ? styles.buttonImageFirst : ''}`}
                                 />
                                 <span className={styles.buttonLabel}>{item.label}</span>
                             </button>

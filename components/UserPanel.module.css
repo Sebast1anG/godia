@@ -1,5 +1,6 @@
 .container {
   width: 220px;
+  height: 267px;
   background: url("/images/bgRightSIdebar.webp") center / 100% 100% no-repeat;
   padding: 0;
   position: relative;

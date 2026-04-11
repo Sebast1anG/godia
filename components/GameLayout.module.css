@@ -79,7 +79,7 @@
 .rightColumn {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 13px;
 }
 
 .bottomBarWrapper {
