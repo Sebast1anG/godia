@@ -111,7 +111,7 @@ export default function CharacterCreation({
         setLoading(true);
 
         try {
-            const token = authService.getToken();
+            const token = await authService.getToken();
             if (!token) {
                 authService.logout('session-expired');
                 setError(SESSION_EXPIRED_MESSAGE);

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
-import { generateToken } from "@/lib/auth";
+import { generateToken, generateRefreshToken } from "@/lib/auth";
 
 interface LoginRequest {
   login: string;
@@ -45,7 +45,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const token = generateToken({ userId: user.id, email: user.email });
+    const payload = { userId: user.id, email: user.email };
+    const token = generateToken(payload);
+    const refreshToken = generateRefreshToken(payload);
 
     const userResponse: UserResponse = {
       id: user.id,
@@ -54,7 +56,16 @@ export async function POST(request: NextRequest) {
       createdAt: user.created_at.toISOString(),
     };
 
-    return NextResponse.json({ user: userResponse, token });
+    const response = NextResponse.json({ user: userResponse, token });
+    response.cookies.set("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/api/auth/refresh",
+      maxAge: 60 * 60 * 24 * 30,
+    });
+
+    return response;
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json({ error: "Błąd serwera" }, { status: 500 });

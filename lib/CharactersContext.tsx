@@ -74,7 +74,7 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
     const selectCharacter = useCallback(async (id: string) => {
         setSelectedCharacterId(id);
 
-        const token = authService.getToken();
+        const token = await authService.getToken();
         if (!token) {
             handleUnauthorized();
             return;
@@ -99,7 +99,7 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
     }, [handleUnauthorized]);
 
     const fetchCharacters = useCallback(async () => {
-        const token = authService.getToken();
+        const token = await authService.getToken();
         if (!token) {
             clearCharacterState();
             setError(null);
@@ -138,7 +138,7 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
     }, [clearCharacterState, handleUnauthorized]);
 
     const deleteCharacter = useCallback(async (id: string): Promise<boolean> => {
-        const token = authService.getToken();
+        const token = await authService.getToken();
         if (!token) {
             handleUnauthorized();
             return false;
@@ -177,7 +177,7 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
         id: string,
         updates: Partial<Pick<Character, 'name' | 'gender' | 'race'>>
     ): Promise<boolean> => {
-        const token = authService.getToken();
+        const token = await authService.getToken();
         if (!token) {
             handleUnauthorized();
             return false;
@@ -219,7 +219,7 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
     }, [fetchCharacters, handleUnauthorized]);
 
     const init = useCallback(async () => {
-        const token = authService.getToken();
+        const token = await authService.getToken();
 
         if (!token) {
             clearCharacterState();

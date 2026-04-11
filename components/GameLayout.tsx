@@ -79,8 +79,10 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
         window.addEventListener('storage', syncAuthStateFromStorage);
 
         setMounted(true);
-        syncAuthState();
-        setLoading(false);
+        authService.restoreSession().then((restored) => {
+            setIsAuthenticated(restored);
+            setLoading(false);
+        });
 
         return () => {
             window.removeEventListener(AUTH_STATE_EVENT, syncAuthState as EventListener);
@@ -158,7 +160,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                             goldCoins: 0
                         }}
                         onChangePassword={async (current, newPass) => {
-                            const token = authService.getToken();
+                            const token = await authService.getToken();
                             if (!token) {
                                 authService.logout('session-expired');
                                 throw new Error(SESSION_EXPIRED_MESSAGE);
