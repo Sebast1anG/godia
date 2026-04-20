@@ -110,7 +110,8 @@ class AuthService {
     this.refreshPromise = fetch("/api/auth/refresh", { method: "POST" })
       .then(async (res) => {
         if (!res.ok) {
-          this.clearSession("session-expired");
+          const hadSession = this.accessToken !== null;
+          this.clearSession(hadSession ? "session-expired" : "signed-out");
           return null;
         }
         const data = await res.json() as { token: string };
@@ -119,7 +120,8 @@ class AuthService {
         return data.token;
       })
       .catch(() => {
-        this.clearSession("session-expired");
+        const hadSession = this.accessToken !== null;
+        this.clearSession(hadSession ? "session-expired" : "signed-out");
         return null;
       })
       .finally(() => {
@@ -268,6 +270,19 @@ class AuthService {
           localStorage.removeItem("user");
         }
       }
+
+      if (!this.currentUser) {
+        try {
+          const user = await this.getProfile();
+          this.currentUser = user;
+          if (typeof window !== "undefined") {
+            localStorage.setItem("user", JSON.stringify(user));
+          }
+        } catch {
+          // token valid but profile unreachable — session still usable
+        }
+      }
+
       return true;
     }
     return false;

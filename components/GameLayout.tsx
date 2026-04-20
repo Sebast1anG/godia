@@ -128,6 +128,10 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
     };
 
     const handleGoHome = () => {
+        if (!Object.values(viewToPath).includes(pathname)) {
+            window.location.href = '/';
+            return;
+        }
         setCurrentView('home');
         window.history.pushState(null, '', '/');
         setShowCharacterSelect(false);
