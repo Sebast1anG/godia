@@ -21,6 +21,7 @@ import {
     SESSION_EXPIRED_MESSAGE,
     authService
 } from '@/lib/authService';
+import { preloadModalImages } from '@/lib/imagePreloader';
 import styles from './GameLayout.module.css';
 
 type ViewType = 'home' | 'account-settings' | 'premium' | 'regulations' | 'character-management' | 'create-character';
@@ -55,6 +56,10 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
     const [showGameLoading, setShowGameLoading] = useState(false);
     const [globalNotice, setGlobalNotice] = useState<string | null>(null);
     const { refetch } = useCharacters();
+
+    useEffect(() => {
+        preloadModalImages();
+    }, []);
 
     useEffect(() => {
         const syncAuthState = (event?: Event) => {
