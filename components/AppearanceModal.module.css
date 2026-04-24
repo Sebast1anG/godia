@@ -12,9 +12,9 @@
 }
 
 .modal {
-    width: 988px;
-    height: 727px;
-    background: linear-gradient(180deg, #2a2015 0%, #1a140a 100%);
+    width: 999px;
+    height: 822px;
+    background: url(/images/bgAppearanceModal.webp) center / cover no-repeat;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
     position: relative;
     padding: 20px;
@@ -106,8 +106,9 @@
 .previewSection {
     display: flex;
     justify-content: space-between;
-    padding: 0 40px;
-    margin-bottom: 25px;
+    padding: 0 120px;
+    margin-top: 110px;
+    margin-bottom: 145px;
 }
 
 .previewBox {
@@ -147,6 +148,7 @@
 
 .costumesSection {
     margin-bottom: 20px;
+    margin: 0 65px;
 }
 
 .costumesLabel {
@@ -207,7 +209,7 @@
 .buttonContainer {
     display: flex;
     justify-content: center;
-    margin-top: 15px;
+    margin-top: 52px;
 }
 
 .confirmButton {
