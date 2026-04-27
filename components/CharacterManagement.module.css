@@ -167,6 +167,7 @@
     align-items: center;
     gap: 20px;
     padding: 10px;
+    padding-left: 16px;
     background: linear-gradient(180deg, #d4c4a0 0%, #c9b896 50%, #b8a67d 100%);
     border: 2px solid #8b6914;
     border-radius: 4px;
@@ -201,7 +202,7 @@
     flex: 1;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 11px;
     flex-wrap: nowrap;
     justify-content: flex-end;
     position: relative;
