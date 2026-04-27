@@ -68,8 +68,8 @@ export default function AppearanceModal({
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                 <img src="/images/tbFrameChangeCostume.svg" alt="" className={styles.frameTop} />
                 <img src="/images/tbFrameChangeCostume.svg" alt="" className={styles.frameBottom} />
-                <img src="/images/lrFrameChangeCostume.svg" alt="" className={styles.frameLeft} />
-                <img src="/images/lrFrameChangeCostume.svg" alt="" className={styles.frameRight} />
+                <img src="/images/lrFrameChangeCostume.webp" alt="" className={styles.frameLeft} />
+                <img src="/images/lrFrameChangeCostume.webp" alt="" className={styles.frameRight} />
                 <img src="/images/corner-TL.svg" alt="" className={`${styles.corner} ${styles.cornerTL}`} />
                 <img src="/images/corner TR.svg" alt="" className={`${styles.corner} ${styles.cornerTR}`} />
                 <img src="/images/corner BL.svg" alt="" className={`${styles.corner} ${styles.cornerBL}`} />

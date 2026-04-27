@@ -15,7 +15,7 @@ const MODAL_IMAGES = [
 
   // AppearanceModal (zmiana kostiumu)
   '/images/bgChangeCostume.svg',
-  '/images/lrFrameChangeCostume.svg',
+  '/images/lrFrameChangeCostume.webp',
   '/images/tbFrameChangeCostume.svg',
 
   // ChangeNick modal
