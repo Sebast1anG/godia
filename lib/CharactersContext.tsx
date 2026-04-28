@@ -273,12 +273,10 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
 
         window.addEventListener(AUTH_STATE_EVENT, syncCharacters);
         window.addEventListener('storage', syncCharacters);
-        window.addEventListener('focus', syncCharacters);
 
         return () => {
             window.removeEventListener(AUTH_STATE_EVENT, syncCharacters);
             window.removeEventListener('storage', syncCharacters);
-            window.removeEventListener('focus', syncCharacters);
         };
     }, [init]);
 
