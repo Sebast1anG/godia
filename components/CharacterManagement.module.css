@@ -632,7 +632,7 @@
 .deleteTitle {
     color: #ffffff;
     font-size: 14px;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     font-weight: bold;
     font-family: Tahoma, sans-serif;
     text-shadow:
@@ -646,7 +646,7 @@
 .deleteSubtitle {
     color: #ffffff;
     font-size: 14px;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     font-weight: bold;
     font-family: Tahoma, sans-serif;
     text-shadow:
@@ -731,6 +731,7 @@
     color: #ffffff;
     font-size: 14px;
     font-weight: bold;
+    letter-spacing: 2px;
     font-family: Tahoma, sans-serif;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
     white-space: nowrap;

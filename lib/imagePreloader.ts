@@ -40,7 +40,7 @@ const MODAL_IMAGES = [
   '/images/tbFrameGenderRace.webp',
   '/images/bgTitleGenderRace.webp',
   '/images/btnGenderRace.webp',
-  '/images/bgCheckboxGenderRace.webp',
+  '/images/bgCheckboxGenderRace.svg',
   '/images/checkmarkGenderRace.webp',
 
   // RegisterForm

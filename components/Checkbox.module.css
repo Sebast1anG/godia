@@ -58,9 +58,8 @@
   width: 29px;
   height: 27px;
   border: none;
-  background: url("/images/bgCheckboxGenderRace.webp") center / 100% 100% no-repeat;
+  background: url("/images/bgCheckboxGenderRace.svg") center / 100% 100% no-repeat;
   box-shadow: none;
-  image-rendering: auto;
 }
 
 .checkboxCustomCharManagement {
