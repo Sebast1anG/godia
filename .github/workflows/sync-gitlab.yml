@@ -13,6 +13,6 @@ jobs:
           fetch-depth: 0
       - name: Push to GitLab
         run: |
-          git remote add gitlab https://oauth2:${{ secrets.SYNCHRO_TOKEN }}@gitlab.com/Char0n/godia.git
+          git remote add gitlab "https://oauth2:${{ secrets.SYNCHRO_TOKEN }}@gitlab.com/Char0n/godia.git"
           git push gitlab --all --force
           git push gitlab --tags --force
