@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Strapi CMS
+/cms/node_modules
+/cms/.cache
+/cms/dist
+/cms/build
+/cms/.strapi
+/cms/public/uploads
+/cms/.env

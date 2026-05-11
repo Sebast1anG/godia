@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "character_classes",
+  "info": {
+    "singularName": "character-class",
+    "pluralName": "character-classes",
+    "displayName": "Character Class",
+    "description": "Playable character classes"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "key": {
+      "type": "string",
+      "required": true,
+      "maxLength": 50
+    },
+    "displayName": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100
+    },
+    "description": {
+      "type": "text",
+      "maxLength": 1000
+    },
+    "role": {
+      "type": "enumeration",
+      "enum": ["tank", "dps", "support", "ranged"],
+      "required": false
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    }
+  }
+}

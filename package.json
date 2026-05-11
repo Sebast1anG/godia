@@ -7,7 +7,10 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "optimize:svg": "npx svgo -f public --config=svgo.config.mjs --multipass"
+    "optimize:svg": "npx svgo -f public --config=svgo.config.mjs --multipass",
+    "cms:dev": "cd cms && npm run develop",
+    "cms:build": "cd cms && npm run build",
+    "cms:start": "cd cms && npm run start"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",

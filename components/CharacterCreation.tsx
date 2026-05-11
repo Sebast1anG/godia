@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './CharacterCreation.module.css';
 import Checkbox from './Checkbox';
 import { useTranslations } from '@/lib/useTranslations';
@@ -30,9 +30,21 @@ export default function CharacterCreation({
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const servers = [
+    const [servers, setServers] = useState<{ id: number; label: string }[]>([
         { id: 0, label: t('characterCreation.testServer') },
-    ];
+    ]);
+
+    useEffect(() => {
+        fetch('/api/cms/servers')
+            .then((r) => r.json())
+            .then((data: Array<{ serverId: number; name: string }>) => {
+                if (data.length > 0) {
+                    setServers(data.map((s) => ({ id: s.serverId, label: s.name })));
+                    setSelectedServer(data[0].serverId);
+                }
+            })
+            .catch(() => {});
+    }, []);
     const classIds = ['warrior', 'mag', 'knight', 'hunter', 'archer', 'assassin'];
     const classes = classIds.map(id => ({
         id,

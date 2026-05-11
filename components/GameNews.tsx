@@ -1,19 +1,26 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import type { CmsArticle } from '@/lib/cms';
 import styles from './GameNews.module.css';
 
-interface NewsItem {
-    id: string;
-    title?: string;
-    content: string;
-    date: string;
-}
+const CATEGORY_LABELS: Record<string, string> = {
+    news: 'Aktualno\u015bci',
+    update: 'Aktualizacja',
+    event: 'Wydarzenie',
+    maintenance: 'Serwis',
+};
 
-interface GameNewsProps {
-    news?: NewsItem[];
-}
+export default function GameNews() {
+    const [articles, setArticles] = useState<CmsArticle[]>([]);
 
-export default function GameNews({ news = [] }: GameNewsProps) {
+    useEffect(() => {
+        fetch('/api/cms/news')
+            .then((r) => r.json())
+            .then(setArticles)
+            .catch(() => {});
+    }, []);
+
     return (
         <div className={styles.container}>
             <img src="/images/topFrameCreateChar.webp" alt="" className={styles.frameTop} />
@@ -29,15 +36,24 @@ export default function GameNews({ news = [] }: GameNewsProps) {
                 </div>
 
                 <div className={styles.content}>
-                    {news.length > 0 ? (
+                    {articles.length > 0 ? (
                         <div className={styles.newsList}>
-                            {news.map((item) => (
+                            {articles.map((item) => (
                                 <div key={item.id} className={styles.newsItem}>
-                                    {item.title && (
-                                        <div className={styles.newsTitle}>{item.title}</div>
-                                    )}
-                                    <div className={styles.newsContent}>{item.content}</div>
-                                    <div className={styles.newsDate}>{item.date}</div>
+                                    <div className={styles.newsTitle}>
+                                        {item.title}
+                                        {item.category && (
+                                            <span className={styles.newsCategory}>
+                                                {CATEGORY_LABELS[item.category] ?? item.category}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className={styles.newsContent}>
+                                        {item.excerpt ?? item.content}
+                                    </div>
+                                    <div className={styles.newsDate}>
+                                        {new Date(item.publishedAt).toLocaleDateString('pl-PL')}
+                                    </div>
                                 </div>
                             ))}
                         </div>
