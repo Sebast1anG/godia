@@ -15,7 +15,8 @@ jobs:
         env:
           GITLAB_TOKEN: ${{ secrets.SYNCHRO_TOKEN }}
         run: |
-          git config --global http."https://gitlab.com/".extraHeader "Authorization: Bearer ${GITLAB_TOKEN}"
+          git config --global credential.helper store
+          echo "https://oauth2:${GITLAB_TOKEN}@gitlab.com" >> ~/.git-credentials
           git remote add gitlab https://gitlab.com/Char0n/godia.git
           git push gitlab --all --force
           git push gitlab --tags --force
