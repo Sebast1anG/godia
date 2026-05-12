@@ -1,7 +1,7 @@
 .container {
     position: relative;
-    width: 855px;
-    height: 850px;
+    width: 850px;
+    height: 885px;
     background: url("/images/bg-character-select.webp") center / cover no-repeat;
     box-shadow:
         inset 0 0 20px rgba(0, 0, 0, 0.8),
