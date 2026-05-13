@@ -23,7 +23,7 @@
       "required": true
     },
     "content": {
-      "type": "richtext",
+      "type": "blocks",
       "required": true
     },
     "excerpt": {

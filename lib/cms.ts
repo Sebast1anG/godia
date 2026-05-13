@@ -24,7 +24,7 @@ export interface CmsArticle {
   documentId: string;
   title: string;
   slug: string;
-  content: string;
+  content: any[];
   category: 'news' | 'update' | 'event' | 'maintenance';
   excerpt: string | null;
   publishedAt: string;

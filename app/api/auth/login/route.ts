@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { generateToken, generateRefreshToken } from "@/lib/auth";
+import { getClientIp } from "@/lib/adminAuth";
 
 interface LoginRequest {
   login: string;
@@ -27,6 +28,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const ip = getClientIp(request);
+    const userAgent = request.headers.get('user-agent');
+
     const user = await db.findUserByUsername(login);
 
     if (!user) {
@@ -36,14 +40,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (user.banned === true) {
+      db.recordLoginAttempt(user.id, ip, userAgent, false).catch(() => {});
+      return NextResponse.json(
+        { error: "Konto zostało permanentnie zbanowane" },
+        { status: 403 }
+      );
+    }
+
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
+      db.recordLoginAttempt(user.id, ip, userAgent, false).catch(() => {});
       return NextResponse.json(
         { error: "Nieprawidłowy login lub hasło" },
         { status: 401 }
       );
     }
+
+    db.recordLoginAttempt(user.id, ip, userAgent, true).catch(() => {});
 
     const payload = { userId: user.id, email: user.email };
     const token = generateToken(payload);

@@ -62,7 +62,7 @@ export default function LoginForm() {
                 </div>
 
                 {error && (
-                    <div className={styles.errorMessage}>
+                    <div className={error.includes('zbanowane') ? styles.bannedMessage : styles.errorMessage}>
                         {error}
                     </div>
                 )}

@@ -161,12 +161,32 @@
     line-height: 1.5;
 }
 
+.newsFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
 .newsDate {
     color: #6a5520;
     font-size: 11px;
     font-family: Tahoma, sans-serif;
-    margin-top: 8px;
-    text-align: right;
+}
+
+.toggleBtn {
+    background: none;
+    border: none;
+    color: #7a4500;
+    font-size: 11px;
+    font-family: Tahoma, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+}
+.toggleBtn:hover {
+    color: #5a3000;
 }
 
 .empty {

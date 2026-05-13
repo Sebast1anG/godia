@@ -18,5 +18,23 @@ export default {
       handler: 'game-manager.deleteCharacter',
       config: { auth: false, policies: [] },
     },
+    {
+      method: 'GET',
+      path: '/game-manager/accounts/search',
+      handler: 'game-manager.searchAccounts',
+      config: { auth: false, policies: [] },
+    },
+    {
+      method: 'PUT',
+      path: '/game-manager/accounts/:userId',
+      handler: 'game-manager.updateAccount',
+      config: { auth: false, policies: [] },
+    },
+    {
+      method: 'GET',
+      path: '/game-manager/accounts/:userId/login-history',
+      handler: 'game-manager.getLoginHistory',
+      config: { auth: false, policies: [] },
+    },
   ],
 };

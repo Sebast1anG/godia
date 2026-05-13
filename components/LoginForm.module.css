@@ -218,6 +218,19 @@
     text-align: center;
 }
 
+.bannedMessage {
+    color: #ff2222;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+    background: rgba(180, 0, 0, 0.15);
+    border: 1px solid rgba(255, 50, 50, 0.4);
+    border-radius: 3px;
+    padding: 6px 10px;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+}
+
 .forgotPassword {
     background: none;
     border: none;

@@ -8,7 +8,18 @@ export interface User {
   email: string;
   username: string;
   password: string;
+  role: string;
+  banned: boolean;
   selected_character_id: string | null;
+  created_at: Date;
+}
+
+export interface LoginHistoryEntry {
+  id: string;
+  user_id: string;
+  ip_address: string;
+  user_agent: string | null;
+  success: boolean;
   created_at: Date;
 }
 
@@ -39,12 +50,41 @@ export async function initDb() {
   `;
 
   await sql`
-    DO $$ 
-    BEGIN 
+    DO $$
+    BEGIN
       IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='selected_character_id') THEN
         ALTER TABLE users ADD COLUMN selected_character_id VARCHAR(255) DEFAULT NULL;
       END IF;
     END $$;
+  `;
+
+  await sql`
+    DO $$
+    BEGIN
+      IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='role') THEN
+        ALTER TABLE users ADD COLUMN role VARCHAR(20) DEFAULT 'user';
+      END IF;
+    END $$;
+  `;
+
+  await sql`
+    DO $$
+    BEGIN
+      IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='banned') THEN
+        ALTER TABLE users ADD COLUMN banned BOOLEAN NOT NULL DEFAULT FALSE;
+      END IF;
+    END $$;
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS login_history (
+      id VARCHAR(255) PRIMARY KEY,
+      user_id VARCHAR(255) REFERENCES users(id) ON DELETE CASCADE,
+      ip_address VARCHAR(45) NOT NULL,
+      user_agent TEXT,
+      success BOOLEAN DEFAULT TRUE,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
   `;
 
   await sql`
@@ -120,8 +160,8 @@ export const db = {
   },
 
   updateCharacter: async (id: string, updates: Partial<Pick<Character, 'name' | 'gender' | 'race'>>): Promise<Character | null> => {
-    const setClauses = [];
-    const values: any[] = [];
+    const setClauses: string[] = [];
+    const values: string[] = [];
     
     if (updates.name !== undefined) {
       setClauses.push(`name = $${values.length + 1}`);
@@ -172,7 +212,7 @@ export const db = {
   },
 
   deleteCharacter: async (id: string): Promise<boolean> => {
-    const result = await sql`DELETE FROM characters WHERE id = ${id}`;
+    await sql`DELETE FROM characters WHERE id = ${id}`;
     return true;
   },
 
@@ -194,5 +234,66 @@ export const db = {
   updateUserPassword: async (userId: string, hashedPassword: string): Promise<boolean> => {
     const rows = await sql`UPDATE users SET password = ${hashedPassword} WHERE id = ${userId} RETURNING id`;
     return rows.length > 0;
-  }
+  },
+
+  searchAccounts: async (login?: string, email?: string): Promise<Omit<User, 'password'>[]> => {
+    if (login && email) {
+      const loginPat = `%${login}%`;
+      const emailPat = `%${email}%`;
+      const rows = await sql`
+        SELECT id, email, username, role, selected_character_id, created_at
+        FROM users
+        WHERE username ILIKE ${loginPat} AND email ILIKE ${emailPat}
+        ORDER BY created_at DESC LIMIT 20
+      `;
+      return rows as Omit<User, 'password'>[];
+    } else if (email) {
+      const pat = `%${email}%`;
+      const rows = await sql`
+        SELECT id, email, username, role, selected_character_id, created_at
+        FROM users
+        WHERE email ILIKE ${pat}
+        ORDER BY created_at DESC LIMIT 20
+      `;
+      return rows as Omit<User, 'password'>[];
+    } else if (login) {
+      const pat = `%${login}%`;
+      const rows = await sql`
+        SELECT id, email, username, role, selected_character_id, created_at
+        FROM users
+        WHERE username ILIKE ${pat}
+        ORDER BY created_at DESC LIMIT 20
+      `;
+      return rows as Omit<User, 'password'>[];
+    }
+    return [];
+  },
+
+  updateUsername: async (userId: string, username: string): Promise<boolean> => {
+    const rows = await sql`UPDATE users SET username = ${username} WHERE id = ${userId} RETURNING id`;
+    return rows.length > 0;
+  },
+
+  getLoginHistory: async (userId: string): Promise<LoginHistoryEntry[]> => {
+    const rows = await sql`
+      SELECT id, user_id, ip_address, user_agent, success, created_at
+      FROM login_history
+      WHERE user_id = ${userId}
+      ORDER BY created_at DESC LIMIT 100
+    `;
+    return rows as LoginHistoryEntry[];
+  },
+
+  recordLoginAttempt: async (
+    userId: string,
+    ipAddress: string,
+    userAgent: string | null,
+    success: boolean
+  ): Promise<void> => {
+    const id = uuidv4();
+    await sql`
+      INSERT INTO login_history (id, user_id, ip_address, user_agent, success)
+      VALUES (${id}, ${userId}, ${ipAddress}, ${userAgent}, ${success})
+    `;
+  },
 };
