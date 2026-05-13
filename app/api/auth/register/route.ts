@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
       id: newUser.id,
       email: newUser.email,
       username: newUser.username,
+      role: newUser.role ?? 'user',
       createdAt: newUser.created_at.toISOString(),
     };
 
