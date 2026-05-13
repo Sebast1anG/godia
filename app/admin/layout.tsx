@@ -50,7 +50,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className={styles.sidebarFooter}>
           <button
             className={styles.signOutBtn}
-            onClick={() => { authService.logout(); router.replace('/'); }}
+            onClick={async () => { await authService.logout(); router.replace('/'); }}
           >
             Wyloguj
           </button>

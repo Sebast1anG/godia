@@ -208,9 +208,12 @@ class AuthService {
     return response.json();
   }
 
-  logout(reason: AuthStateChangeReason = "signed-out"): void {
-    // Fire-and-forget: clear the httpOnly cookie on the server
-    fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
+  async logout(reason: AuthStateChangeReason = "signed-out"): Promise<void> {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch {
+      // proceed even if network fails
+    }
     this.clearSession(reason);
   }
 

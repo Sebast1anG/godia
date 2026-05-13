@@ -199,8 +199,8 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                         onSendVerificationCode={async (email) => {
                             console.log('Send code to', email);
                         }}
-                        onLogout={() => {
-                            authService.logout();
+                        onLogout={async () => {
+                            await authService.logout();
                             window.location.reload();
                         }}
                         onNavigateToCreateCharacter={() => navigateTo('create-character')}
@@ -214,8 +214,8 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
             case 'character-management':
                 return (
                     <CharacterManagement
-                        onLogout={() => {
-                            authService.logout();
+                        onLogout={async () => {
+                            await authService.logout();
                             window.location.reload();
                         }}
                         onNavigateToAccount={() => navigateTo('account-settings')}
@@ -229,8 +229,8 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                             await refetch();
                             navigateTo('character-management');
                         }}
-                        onLogout={() => {
-                            authService.logout();
+                        onLogout={async () => {
+                            await authService.logout();
                             window.location.reload();
                         }}
                         onNavigateToAccount={() => navigateTo('account-settings')}
