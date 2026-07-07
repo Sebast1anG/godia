@@ -40,11 +40,12 @@ export function getSprite(characterClass?: string, gender?: string, race?: strin
     return SPRITES[key] || null;
 }
 
-export function SpriteAvatar({ src, direction = 0, targetHeight = 72 }: { src: string; direction?: number; targetHeight?: number }) {
+export function SpriteAvatar({ src, direction = 0, targetHeight = 72, animate = false, onDirectionChange }: { src: string; direction?: number; targetHeight?: number; animate?: boolean; onDirectionChange?: (dir: number) => void }) {
     const [frame, setFrame] = useState(0);
     const [frameW, setFrameW] = useState(targetHeight);
     const [frameH, setFrameH] = useState(targetHeight);
     const [sheetW, setSheetW] = useState(targetHeight * 4);
+    const [currentDirection, setCurrentDirection] = useState(direction);
 
     useEffect(() => {
         const img = new Image();
@@ -59,9 +60,25 @@ export function SpriteAvatar({ src, direction = 0, targetHeight = 72 }: { src: s
     }, [src, targetHeight]);
 
     useEffect(() => {
+        if (!animate) return;
         const timer = setInterval(() => setFrame(f => (f + 1) % 4), 200);
         return () => clearInterval(timer);
-    }, []);
+    }, [animate]);
+
+    useEffect(() => {
+        if (!animate) {
+            setCurrentDirection(direction);
+            return;
+        }
+        const timer = setInterval(() => {
+            setCurrentDirection(d => {
+                const newDir = (d + 1) % 4;
+                onDirectionChange?.(newDir);
+                return newDir;
+            });
+        }, 800);
+        return () => clearInterval(timer);
+    }, [animate, onDirectionChange, direction]);
 
     return (
         <div
@@ -71,7 +88,7 @@ export function SpriteAvatar({ src, direction = 0, targetHeight = 72 }: { src: s
                 backgroundImage: `url(${src})`,
                 backgroundSize: `${sheetW}px auto`,
                 backgroundRepeat: 'no-repeat',
-                backgroundPosition: `${-frame * frameW}px ${-direction * frameH}px`,
+                backgroundPosition: `${-frame * frameW}px ${-currentDirection * frameH}px`,
                 imageRendering: 'pixelated',
                 flexShrink: 0,
             }}
