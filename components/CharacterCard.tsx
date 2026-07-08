@@ -82,7 +82,7 @@ export function SpriteAvatar({ src, direction = 0, targetHeight = 72, animate = 
                 onDirectionChange?.(newLogicalDir);
                 return newLogicalDir;
             });
-        }, 600);
+        }, 1200);
         return () => clearInterval(timer);
     }, [animate, onDirectionChange, direction]);
 

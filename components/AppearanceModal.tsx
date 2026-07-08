@@ -83,7 +83,7 @@ export default function AppearanceModal({
                         <div className={styles.previewLabel}>Aktualny kostium</div>
                         <div className={styles.previewSlot}>
                             {activeSpriteUrl
-                                ? <SpriteAvatar src={activeSpriteUrl} targetHeight={74} animate={true} />
+                                ? <SpriteAvatar src={activeSpriteUrl} targetHeight={60} animate={true} />
                                 : <img src="/images/activeCharacter.svg" alt="" className={styles.spriteImage} />
                             }
                         </div>
@@ -92,7 +92,7 @@ export default function AppearanceModal({
                     <div className={styles.previewBox}>
                         <div className={styles.previewLabel}>Podgląd wybranego</div>
                         <div className={styles.previewSlot}>
-                            {selectedSpriteUrl && <SpriteAvatar src={selectedSpriteUrl} targetHeight={74} animate={true} />}
+                            {selectedSpriteUrl && <SpriteAvatar src={selectedSpriteUrl} targetHeight={60} animate={true} />}
                         </div>
                     </div>
                 </div>
