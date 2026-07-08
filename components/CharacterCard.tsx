@@ -40,12 +40,16 @@ export function getSprite(characterClass?: string, gender?: string, race?: strin
     return SPRITES[key] || null;
 }
 
+const DIRECTION_MAP = [0, 2, 3, 1]; // front, right, back, left → rows
+
 export function SpriteAvatar({ src, direction = 0, targetHeight = 72, animate = false, onDirectionChange }: { src: string; direction?: number; targetHeight?: number; animate?: boolean; onDirectionChange?: (dir: number) => void }) {
+
     const [frame, setFrame] = useState(0);
     const [frameW, setFrameW] = useState(targetHeight);
     const [frameH, setFrameH] = useState(targetHeight);
     const [sheetW, setSheetW] = useState(targetHeight * 4);
-    const [currentDirection, setCurrentDirection] = useState(direction);
+    const [currentDirection, setCurrentDirection] = useState(DIRECTION_MAP[direction]);
+    const [logicalDir, setLogicalDir] = useState(direction);
 
     useEffect(() => {
         const img = new Image();
@@ -67,16 +71,18 @@ export function SpriteAvatar({ src, direction = 0, targetHeight = 72, animate = 
 
     useEffect(() => {
         if (!animate) {
-            setCurrentDirection(direction);
+            setLogicalDir(direction);
+            setCurrentDirection(DIRECTION_MAP[direction]);
             return;
         }
         const timer = setInterval(() => {
-            setCurrentDirection(d => {
-                const newDir = (d + 1) % 4;
-                onDirectionChange?.(newDir);
-                return newDir;
+            setLogicalDir((d: number) => {
+                const newLogicalDir = (d + 1) % 4;
+                setCurrentDirection(DIRECTION_MAP[newLogicalDir]);
+                onDirectionChange?.(newLogicalDir);
+                return newLogicalDir;
             });
-        }, 800);
+        }, 600);
         return () => clearInterval(timer);
     }, [animate, onDirectionChange, direction]);
 
