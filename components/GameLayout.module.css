@@ -2,7 +2,6 @@
   min-height: 100vh;
   background-color: #1a1a1a;
   position: relative;
-  background-image: url(/images/main-bg.webp);
   background-size: cover;
   background-position: top center;
   display: flex;

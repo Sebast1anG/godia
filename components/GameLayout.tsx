@@ -62,6 +62,20 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
     }, []);
 
     useEffect(() => {
+        if (!mounted) return;
+
+        // Lazy load background image after page is interactive
+        const img = new Image();
+        img.onload = () => {
+            const main = document.querySelector('.' + styles.main) as HTMLElement;
+            if (main) {
+                main.style.backgroundImage = 'url(/images/main-bg.webp)';
+            }
+        };
+        img.src = '/images/main-bg.webp';
+    }, [mounted]);
+
+    useEffect(() => {
         const syncAuthState = (event?: Event) => {
             setIsAuthenticated(authService.isAuthenticated());
 
