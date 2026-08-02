@@ -10,6 +10,7 @@ interface ModalProps {
     children: ReactNode;
     width?: number;
     className?: string;
+    maxWidth?: number;
 }
 
 export default function Modal({
@@ -19,6 +20,7 @@ export default function Modal({
     showHeader = true,
     children,
     width = 450,
+    maxWidth = width,
     className
 }: ModalProps) {
     if (!isOpen) return null;
@@ -27,7 +29,7 @@ export default function Modal({
         <div className={styles.overlay} onClick={onClose}>
             <div
                 className={`${styles.modal} ${className || ''}`}
-                style={{ width }}
+                style={{ width: `min(${width}px, 90vw)`, maxWidth: `${maxWidth}px` }}
                 onClick={(e) => e.stopPropagation()}
             >
                 {showHeader && (

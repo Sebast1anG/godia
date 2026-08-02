@@ -9,6 +9,9 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    padding: 1.5vw;
+    box-sizing: border-box;
+    transform-origin: center center;
 }
 
 .modal {
@@ -21,6 +24,8 @@
         0 0 0 2px #8b6914,
         0 0 0 4px #6b4f0f,
         0 0 0 5px #8b6914;
+    transform-origin: center center;
+    max-height: 90vh;
 }
 
 .header {
