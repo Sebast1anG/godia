@@ -26,6 +26,8 @@
         0 0 0 5px #8b6914;
     transform-origin: center center;
     max-height: 90vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .header {
@@ -72,6 +74,8 @@
 
 .content {
     padding: 15px 20px;
+    overflow-y: auto;
+    min-height: 0;
 }
 
 .inputWrapper {

@@ -3,14 +3,19 @@
 import styles from './CharacterSelect.module.css';
 import { useCharacters } from '@/lib/CharactersContext';
 import CharacterCard from './CharacterCard';
+import { useFitScale } from '@/lib/useFitScale';
 
 interface CharacterSelectProps {
     onSelect?: (characterId: string) => void;
     onClose?: () => void;
 }
 
+const CONTAINER_WIDTH = 850;
+const CONTAINER_HEIGHT = 885;
+
 export default function CharacterSelect({ onSelect }: CharacterSelectProps) {
     const { characters, selectedCharacterId, selectCharacter } = useCharacters();
+    const scale = useFitScale(CONTAINER_WIDTH, CONTAINER_HEIGHT);
 
     const sortedCharacters = [...characters].sort((a, b) => {
         if (a.serverId !== b.serverId) {
@@ -27,7 +32,7 @@ export default function CharacterSelect({ onSelect }: CharacterSelectProps) {
     };
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container} style={{ zoom: scale }}>
             <img src="/images/TBFrameChooseCharacter.webp" alt="" className={styles.frameTop} />
             <img src="/images/TBFrameChooseCharacter.webp" alt="" className={styles.frameBottom} />
             <img src="/images/LRChooseCharacter.webp" alt="" className={styles.frameLeft} />

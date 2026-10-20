@@ -45,3 +45,9 @@
   width: 1238px;
   height: 100%;
 }
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

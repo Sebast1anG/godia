@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import styles from './AppearanceModal.module.css';
 import { SpriteAvatar, getSprite } from './CharacterCard';
+import { useFitScale } from '@/lib/useFitScale';
 
 interface Costume {
     id: string;
@@ -34,6 +35,7 @@ export default function AppearanceModal({
 }: AppearanceModalProps) {
     const [selectedCostumeId, setSelectedCostumeId] = useState<string | null>(null);
     const [activeCostumeId, setActiveCostumeId] = useState<string | undefined>(currentCostumeId);
+    const scale = useFitScale(999, 822);
 
     if (!isOpen) return null;
 
@@ -65,7 +67,7 @@ export default function AppearanceModal({
 
     return (
         <div className={styles.overlay} onClick={handleClose}>
-            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modal} style={{ zoom: scale }} onClick={(e) => e.stopPropagation()}>
                 <img src="/images/tbFrameChangeCostume.svg" alt="" className={styles.frameTop} />
                 <img src="/images/tbFrameChangeCostume.svg" alt="" className={styles.frameBottom} />
                 <img src="/images/lrFrameChangeCostume.webp" alt="" className={styles.frameLeft} />

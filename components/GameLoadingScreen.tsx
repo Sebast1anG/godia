@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import styles from './GameLoadingScreen.module.css';
+import { useFitScale } from '@/lib/useFitScale';
 
 interface GameLoadingScreenProps {
     onLoadingComplete?: () => void;
@@ -9,6 +10,7 @@ interface GameLoadingScreenProps {
 
 export default function GameLoadingScreen({ onLoadingComplete }: GameLoadingScreenProps) {
     const [step, setStep] = useState(0);
+    const scale = useFitScale(1238, 450);
 
     useEffect(() => {
         const timeouts: NodeJS.Timeout[] = [];
@@ -29,29 +31,31 @@ export default function GameLoadingScreen({ onLoadingComplete }: GameLoadingScre
 
     return (
         <div className={styles.overlay}>
-            <img
-                src="/images/logo.webp"
-                alt="Godia"
-                className={styles.logo}
-            />
-            <div className={styles.barContainer}>
+            <div className={styles.content} style={{ zoom: scale }}>
                 <img
-                    src="/images/bgLoading.webp"
-                    alt=""
-                    className={styles.barTrack}
+                    src="/images/logo.webp"
+                    alt="Godia"
+                    className={styles.logo}
                 />
-                {step > 0 && (
-                    <div
-                        className={styles.barFillWrapper}
-                        style={{ width: `${step}%` }}
-                    >
-                        <img
-                            src="/images/barFull2.svg"
-                            alt=""
-                            className={styles.barFillImg}
-                        />
-                    </div>
-                )}
+                <div className={styles.barContainer}>
+                    <img
+                        src="/images/bgLoading.webp"
+                        alt=""
+                        className={styles.barTrack}
+                    />
+                    {step > 0 && (
+                        <div
+                            className={styles.barFillWrapper}
+                            style={{ width: `${step}%` }}
+                        >
+                            <img
+                                src="/images/barFull2.svg"
+                                alt=""
+                                className={styles.barFillImg}
+                            />
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
