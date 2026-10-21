@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { appZoomScript } from '@/lib/appScale';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -12,7 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pl">
+    <html lang="pl" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: appZoomScript }} />
+      </head>
       <body>
         {children}
       </body>

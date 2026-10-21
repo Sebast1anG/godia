@@ -29,7 +29,7 @@ export default function Modal({
         <div className={styles.overlay} onClick={onClose}>
             <div
                 className={`${styles.modal} ${className || ''}`}
-                style={{ width: `min(${width}px, 90vw)`, maxWidth: `${maxWidth}px` }}
+                style={{ width: `min(${width}px, calc(90vw / var(--app-zoom, 1)))`, maxWidth: `${maxWidth}px` }}
                 onClick={(e) => e.stopPropagation()}
             >
                 {showHeader && (
