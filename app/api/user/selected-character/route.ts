@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { characterStore } from "@/lib/characterStore";
 
 export async function PATCH(request: NextRequest) {
   try {
@@ -27,8 +28,8 @@ export async function PATCH(request: NextRequest) {
     const { characterId } = body;
 
     if (characterId) {
-      const character = await db.findCharacterById(characterId);
-      if (!character || character.user_id !== payload.userId) {
+      const character = await characterStore.find(payload.userId, characterId);
+      if (!character) {
         return NextResponse.json(
           { error: "Postać nie istnieje lub nie należy do Ciebie" },
           { status: 404 }

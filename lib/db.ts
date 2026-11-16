@@ -149,8 +149,8 @@ export const db = {
     return rows[0] as Character || null;
   },
 
-  createCharacter: async (character: Omit<Character, 'id' | 'created_at' | 'level' | 'last_online'>): Promise<Character> => {
-    const id = uuidv4();
+  // The id is given when the character was created on the game server and this row only keeps its extra details.
+  createCharacter: async (character: Omit<Character, 'id' | 'created_at' | 'level' | 'last_online'>, id: string = uuidv4()): Promise<Character> => {
     const rows = await sql`
       INSERT INTO characters (id, user_id, name, server_id, game_mode, gender, race, class)
       VALUES (${id}, ${character.user_id}, ${character.name}, ${character.server_id}, ${character.game_mode}, ${character.gender}, ${character.race}, ${character.class})

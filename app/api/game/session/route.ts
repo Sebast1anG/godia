@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateGameToken, verifyToken } from "@/lib/auth";
-import { db } from "@/lib/db";
+import { characterStore } from "@/lib/characterStore";
+import { gameApiEnabled } from "@/lib/gameApi";
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,8 +32,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const character = await db.findCharacterById(characterId);
-    if (!character || character.user_id !== payload.userId) {
+    const character = await characterStore.find(payload.userId, characterId);
+    if (!character) {
       return NextResponse.json(
         { error: "Postać nie istnieje lub nie należy do Ciebie" },
         { status: 404 }
@@ -42,7 +43,9 @@ export async function POST(request: NextRequest) {
     const token = generateGameToken({ userId: payload.userId, characterId });
 
     // Name and level come from the database, so the game shows what the character really has.
-    return NextResponse.json({ token, characterId, characterName: character.name, characterLevel: String(character.level) });
+    const session = { token, characterId, characterName: character.name, characterLevel: String(character.level) };
+    // With the player id the game can read the character from the game server itself.
+    return NextResponse.json(gameApiEnabled() ? { ...session, playerId: payload.userId } : session);
   } catch (error) {
     console.error("Create game session error:", error);
     return NextResponse.json({ error: "Błąd serwera" }, { status: 500 });

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import { db, initDb } from "@/lib/db";
+import { characterStore } from "@/lib/characterStore";
+import { GameApiError } from "@/lib/gameApi";
 
 const CHARACTER_CREATION_COOLDOWN_MS = 2 * 60 * 1000;
 
@@ -42,7 +44,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const characters = await db.findCharactersByUserId(payload.userId);
+    const characters = await characterStore.list(payload.userId);
 
     return NextResponse.json({ characters });
   } catch (error) {
@@ -83,7 +85,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const existingCharacters = await db.findCharactersByUserId(payload.userId);
+    const existingCharacters = await characterStore.list(payload.userId);
     if (existingCharacters.length >= 21) {
       return NextResponse.json(
         { error: "Osiągnięto maksymalną liczbę postaci (21)" },
@@ -112,7 +114,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const character = await db.createCharacter({
+    const character = await characterStore.create({
       user_id: payload.userId,
       name,
       server_id: serverId || 0,
@@ -125,6 +127,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ character }, { status: 201 });
   } catch (error) {
     console.error("Create character error:", error);
+    if (error instanceof GameApiError) {
+      return NextResponse.json({ error: "Serwer gry nie utworzył postaci" }, { status: 502 });
+    }
     return NextResponse.json({ error: "Błąd serwera" }, { status: 500 });
   }
 }
@@ -147,6 +152,13 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json(
         { error: "Nieprawidłowy token" },
         { status: 401 }
+      );
+    }
+
+    if (!characterStore.canEdit()) {
+      return NextResponse.json(
+        { error: "Serwer gry nie obsługuje jeszcze zmiany postaci" },
+        { status: 501 }
       );
     }
 
@@ -200,6 +212,13 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json(
         { error: "Nieprawidłowy token" },
         { status: 401 }
+      );
+    }
+
+    if (!characterStore.canEdit()) {
+      return NextResponse.json(
+        { error: "Serwer gry nie obsługuje jeszcze usuwania postaci" },
+        { status: 501 }
       );
     }
 
