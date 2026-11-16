@@ -24,6 +24,8 @@ import {
 import { preloadModalImages } from '@/lib/imagePreloader';
 import styles from './GameLayout.module.css';
 
+const GAME_URL = process.env.NEXT_PUBLIC_GAME_URL || 'http://localhost:9000';
+
 type ViewType = 'home' | 'account-settings' | 'premium' | 'regulations' | 'character-management' | 'create-character';
 
 const viewToPath: Record<ViewType, string> = {
@@ -55,7 +57,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
     const [showCharacterSelect, setShowCharacterSelect] = useState(false);
     const [showGameLoading, setShowGameLoading] = useState(false);
     const [globalNotice, setGlobalNotice] = useState<string | null>(null);
-    const { refetch } = useCharacters();
+    const { refetch, selectedCharacter, loading: charactersLoading } = useCharacters();
 
     useEffect(() => {
         preloadModalImages();
@@ -154,6 +156,56 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
         setCurrentView('home');
         window.history.pushState(null, '', '/');
         setShowCharacterSelect(false);
+    };
+
+    const handleJoinGame = () => {
+        if (charactersLoading) return;
+
+        if (!selectedCharacter) {
+            setGlobalNotice('Wybierz postać, aby dołączyć do rozgrywki.');
+            return;
+        }
+
+        setShowGameLoading(true);
+    };
+
+    const enterGame = async () => {
+        try {
+            const token = await authService.getToken();
+            if (!token) {
+                setShowGameLoading(false);
+                authService.logout('session-expired');
+                return;
+            }
+
+            const response = await fetch('/api/game/session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ characterId: selectedCharacter?.id })
+            });
+
+            if (response.status === 401) {
+                setShowGameLoading(false);
+                authService.logout('session-expired');
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error(`Game session: HTTP ${response.status}`);
+            }
+
+            const session = await response.json() as { token: string; characterId: string; characterName: string; characterLevel: string };
+            setShowGameLoading(false);
+            // A fragment never reaches servers or their logs; the game removes it from the address bar on load.
+            window.location.href = `${GAME_URL}#${new URLSearchParams(session)}`;
+        } catch (err) {
+            console.error('Błąd dołączania do gry:', err);
+            setShowGameLoading(false);
+            setGlobalNotice('Nie udało się dołączyć do rozgrywki. Spróbuj ponownie.');
+        }
     };
 
     const user = mounted ? authService.getUser() : null;
@@ -290,7 +342,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                         isAuthenticated ? (
                             <UserPanel
                                 onNavigateToCharacterSelection={() => setShowCharacterSelect(true)}
-                                onJoinGame={() => setShowGameLoading(true)}
+                                onJoinGame={handleJoinGame}
                             />
                         ) : <LoginForm />
                     )}
@@ -306,24 +358,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
             </div>
 
             {showGameLoading && (
-                <GameLoadingScreen
-                    onLoadingComplete={() => {
-                        setShowGameLoading(false);
-                        (async () => {
-                            try {
-                                const response = await fetch('http://localhost:5005/api/v1/admin/auth', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ login: 'admin', password: 'Password!23' })
-                                });
-                                const data = await response.json();
-                                window.location.href = `http://localhost:3000/login?token=${data.access_token}&user=${data.user}`;
-                            } catch {
-                                window.location.href = '/game';
-                            }
-                        })();
-                    }}
-                />
+                <GameLoadingScreen onLoadingComplete={enterGame} />
             )}
 
 
