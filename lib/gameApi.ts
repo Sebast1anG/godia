@@ -30,6 +30,12 @@ export class GameApiError extends Error {}
 
 export const gameApiEnabled = (): boolean => Boolean(process.env.GAME_API_URL);
 
+// Every game server numbers its characters from 1, while all of them (e.g. the local one and the shared one) write
+// to the same `characters` table. So the row id carries the server: "57.128.214.47-5015_7", not just "7".
+export const gameServerKey = (): string =>
+  new URL(baseUrl(process.env.GAME_API_URL, 'GAME_API_URL')).host.replace(/[^a-zA-Z0-9.-]/g, '-');
+export const characterRowId = (gameCharacterId: string | number): string => `${gameServerKey()}_${gameCharacterId}`;
+
 // The website calls the mage "mag"; the game server calls it "mage".
 const CLASS_TO_API: Record<string, string> = { mag: 'mage' };
 const CLASS_FROM_API: Record<string, string> = { mage: 'mag' };

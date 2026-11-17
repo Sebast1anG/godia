@@ -1,5 +1,6 @@
 import { Character, db } from "@/lib/db";
 import {
+  characterRowId,
   createGameCharacter,
   deleteGameCharacter,
   fromApiClass,
@@ -47,7 +48,7 @@ export const characterStore = {
     const local = new Map(localRows.map((row) => [row.id, row]));
     return characters
       .flatMap((character) => {
-        const row = local.get(String(character.id));
+        const row = local.get(characterRowId(character.id));
         return row ? [withLocalDetails(character, row)] : [];
       })
       .sort(newestFirst);
@@ -66,8 +67,12 @@ export const characterStore = {
   /** Removes the character from the game server first, so a failure there leaves the website row in place. */
   delete: async (userId: string, characterId: string): Promise<void> => {
     // Against a game server without the delete endpoint this still hides the character, see the note on top.
-    if (gameApiEnabled()) await deleteGameCharacter(userId, characterId);
-    await db.deleteCharacter(characterId);
+    if (!gameApiEnabled()) {
+      await db.deleteCharacter(characterId);
+      return;
+    }
+    await deleteGameCharacter(userId, characterId);
+    await db.deleteCharacter(characterRowId(characterId));
   },
 
   create: async (character: NewCharacter): Promise<Character> => {
@@ -80,7 +85,13 @@ export const characterStore = {
       gender: character.gender,
       gameMode: character.game_mode,
     });
-    const local = await db.createCharacter(character, String(created.id));
-    return withLocalDetails(created, local);
+    try {
+      const local = await db.createCharacter(character, characterRowId(created.id));
+      return withLocalDetails(created, local);
+    } catch (error) {
+      // A character only the game server knows about stays invisible here and keeps its name taken.
+      await deleteGameCharacter(character.user_id, String(created.id)).catch(() => undefined);
+      throw error;
+    }
   },
 };

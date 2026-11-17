@@ -28,6 +28,16 @@ async function gameServerToken(): Promise<string | null> {
   return body.data.access_token;
 }
 
+// A row of a character kept on the game server has the id "<server>_<number>", see characterRowId in the website's
+// lib/gameApi.ts. Null for any other row (made before, or on another game server): there is nothing to delete there.
+function gameCharacterIdOf(rowId: string): string | null {
+  const baseUrl = process.env.GAME_API_URL;
+  if (!baseUrl) return null;
+  const serverKey = new URL(baseUrl).host.replace(/[^a-zA-Z0-9.-]/g, '-');
+  const match = /^(.+)_(\d+)$/.exec(rowId);
+  return match && match[1] === serverKey ? match[2] : null;
+}
+
 async function deleteOnGameServer(userId: string, charId: string) {
   const baseUrl = process.env.GAME_API_URL;
   if (!baseUrl) return;
@@ -78,7 +88,8 @@ export default () => ({
     const sql = getSql();
     const rows = (await sql`SELECT user_id FROM characters WHERE id = ${charId}`) as any[];
     // The game server goes first: if it fails, the row stays and the character remains visible.
-    if (rows.length > 0) await deleteOnGameServer(rows[0].user_id, charId);
+    const gameCharacterId = gameCharacterIdOf(charId);
+    if (rows.length > 0 && gameCharacterId) await deleteOnGameServer(rows[0].user_id, gameCharacterId);
     await sql`DELETE FROM characters WHERE id = ${charId}`;
   },
 
