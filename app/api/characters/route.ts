@@ -215,13 +215,6 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    if (!characterStore.canEdit()) {
-      return NextResponse.json(
-        { error: "Serwer gry nie obsługuje jeszcze usuwania postaci" },
-        { status: 501 }
-      );
-    }
-
     const { searchParams } = new URL(request.url);
     const characterId = searchParams.get("id");
 
@@ -232,8 +225,8 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const character = await db.findCharacterById(characterId);
-    if (!character || character.user_id !== payload.userId) {
+    const character = await characterStore.find(payload.userId, characterId);
+    if (!character) {
       return NextResponse.json(
         { error: "Postać nie istnieje lub nie należy do Ciebie" },
         { status: 404 }
@@ -252,11 +245,14 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    await db.deleteCharacter(characterId);
+    await characterStore.delete(payload.userId, characterId);
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Delete character error:", error);
+    if (error instanceof GameApiError) {
+      return NextResponse.json({ error: "Serwer gry nie usunął postaci" }, { status: 502 });
+    }
     return NextResponse.json({ error: "Błąd serwera" }, { status: 500 });
   }
 }

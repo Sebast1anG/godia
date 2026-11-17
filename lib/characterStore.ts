@@ -1,6 +1,7 @@
 import { Character, db } from "@/lib/db";
 import {
   createGameCharacter,
+  deleteGameCharacter,
   fromApiClass,
   GameApiCharacter,
   gameApiEnabled,
@@ -12,10 +13,13 @@ import {
 //
 // The game server does not know a character's level, server or dates, so with it switched on the website's
 // `characters` table keeps just those, in a row with the same id.
+//
+// That row is also what makes a character visible: the game server cannot delete anything yet, so a character
+// whose row was removed (e.g. in the CMS) is treated as deleted and neither listed nor playable.
 
 type NewCharacter = Omit<Character, 'id' | 'created_at' | 'level' | 'last_online'>;
 
-const withLocalDetails = (character: GameApiCharacter, local: Character | undefined): Character => ({
+const withLocalDetails = (character: GameApiCharacter, local: Character): Character => ({
   id: String(character.id),
   user_id: character.userId,
   name: character.name,
@@ -23,17 +27,16 @@ const withLocalDetails = (character: GameApiCharacter, local: Character | undefi
   game_mode: character.gameMode as Character['game_mode'],
   gender: character.gender as Character['gender'],
   race: character.race as Character['race'],
-  server_id: local?.server_id ?? 0,
-  level: local?.level ?? 1,
-  last_online: local?.last_online ?? null,
-  // Missing for a character the website did not create; the epoch sorts it last.
-  created_at: local?.created_at ?? new Date(0),
+  server_id: local.server_id,
+  level: local.level,
+  last_online: local.last_online,
+  created_at: local.created_at,
 });
 
 const newestFirst = (a: Character, b: Character) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
 
 export const characterStore = {
-  /** The game server cannot change or remove a character yet. */
+  /** The game server cannot change a character yet. */
   canEdit: (): boolean => !gameApiEnabled(),
 
   /** Newest first. */
@@ -42,7 +45,12 @@ export const characterStore = {
 
     const [characters, localRows] = await Promise.all([listGameCharacters(userId), db.findCharactersByUserId(userId)]);
     const local = new Map(localRows.map((row) => [row.id, row]));
-    return characters.map((character) => withLocalDetails(character, local.get(String(character.id)))).sort(newestFirst);
+    return characters
+      .flatMap((character) => {
+        const row = local.get(String(character.id));
+        return row ? [withLocalDetails(character, row)] : [];
+      })
+      .sort(newestFirst);
   },
 
   /** Null when the character does not exist or belongs to someone else. */
@@ -53,6 +61,13 @@ export const characterStore = {
     }
     const characters = await characterStore.list(userId);
     return characters.find((character) => character.id === characterId) ?? null;
+  },
+
+  /** Removes the character from the game server first, so a failure there leaves the website row in place. */
+  delete: async (userId: string, characterId: string): Promise<void> => {
+    // Against a game server without the delete endpoint this still hides the character, see the note on top.
+    if (gameApiEnabled()) await deleteGameCharacter(userId, characterId);
+    await db.deleteCharacter(characterId);
   },
 
   create: async (character: NewCharacter): Promise<Character> => {

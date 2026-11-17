@@ -11,6 +11,42 @@ function getSql() {
   return _sql;
 }
 
+// Characters live on the game server (storage_service) when GAME_API_URL is set in cms/.env, same as for the website.
+// GAME_AUTH_URL + GAME_API_LOGIN + GAME_API_PASSWORD are only needed when storage_service checks tokens.
+async function gameServerToken(): Promise<string | null> {
+  const { GAME_AUTH_URL, GAME_API_LOGIN, GAME_API_PASSWORD } = process.env;
+  if (!GAME_API_LOGIN || !GAME_API_PASSWORD) return null;
+  if (!GAME_AUTH_URL) throw new Error('GAME_AUTH_URL is not configured in cms/.env');
+
+  const res = await fetch(`${GAME_AUTH_URL.replace(/\/$/, '')}/api/v1/admin/auth`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ login: GAME_API_LOGIN, password: GAME_API_PASSWORD }),
+  });
+  const body = (await res.json()) as { status?: string; data?: { access_token: string } };
+  if (!res.ok || body.status !== 'ok' || !body.data) throw new Error('Game server login failed');
+  return body.data.access_token;
+}
+
+async function deleteOnGameServer(userId: string, charId: string) {
+  const baseUrl = process.env.GAME_API_URL;
+  if (!baseUrl) return;
+
+  const token = await gameServerToken();
+  const res = await fetch(
+    `${baseUrl.replace(/\/$/, '')}/api/v1/player_character/${encodeURIComponent(userId)}/${encodeURIComponent(charId)}`,
+    { method: 'DELETE', headers: token ? { Authorization: `Bearer ${token}` } : {} }
+  );
+  // 404: a game server without the delete endpoint; removing the row below hides the character, as before.
+  if (res.status === 404) return;
+  if (!res.ok) throw new Error(`Game server character delete: HTTP ${res.status}`);
+
+  const body = (await res.json()) as { status?: string; message?: string };
+  if (body.status !== 'ok' && body.message !== 'character do not exist') {
+    throw new Error(`Game server character delete: ${body.message ?? 'unknown error'}`);
+  }
+}
+
 export default () => ({
   async getUsers() {
     const sql = getSql();
@@ -40,6 +76,9 @@ export default () => ({
 
   async deleteCharacterById(charId: string) {
     const sql = getSql();
+    const rows = (await sql`SELECT user_id FROM characters WHERE id = ${charId}`) as any[];
+    // The game server goes first: if it fails, the row stays and the character remains visible.
+    if (rows.length > 0) await deleteOnGameServer(rows[0].user_id, charId);
     await sql`DELETE FROM characters WHERE id = ${charId}`;
   },
 

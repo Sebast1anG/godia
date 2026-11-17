@@ -68,7 +68,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
       ctx.send({ success: true });
     } catch (err: any) {
       strapi.log.error(err);
-      ctx.internalServerError('Błąd bazy danych');
+      ctx.internalServerError('Nie udało się usunąć postaci');
     }
   },
 

@@ -90,6 +90,23 @@ export async function listGameCharacters(userId: string): Promise<GameApiCharact
   return readBody<GameApiCharacter[]>(response, 'Game server character list');
 }
 
+/**
+ * Removes a character on the game server; the server only removes one that belongs to the user.
+ * False when this game server version has no delete endpoint yet (it answers HTTP 404 to the unknown route).
+ * A character the server no longer has counts as removed.
+ */
+export async function deleteGameCharacter(userId: string, characterId: string): Promise<boolean> {
+  const response = await request(`${charactersPath(userId)}/${encodeURIComponent(characterId)}`, { method: 'DELETE' });
+  if (response.status === 404) return false;
+  if (!response.ok) throw new GameApiError(`Game server character delete: HTTP ${response.status}`);
+
+  const body = (await response.json()) as ApiResponse<null>;
+  if (body.status !== 'ok' && body.message !== 'character do not exist') {
+    throw new GameApiError(`Game server character delete: ${body.message ?? 'unknown error'}`);
+  }
+  return true;
+}
+
 export async function createGameCharacter(userId: string, character: NewGameApiCharacter): Promise<GameApiCharacter> {
   const response = await request(charactersPath(userId), {
     method: 'POST',
