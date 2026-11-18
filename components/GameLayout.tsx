@@ -197,7 +197,7 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                 throw new Error(`Game session: HTTP ${response.status}`);
             }
 
-            const session = await response.json() as { token: string; characterId: string; characterName: string; characterLevel: string; playerId?: string };
+            const session = await response.json() as { token: string; characterId: string; characterName: string; characterLevel: string; characterClass: string; characterGender: string; characterRace: string; characterMode: string; playerId?: string };
             setShowGameLoading(false);
             // A fragment never reaches servers or their logs; the game removes it from the address bar on load.
             window.location.href = `${GAME_URL}#${new URLSearchParams(session)}`;

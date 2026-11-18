@@ -42,8 +42,17 @@ export async function POST(request: NextRequest) {
 
     const token = generateGameToken({ userId: payload.userId, characterId });
 
-    // Name and level come from the database, so the game shows what the character really has.
-    const session = { token, characterId, characterName: character.name, characterLevel: String(character.level) };
+    // Name, level and looks come from the database, so the game shows what the character really has.
+    const session = {
+      token,
+      characterId,
+      characterName: character.name,
+      characterLevel: String(character.level),
+      characterClass: character.class,
+      characterGender: character.gender,
+      characterRace: character.race,
+      characterMode: character.game_mode,
+    };
     // With the player id the game can read the character from the game server itself.
     return NextResponse.json(gameApiEnabled() ? { ...session, playerId: payload.userId } : session);
   } catch (error) {
