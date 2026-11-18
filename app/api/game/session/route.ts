@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateGameToken, verifyToken } from "@/lib/auth";
 import { characterStore } from "@/lib/characterStore";
-import { gameApiEnabled } from "@/lib/gameApi";
+import { claimGamePresence, gameApiEnabled } from "@/lib/gameApi";
+import { randomUUID } from "crypto";
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,6 +41,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // One character per account in the game: the game server remembers who is in and refuses the rest.
+    // The id stands for this game tab, so its own refreshes are not taken for a second tab.
+    const sessionId = randomUUID();
+    if (gameApiEnabled()) {
+      const presence = await claimGamePresence(payload.userId, Number(character.id), sessionId);
+      if (presence === 'busy') {
+        return NextResponse.json(
+          { error: "Aby wejść do gry najpierw trzeba wylogować inną postać.", code: "already-in-game" },
+          { status: 409 }
+        );
+      }
+    }
+
     const token = generateGameToken({ userId: payload.userId, characterId });
 
     // Name, level and looks come from the database, so the game shows what the character really has.
@@ -52,6 +66,7 @@ export async function POST(request: NextRequest) {
       characterGender: character.gender,
       characterRace: character.race,
       characterMode: character.game_mode,
+      sessionId,
     };
     // With the player id the game can read the character from the game server itself.
     return NextResponse.json(gameApiEnabled() ? { ...session, playerId: payload.userId } : session);

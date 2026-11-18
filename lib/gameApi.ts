@@ -113,6 +113,30 @@ export async function deleteGameCharacter(userId: string, characterId: string): 
   return true;
 }
 
+/**
+ * Puts the character in the game for this session (a random id of one game tab).
+ * 'busy' when another character of the user is in the game. 'unsupported' when this game server
+ * version has no presence endpoint yet (it answers HTTP 404 to the unknown route).
+ */
+export async function claimGamePresence(
+  userId: string,
+  characterId: number,
+  sessionId: string,
+): Promise<'ok' | 'busy' | 'unsupported'> {
+  const response = await request(`/api/v1/player_presence/${encodeURIComponent(userId)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ characterId, sessionId }),
+  });
+  if (response.status === 404) return 'unsupported';
+  if (!response.ok) throw new GameApiError(`Game server presence: HTTP ${response.status}`);
+
+  const body = (await response.json()) as ApiResponse<unknown>;
+  if (body.status === 'ok') return 'ok';
+  if (body.message === 'another character is already in the game') return 'busy';
+  throw new GameApiError(`Game server presence: ${body.message ?? 'unknown error'}`);
+}
+
 export async function createGameCharacter(userId: string, character: NewGameApiCharacter): Promise<GameApiCharacter> {
   const response = await request(charactersPath(userId), {
     method: 'POST',

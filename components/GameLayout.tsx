@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import TopBar from '@/components/TopBar';
 import LeftSidebar from '@/components/LeftSidebar';
@@ -56,6 +56,9 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
     const [currentView, setCurrentView] = useState<ViewType>(pathToView(pathname));
     const [showCharacterSelect, setShowCharacterSelect] = useState(false);
     const [showGameLoading, setShowGameLoading] = useState(false);
+    const [joinResult, setJoinResult] = useState<'pending' | 'ok' | 'blocked'>('pending');
+    const [joinMessage, setJoinMessage] = useState('');
+    const joinSession = useRef<Record<string, string> | null>(null);
     const [globalNotice, setGlobalNotice] = useState<string | null>(null);
     const { refetch, selectedCharacter, loading: charactersLoading } = useCharacters();
 
@@ -166,10 +169,13 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
             return;
         }
 
+        setJoinResult('pending');
         setShowGameLoading(true);
+        void requestGameSession();
     };
 
-    const enterGame = async () => {
+    // Runs while the loading bar fills, so a refusal shows up on that very screen.
+    const requestGameSession = async () => {
         try {
             const token = await authService.getToken();
             if (!token) {
@@ -193,19 +199,30 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
                 return;
             }
 
+            if (response.status === 409) {
+                const body = await response.json().catch(() => null) as { error?: string } | null;
+                setJoinMessage(body?.error ?? 'Aby wejść do gry najpierw trzeba wylogować inną postać.');
+                setJoinResult('blocked');
+                return;
+            }
+
             if (!response.ok) {
                 throw new Error(`Game session: HTTP ${response.status}`);
             }
 
-            const session = await response.json() as { token: string; characterId: string; characterName: string; characterLevel: string; characterClass: string; characterGender: string; characterRace: string; characterMode: string; playerId?: string };
-            setShowGameLoading(false);
-            // A fragment never reaches servers or their logs; the game removes it from the address bar on load.
-            window.location.href = `${GAME_URL}#${new URLSearchParams(session)}`;
+            joinSession.current = await response.json() as Record<string, string>;
+            setJoinResult('ok');
         } catch (err) {
             console.error('Błąd dołączania do gry:', err);
             setShowGameLoading(false);
             setGlobalNotice('Nie udało się dołączyć do rozgrywki. Spróbuj ponownie.');
         }
+    };
+
+    const goToGame = () => {
+        if (!joinSession.current) return;
+        // A fragment never reaches servers or their logs; the game removes it from the address bar on load.
+        window.location.href = `${GAME_URL}#${new URLSearchParams(joinSession.current)}`;
     };
 
     const user = mounted ? authService.getUser() : null;
@@ -358,7 +375,12 @@ function GameLayoutContent({ centerContent }: GameLayoutProps) {
             </div>
 
             {showGameLoading && (
-                <GameLoadingScreen onLoadingComplete={enterGame} />
+                <GameLoadingScreen
+                    result={joinResult}
+                    message={joinMessage}
+                    onLoadingComplete={goToGame}
+                    onDismiss={() => setShowGameLoading(false)}
+                />
             )}
 
 
