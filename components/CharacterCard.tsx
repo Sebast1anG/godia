@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import styles from './CharacterCard.module.css';
+import { useTranslations } from '@/lib/useTranslations';
 
 export const SPRITES: Record<string, string> = {
     'warrior_male_human':   '/images/warrior-resize.webp',
@@ -129,6 +130,10 @@ export default function CharacterCard({
     size = 'default',
     selected = false,
 }: CharacterCardProps) {
+    const { t } = useTranslations();
+    const classKey = `characterCreation.classes.${characterClass}`;
+    const translatedClass = t(classKey);
+    const classLabel = translatedClass === classKey ? characterClass : translatedClass;
     const spriteHeight = size === 'selection' ? 54 : 58;
     const useSelectionFrameOnly = size === 'selection';
     const nameBackgroundSrc = size === 'selection'
@@ -180,7 +185,7 @@ export default function CharacterCard({
                 {!empty && (
                     <div className={styles.characterInfo}>
                         <div className={styles.characterProperty}>
-                            {characterClass}
+                            {classLabel}
                         </div>
                         <div className={styles.characterProperty}>
                             Poziom {level}
