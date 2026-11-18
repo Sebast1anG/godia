@@ -15,12 +15,12 @@
     "raceElf": "Elf",
     "professions": "Profesje postaci:",
     "classes": {
-      "warrior":  "Wojownik",
-      "mag":      "Mag",
-      "knight":   "Rycerz",
-      "hunter":   "Łowca",
-      "archer":   "Łucznik",
-      "assassin": "Skrytobójca"
+      "warrior":  "Warrior",
+      "mag":      "Mage",
+      "knight":   "Knight",
+      "hunter":   "Hunter",
+      "archer":   "Archer",
+      "assassin": "Assassin"
     },
     "createButton": "Utwórz postać",
     "footer": "Informacje o trybach i profesjach postaci są w \"Wikipedia gry\""
