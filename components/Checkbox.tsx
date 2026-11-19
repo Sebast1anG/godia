@@ -6,6 +6,7 @@ interface CheckboxProps {
     onChange?: (checked: boolean) => void;
     disabled?: boolean;
     variant?: 'default' | 'createCharacter' | 'genderRace' | 'charManagement';
+    labelClassName?: string;
 }
 
 export default function Checkbox({
@@ -13,7 +14,8 @@ export default function Checkbox({
     checked = false,
     onChange,
     disabled = false,
-    variant = 'default'
+    variant = 'default',
+    labelClassName: extraLabelClassName
 }: CheckboxProps) {
     const isCreateCharacterVariant = variant === 'createCharacter';
     const isGenderRaceVariant = variant === 'genderRace';
@@ -31,6 +33,7 @@ export default function Checkbox({
     const labelClassName = [
         styles.checkboxLabel,
         isCreateCharacterVariant ? styles.checkboxLabelCreateCharacter : '',
+        extraLabelClassName ?? '',
     ].filter(Boolean).join(' ');
 
     return (

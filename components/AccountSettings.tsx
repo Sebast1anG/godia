@@ -266,7 +266,7 @@ export default function AccountSettings({
             <div className={styles.accountInfoSection}>
               <h2 className={styles.sectionTitleCentered}>Informacje o koncie:</h2>
               <div className={styles.infoText}>Login: {maskLogin(accountInfo.login)}</div>
-              <div className={styles.infoText}>konto założone: {accountInfo.createdAt}</div>
+              <div className={styles.infoText}>Konto założone: {accountInfo.createdAt}</div>
               <div className={styles.infoText}>Ilość postów na forum: {accountInfo.forumPosts}</div>
               <div className={styles.infoText}>Renoma: {accountInfo.reputation}</div>
               {accountInfo.email && (

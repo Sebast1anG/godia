@@ -256,16 +256,18 @@ export default function CharacterCreation({
                 <div className={styles.sectionContent}>
                     <div className={styles.settingsGrid}>
                         <div className={styles.settingRow}>
-                            <span className={styles.settingLabel}>{t('characterCreation.gameMode')}</span>
+                            <span className={`${styles.settingLabel} ${styles.shiftLeft1}`}>{t('characterCreation.gameMode')}</span>
                             <div className={styles.radioGroup}>
                                 <Checkbox
                                     label={t('characterCreation.modePvE')}
+                                    labelClassName={styles.shiftLeft1}
                                     variant="createCharacter"
                                     checked={gameMode === 'pve'}
                                     onChange={() => setGameMode('pve')}
                                 />
                                 <Checkbox
                                     label={t('characterCreation.modePvP')}
+                                    labelClassName={styles.shiftLeft1}
                                     variant="createCharacter"
                                     checked={gameMode === 'pvp'}
                                     onChange={() => setGameMode('pvp')}

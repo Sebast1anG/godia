@@ -333,6 +333,10 @@
     gap: 29px;
 }
 
+.verificationRow .longButton {
+    top: 1px;
+}
+
 .columnDivider {
     width: 5px;
     flex-shrink: 0;
