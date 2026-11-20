@@ -17,10 +17,14 @@
     "classes": {
       "warrior":  "Wojownik",
       "mag":      "Mag",
-      "knight":   "Rycerz",
-      "hunter":   "Łowca",
+      "knight":   "Rycerz Zaklęty Magią",
+      "hunter":   "Łowca Opętany Magią",
       "archer":   "Łucznik",
       "assassin": "Skrytobójca"
+    },
+    "classesShort": {
+      "knight":   "Rycerz Z.M",
+      "hunter":   "Łowca O.M"
     },
     "createButton": "Utwórz postać",
     "footer": "Informacje o trybach i profesjach postaci są w \"Wikipedia gry\""
