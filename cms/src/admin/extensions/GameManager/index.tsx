@@ -72,8 +72,8 @@ interface AccountState {
 
 
 const CLASS_NAMES: Record<string, string> = {
-  warrior: 'Wojownik', mag: 'Mag', knight: 'Rycerz',
-  hunter: 'Łowca', archer: 'Łucznik', assassin: 'Skrytobójca',
+  warrior: 'Wojownik', mag: 'Mag', knight: 'Rycerz Zaklęty Magią',
+  hunter: 'Łowca Opętany Magią', archer: 'Łucznik', assassin: 'Skrytobójca',
 };
 
 

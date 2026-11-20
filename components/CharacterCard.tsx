@@ -131,9 +131,13 @@ export default function CharacterCard({
     selected = false,
 }: CharacterCardProps) {
     const { t } = useTranslations();
+    const shortClassKey = `characterCreation.classesShort.${characterClass}`;
     const classKey = `characterCreation.classes.${characterClass}`;
+    const shortClass = t(shortClassKey);
     const translatedClass = t(classKey);
-    const classLabel = translatedClass === classKey ? characterClass : translatedClass;
+    const classLabel = shortClass !== shortClassKey
+        ? shortClass
+        : translatedClass === classKey ? characterClass : translatedClass;
     const spriteHeight = size === 'selection' ? 54 : 58;
     const useSelectionFrameOnly = size === 'selection';
     const nameBackgroundSrc = size === 'selection'
