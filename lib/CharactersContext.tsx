@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { AUTH_STATE_EVENT, SESSION_EXPIRED_MESSAGE, authService } from '@/lib/authService';
 
 interface RawCharacter {
@@ -40,6 +40,44 @@ interface CharactersContextType {
 
 const CharactersContext = createContext<CharactersContextType | null>(null);
 
+// The last known characters, kept in the browser so the sidebar can show them before the server answers.
+const CACHE_KEY = 'charactersCache';
+
+interface CharactersCache {
+    userId: string;
+    characters: Character[];
+    selectedCharacterId: string | null;
+}
+
+const readCache = (): CharactersCache | null => {
+    const userId = authService.getUser()?.id;
+    if (!userId) return null;
+    try {
+        const cache = JSON.parse(localStorage.getItem(CACHE_KEY) ?? 'null') as CharactersCache | null;
+        return cache && cache.userId === userId && Array.isArray(cache.characters) ? cache : null;
+    } catch {
+        return null;
+    }
+};
+
+const writeCache = (characters: Character[], selectedCharacterId: string | null) => {
+    const userId = authService.getUser()?.id;
+    if (!userId) return;
+    try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ userId, characters, selectedCharacterId }));
+    } catch {
+        // Storage can be full or blocked; the cache is only a speed-up.
+    }
+};
+
+const clearCache = () => {
+    try {
+        localStorage.removeItem(CACHE_KEY);
+    } catch {
+        // Nothing to clear when storage is blocked.
+    }
+};
+
 const mapCharacter = (character: RawCharacter): Character => ({
     id: character.id,
     name: character.name,
@@ -60,7 +98,14 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
     const clearCharacterState = useCallback(() => {
         setCharacters([]);
         setSelectedCharacterId(null);
+        clearCache();
     }, []);
+
+    const hasFetched = useRef(false);
+
+    useEffect(() => {
+        if (hasFetched.current) writeCache(characters, selectedCharacterId);
+    }, [characters, selectedCharacterId]);
 
     const handleUnauthorized = useCallback(() => {
         clearCharacterState();
@@ -124,6 +169,7 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
 
             if (response.ok) {
                 const data = await response.json();
+                hasFetched.current = true;
                 setCharacters(data.characters.map(mapCharacter));
                 return;
             }
@@ -219,6 +265,13 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
     }, [fetchCharacters, handleUnauthorized]);
 
     const init = useCallback(async () => {
+        const cache = readCache();
+        if (cache) {
+            setCharacters(cache.characters);
+            setSelectedCharacterId(cache.selectedCharacterId);
+            setLoading(false);
+        }
+
         const token = await authService.getToken();
 
         if (!token) {
@@ -228,7 +281,7 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
             return;
         }
 
-        setLoading(true);
+        if (!cache) setLoading(true);
         setError(null);
 
         try {
@@ -244,6 +297,7 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
 
             if (charsRes.ok) {
                 const data = await charsRes.json();
+                hasFetched.current = true;
                 setCharacters(data.characters.map(mapCharacter));
             } else {
                 clearCharacterState();
@@ -271,12 +325,17 @@ export function CharactersProvider({ children }: { children: ReactNode }) {
             void init();
         };
 
+        // Another tab saving its characters cache must not make this tab reload (and save) its own.
+        const syncOnStorage = (event: StorageEvent) => {
+            if (event.key !== CACHE_KEY) syncCharacters();
+        };
+
         window.addEventListener(AUTH_STATE_EVENT, syncCharacters);
-        window.addEventListener('storage', syncCharacters);
+        window.addEventListener('storage', syncOnStorage);
 
         return () => {
             window.removeEventListener(AUTH_STATE_EVENT, syncCharacters);
-            window.removeEventListener('storage', syncCharacters);
+            window.removeEventListener('storage', syncOnStorage);
         };
     }, [init]);
 

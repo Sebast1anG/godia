@@ -57,6 +57,11 @@ const MODAL_IMAGES = [
 
   // CharacterCard / CharacterManagement
   '/images/bgFrameCharacter.webp',
+  '/images/bgFrameNick.webp',
+  '/images/bgNickChooseCharacter.webp',
+  '/images/warrior-resize.webp',
+  '/images/witch-female-human.webp',
+  '/images/archer-male-human.webp',
   '/images/bgCharacterAvatar.webp',
   '/images/backgroundCharacter.svg',
   '/images/activeCharacter.svg',

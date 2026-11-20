@@ -37,7 +37,18 @@ export interface Character {
   created_at: Date;
 }
 
-export async function initDb() {
+let initDbPromise: Promise<void> | null = null;
+
+// Creating and migrating tables only has to happen once per server process, not on every request.
+export function initDb(): Promise<void> {
+  initDbPromise ??= createTables().catch((error) => {
+    initDbPromise = null;
+    throw error;
+  });
+  return initDbPromise;
+}
+
+async function createTables(): Promise<void> {
   await sql`
     CREATE TABLE IF NOT EXISTS users (
       id VARCHAR(255) PRIMARY KEY,

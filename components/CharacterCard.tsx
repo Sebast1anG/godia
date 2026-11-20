@@ -141,8 +141,8 @@ export default function CharacterCard({
     const spriteHeight = size === 'selection' ? 54 : 58;
     const useSelectionFrameOnly = size === 'selection';
     const nameBackgroundSrc = size === 'selection'
-        ? '/images/bgNickChooseCharacter.svg'
-        : '/images/bgFrameNick.svg';
+        ? '/images/bgNickChooseCharacter.webp'
+        : '/images/bgFrameNick.webp';
     const sectionClassName = [
         styles.characterSection,
         size === 'selection' ? styles.characterSectionSelection : '',
